@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.UserCardService">
+	<resultMap type="com.cofc.pojo.aida.UserCard" id="BaseResultMap">
+		<id column="card_id" property="cardId" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="gender" property="gender" jdbcType="INTEGER" />
+		<result column="position" property="position" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="sit_phone" property="sitPhone" jdbcType="VARCHAR" />
+		<result column="wechat" property="wechat" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="company" property="company" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		<result column="code_url" property="codeUrl" jdbcType="VARCHAR" />
+		<result column="introduce" property="introduce" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="voice" property="voice" jdbcType="VARCHAR" />
+		<result column="vedio" property="vedio" jdbcType="VARCHAR" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+		<result column="photo_list" property="photoList" jdbcType="VARCHAR" />
+		<result column="praise_count" property="praiseCount" jdbcType="INTEGER" />
+		<result column="share_title" property="shareTitle" jdbcType="VARCHAR" />
+		<result column="is_share" property="isShare" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addUserCard" parameterType="com.cofc.pojo.aida.UserCard"
+	 useGeneratedKeys="true" keyProperty="cardId">
+	 	insert into tf_user_card(app_id,user_id,real_name,gender,position,phone,sit_phone,wechat,email,company,address,
+	 	head_image,code_url,introduce,create_time,voice,vedio,is_effect,photo_list,share_title,is_share)
+	 	values(#{appId},#{userId},#{realName},#{gender},#{position},#{phone},#{sitPhone},#{wechat},#{email},#{company},#{address},
+	 	#{headImage},#{codeUrl},#{introduce},#{createTime},#{voice},#{vedio},#{isEffect},#{photoList},#{shareTitle},#{isShare})
+	 </insert>
+	 <update id="updateUserCard" parameterType="com.cofc.pojo.aida.UserCard">
+	 	update tf_user_card
+		<trim prefix="set" suffixOverrides=",">
+			<if test="realName!=null and realName!=''">real_name=#{realName},</if>
+			<if test="position!=null and position!=''">position=#{position},</if>
+			<if test="phone!=null and phone!=''">phone=#{phone},</if>
+			<if test="sitPhone!=null and sitPhone!=''">sit_phone=#{sitPhone},</if>
+			<if test="wechat!=null and wechat!=''">wechat=#{wechat},</if>
+			<if test="email!=null and email!=''">email=#{email},</if>
+			<if test="company!=null and company!=''">company=#{company},</if>
+			<if test="address!=null and address!=''">address=#{address},</if>
+			<if test="headImage!=null and headImage!=''">head_image=#{headImage},</if>
+			<if test="codeUrl!=null and codeUrl!=''">code_url=#{codeUrl},</if>
+			<if test="introduce!=null and introduce!=''">introduce=#{introduce},</if>
+			<if test="voice!=null and voice!=''">voice=#{voice},</if>
+			<if test="vedio!=null and vedio!=''">vedio=#{vedio},</if>
+		    <if test="isEffect!=null">is_effect=#{isEffect},</if>
+		    <if test="gender!=null">gender=#{gender},</if>
+		    <if test="photoList!=null and photoList!=''">photo_list=#{photoList},</if>
+		    <if test="praiseCount!=null">praise_count=#{praiseCount},</if>
+		    <if test="shareTitle!=null and shareTitle!=''">share_title=#{shareTitle},</if>
+		    <if test="isShare!=null">is_share=#{isShare},</if>
+		</trim>
+		where card_id = #{cardId}
+	 </update>
+	 <delete id="delUserCard" parameterType="com.cofc.pojo.aida.UserCard">
+	 	delete from tf_user_card where card_id = #{cardId} 
+	 </delete>
+	 <select id="getUserCard" resultMap="BaseResultMap">
+	 	select * from tf_user_card where user_id = #{userId} and app_id = #{appId}
+	 </select>
+	 <select id="getCardInfo" resultMap="BaseResultMap">
+	 	select * from tf_user_card where card_id = #{cardId}
+	 </select>
+</mapper>

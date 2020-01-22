@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.StyleSubjectAnswerService">
+	<resultMap type="com.cofc.pojo.vij.StyleSubjectAnswer" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="project_id" property="projectId" jdbcType="INTEGER" />
+		<result column="answer_list" property="answerList" jdbcType="VARCHAR" />
+		<result column="is_deal" property="isDeal" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addAnswer" parameterType="com.cofc.pojo.vij.StyleSubjectAnswer"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tv_style_subject_answer(project_id,answer_list,create_time)
+		values(#{projectId},#{answerList},#{createTime})
+	</insert>
+	<delete id="delAnswer" parameterType="com.cofc.pojo.vij.StyleSubjectAnswer">
+		delete from tv_style_subject_answer where id = #{id}
+	</delete>
+	
+	<select id="getInfoByProjectId" resultMap="BaseResultMap">
+		select * from tv_style_subject_answer where project_id = #{projectId}
+	</select>
+	<select id="getInfoById" resultMap="BaseResultMap">
+		select * from tv_style_subject_answer where id = #{id}
+	</select>
+	<update id="updateAnswer" parameterType="com.cofc.pojo.vij.StyleSubjectAnswer">
+		UPDATE tv_style_subject_answer 
+			<trim prefix="set" suffixOverrides=",">
+			<if test="projectId !=null">
+				project_id = #{projectId},
+			</if>
+			<if test="answerList != null and answerList !=''">
+				answer_list = #{answerList},
+			</if>
+			<if test="isDeal !=null">
+				is_deal = #{isDeal},
+			</if>
+		</trim>
+		 WHERE id =#{id}
+	</update>
+</mapper>

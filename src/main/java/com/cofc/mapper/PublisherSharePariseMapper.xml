@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.PublisherSharePariseService">
+ <resultMap type="com.cofc.pojo.PublisherShareParise" id="PariseMap">
+  <id column="parise_id" property="pariseId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="share_id" property="shareId" jdbcType="INTEGER" />
+		<result column="parise_status" property="pariseStatus" jdbcType="INTEGER" />
+		<result column="parise_time" property="pariseTime" />
+		<result column="update_time" property="updateTime" />
+ </resultMap>
+ 
+ <insert id="addPublisherShareParise" parameterType="com.cofc.pojo.PublisherShareParise">
+   insert into tb_publisher_share_parise(user_id,share_id,parise_status,parise_time) 
+                   values(#{userId},#{shareId},#{pariseStatus},#{pariseTime})
+ </insert>
+ 
+ <select id="getUserIsParise" resultMap="PariseMap">
+   select * from tb_publisher_share_parise where user_id=#{userId} and share_id=#{shareId}
+ </select>
+ <update id="updatePublisherShareParise" parameterType="com.cofc.pojo.PublisherShareParise">
+   update tb_publisher_share_parise 
+   <trim prefix="set" suffixOverrides=",">
+		     	update_time=#{updateTime},
+			<if test="pariseStatus !=null">parise_status=#{pariseStatus},</if>
+		</trim>
+		where parise_id=#{pariseId}
+ </update>
+</mapper>

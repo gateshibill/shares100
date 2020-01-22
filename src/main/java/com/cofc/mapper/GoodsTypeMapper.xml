@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.GoodsTypeService">
+	<resultMap type="com.cofc.pojo.GoodsType" id="BaseResultMap">
+		<id column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user" property="createUser" jdbcType="INTEGER"/>
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER"/>
+		<result column="order_no" property="orderNo" jdbcType="INTEGER"/>
+		<result column="type_icon" property="typeIcon" jdbcType="VARCHAR" />
+		<result column="is_remove" property="isRemove" jdbcType="INTEGER"/>
+		<result column="parent_id" property="parentId" jdbcType="INTEGER"/>
+		<result column="en_type_name" property="enTypeName" jdbcType="VARCHAR" />
+		<result column="type_images" property="typeImages" jdbcType="VARCHAR" />
+		<!--  -->
+		<association property="application" javaType="com.cofc.pojo.ApplicationCommon">
+		<id column="application_id" property="applicationId" jdbcType="INTEGER" />
+		<result column="application_name" property="applicationName" jdbcType="VARCHAR" />
+		</association>
+		<association property="user" javaType="com.cofc.pojo.UserCommon">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	
+	<select id="findAllGoodsType" resultMap="BaseResultMap">
+		select * from TB_GOODS_TYPE g 
+		 left join TB_APPLICATION_COMMON a on g.login_plat=a.application_id
+		 left join tb_user_common u on g.create_user=u.user_id
+		 where 1 =1 and g.parent_id is null
+		<if test="loginPlat!=null">
+			and g.login_plat = #{loginPlat}
+		</if>
+		<if test="isRemove!=null">
+			and g.is_remove = #{isRemove}
+		</if>
+		<if test="typeName !=null and typeName !=''">
+			and g.type_name like CONCAT('%',#{typeName},'%') or u.nick_name like CONCAT('%',#{typeName},'%')
+		</if>
+		<if test="userId !=null">
+			and g.create_user = #{userId}
+		</if>
+		<if test="applicationName != null and applicationName!=''">
+		   and a.application_name like CONCAT('%',#{applicationName},'%')
+		</if>
+		order by g.order_no asc 
+		<if test="page != null and limit != null">
+		limit #{page},#{limit}
+		</if>
+	</select>
+	
+	<select id="showGoodsTypeList" resultMap="BaseResultMap">
+	  select * from TB_GOODS_TYPE where 1=1
+	  	<if test="loginPlat!=null">
+			and login_plat = #{loginPlat}
+		</if>
+		<if test="userId !=null">
+			and create_user = #{userId} or login_plat is null
+		</if>
+		order by create_time desc
+	</select>
+	
+	<select id="findAllGoodsTypeCount" resultType="int">
+	    select count(*) from TB_GOODS_TYPE g 
+		 left join TB_APPLICATION_COMMON a on g.login_plat=a.application_id
+		 left join tb_user_common u on g.create_user=u.user_id
+		 where 1 =1 
+	      <if test="loginPlat!=null">
+			and g.login_plat = #{loginPlat}
+		</if>
+		<if test="isRemove!=null">
+			and g.is_remove = #{isRemove}
+		</if>
+		<if test="typeName !=null and typeName !=''">
+			and g.type_name like CONCAT('%',#{typeName},'%') or u.nick_name like CONCAT('%',#{typeName},'%')
+		</if>
+		<if test="userId !=null">
+			and g.create_user = #{userId}
+		</if>
+		<if test="applicationName != null and applicationName!=''">
+		   and a.application_name like CONCAT('%',#{applicationName},'%')
+		</if>
+	</select>
+	
+	<select id="getLoginPlatTypeName" resultMap="BaseResultMap">
+	select * from TB_GOODS_TYPE where 1 =1
+	<if test="typeName !=null and typeName !=''">
+		and type_name = #{typeName}
+	</if>
+	<if test="loginPlat !=null">
+		and login_plat = #{loginPlat}
+	</if>
+	<if test="userId !=null">
+		and create_user = #{userId}
+	</if>
+</select>
+	<insert id="addNewGoodsType" parameterType="com.cofc.pojo.GoodsType"
+	      useGeneratedKeys="true" keyProperty="typeId">
+		insert into TB_GOODS_TYPE(type_name,create_time,create_user,login_plat,order_no,type_icon,is_remove,parent_id,en_type_name,type_images) 
+		values(#{typeName},#{createTime},#{createUser},#{loginPlat},#{orderNo},#{typeIcon},#{isRemove},#{parentId},#{enTypeName},#{typeImages})
+	</insert>
+	<select id="confirmThisTypeExists" resultMap="BaseResultMap">
+		select * from TB_GOODS_TYPE where login_plat = #{loginPlat} and type_name = #{typeName}
+	</select>
+	
+	<delete id="deleteGoodsType">
+	  delete from TB_GOODS_TYPE where type_id=#{typeId}
+	</delete>
+	<update id="updateGoodsType" parameterType="com.cofc.pojo.GoodsType">
+	  update TB_GOODS_TYPE
+	  <trim prefix="set" suffixOverrides=",">
+			<if test="loginPlat !=null">login_plat = #{loginPlat},</if>
+			<if test="orderNo !=null">order_no = #{orderNo},</if>
+			<if test="typeName !=null and typeName !=''">type_name=#{typeName},</if>
+			<if test="typeIcon !=null and typeIcon !=''">type_icon=#{typeIcon},</if>
+			<if test="isRemove !=null">is_remove=#{isRemove},</if>
+			<if test="enTypeName !=null and enTypeName !=''">en_type_name=#{enTypeName},</if>
+		</trim>
+		where type_id=#{typeId} 
+	</update>
+	<select id="getGoodsTypeById" resultMap="BaseResultMap">
+	select * from TB_GOODS_TYPE where type_id=#{typeId} 
+	</select>
+	
+	<!-- 增量开发：防止跟前端冲突 -->
+	<select id="getGoodTypeByLoginPlat" resultMap="BaseResultMap">
+	  <!-- select * from TB_GOODS_TYPE where login_plat in 
+	  <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	  </foreach>
+	  order by order_no asc
+		<if test="page != null and limit != null">
+		limit #{page},#{limit}
+		</if> -->
+		
+		select * from TB_GOODS_TYPE g 
+		 left join TB_APPLICATION_COMMON a on g.login_plat=a.application_id
+		 left join tb_user_common u on g.create_user=u.user_id
+		 where 1 =1 
+		<if test="typeName !=null and typeName !=''">
+			and g.type_name like CONCAT('%',#{typeName},'%') or u.nick_name like CONCAT('%',#{typeName},'%')
+		</if>
+		<if test="isRemove!=null">
+			and g.is_remove = #{isRemove}
+		</if>
+		<if test="userId !=null">
+			and g.create_user = #{userId}
+		</if>
+		<if test="applicationName != null and applicationName!=''">
+		   and a.application_name like CONCAT('%',#{applicationName},'%')
+		</if>
+		and g.login_plat in 
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach>
+		order by g.order_no asc 
+		<if test="page != null and limit != null">
+		limit #{page},#{limit}
+		</if>
+	</select>
+	
+	<select id="getGoodTypeCountByLoginPlat" resultType="int">
+	  select count(*) from TB_GOODS_TYPE g 
+		 left join TB_APPLICATION_COMMON a on g.login_plat=a.application_id
+		 left join tb_user_common u on g.create_user=u.user_id
+		 where 1 =1 
+		<if test="typeName !=null and typeName !=''">
+			and g.type_name like CONCAT('%',#{typeName},'%') or u.nick_name like CONCAT('%',#{typeName},'%')
+		</if>
+		<if test="isRemove!=null">
+			and g.is_remove = #{isRemove}
+		</if>
+		<if test="userId !=null">
+			and g.create_user = #{userId}
+		</if>
+		<if test="applicationName != null and applicationName!=''">
+		   and a.application_name like CONCAT('%',#{applicationName},'%')
+		</if>
+		and g.login_plat in 
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach>
+	</select>
+	<!-- 优化查询 -->
+	<select id="getNewTypeList" resultMap="BaseResultMap">
+		select * from TB_GOODS_TYPE where is_remove = 0 
+		<if test="loginPlatList != null">
+			and login_plat in 
+			<foreach item="item"  index="index" collection="loginPlatList" open="("
+						separator="," close=")">
+						#{item}
+		    </foreach>
+		</if>
+		
+	</select>
+	
+	<select id="getVijTypeList" resultMap="BaseResultMap">
+		select * from TB_GOODS_TYPE where is_remove = 0  and login_plat = #{loginPlat} order by order_no
+	</select>
+	<!-- 唯爱家小程序专用 -->
+	<select id="getVijParentList" resultMap="BaseResultMap">
+		select * from TB_GOODS_TYPE where is_remove = 0  and login_plat = #{loginPlat} and parent_id is null
+	</select>
+	<select id="getVijChildList" resultMap="BaseResultMap">
+		select * from TB_GOODS_TYPE where is_remove = 0 and parent_id = #{parentId}
+		order by order_no 
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	<select id="getVijChildCount" resultType="int">
+		select count(*) from TB_GOODS_TYPE where is_remove = 0 and parent_id = #{parentId}
+	</select>
+	
+	<!-- 批量真删除 -->
+		<delete id="delGoodsType" parameterType="com.cofc.pojo.GoodsType">
+				 DELETE from tb_goods_common where goods_id in
+	        <foreach collection="list" item="id"
+	                 open="(" close=")" index="index" separator=",">
+	            #{id}
+	        </foreach>
+		</delete>
+</mapper>

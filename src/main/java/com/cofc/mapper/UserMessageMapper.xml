@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.UserMessageService">
+	<resultMap type="com.cofc.pojo.UserMessage" id="BaseResultMap">
+		<id column="message_id" property="messageId" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="is_remove" property="isRemove" jdbcType="INTEGER" />
+		<result column="is_read" property="isRead" jdbcType="INTEGER" />
+		<result column="score" property="score" jdbcType="INTEGER" />
+		<result column="is_tag" property="isTag" jdbcType="INTEGER" />
+		<result column="token" property="token" jdbcType="DOUBLE" />
+	</resultMap>
+	
+	<insert id="addMessage" parameterType="com.cofc.pojo.UserMessage"
+		useGeneratedKeys="true" keyProperty="messageId">
+		insert into
+		TB_USER_MESSAGE(content,type,user_id,login_plat,create_time,is_remove,is_read,score,is_tag,token)
+		values(#{content},#{type},#{userId},#{loginPlat},#{createTime},#{isRemove},#{isRead},#{score},#{isTag},#{token})
+	</insert>
+	<select id="getMessageCount" resultType="int">
+		select count(*) from TB_USER_MESSAGE where 1=1
+		<if test="message.isRemove != null">
+			and is_remove = #{message.isRemove}
+		</if>
+		<if test="message.userId != null">
+			and user_id = #{message.userId}
+		</if>
+		<if test="message.isTag != null">
+			and is_tag = #{message.isTag}
+		</if>
+		<if test="message.loginPlat != null">
+			and login_plat = #{message.loginPlat}
+		</if>
+		<if test="message.type != null">
+		   and type = #{message.type}
+		</if>
+	</select>
+	<select id="getMessageList" resultMap="BaseResultMap">
+		select * from TB_USER_MESSAGE where 1=1
+		<if test="message.isRemove != null">
+			and is_remove = #{message.isRemove}
+		</if>
+		<if test="message.userId != null">
+			and user_id = #{message.userId}
+		</if>
+		<if test="message.isTag != null">
+			and is_tag = #{message.isTag}
+		</if>
+		<if test="message.loginPlat != null">
+			and login_plat = #{message.loginPlat}
+		</if>
+		<if test="message.type != null">
+			and type = #{message.type}
+		</if>
+		order by create_time desc 
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	<delete id="delMessage">
+		delete from TB_USER_MESSAGE where message_id = #{messageId}
+	</delete>
+</mapper>

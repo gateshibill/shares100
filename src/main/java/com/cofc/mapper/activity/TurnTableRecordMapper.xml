@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.activity.TurnTableRecordService">
+	<resultMap type="com.cofc.pojo.activity.TurnTableRecord" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="turntable_id" property="turntableId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="INTEGER" />
+		<result column="column_id" property="columnId" jdbcType="INTEGER" />
+		<result column="win" property="win" jdbcType="INTEGER" />
+		<result column="prize_type" property="prizeType" jdbcType="INTEGER" />
+		<result column="prize_num" property="prizeNum" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addTurnTableRecord" parameterType="com.cofc.pojo.activity.TurnTableRecord"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tc_turntable_record(app_id,turntable_id,user_id,price,column_id,win,prize_type,prize_num,create_time)
+		values(#{appId},#{turntableId},#{userId},#{price},#{columnId},#{win},#{prizeType},#{prizeNum},#{createTime})
+	</insert>
+	<select id="getTurnTableRecordList" resultMap="BaseResultMap">
+		select * from
+		tc_turntable_record where turntable_id = #{turntableId} and app_id = #{appId}
+		order by create_time desc
+		limit #{page},#{limit}
+		
+	</select>
+</mapper>

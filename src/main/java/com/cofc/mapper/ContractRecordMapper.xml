@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ContractRecordService">
+	<resultMap type="com.cofc.pojo.ContractRecord" id="RecordMap">
+		<id column="record_id" property="recordId" jdbcType="INTEGER" />
+		<result column="contract_id" property="contractId" jdbcType="INTEGER" />
+		<result column="reward_deposit" property="totalFee" jdbcType="DOUBLE" />
+		<result column="reward_user" property="rewardUser" jdbcType="INTEGER" />
+		<result column="publisher_id" property="publisherId" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="out_trade_number" property="outTradeNumber"
+			jdbcType="VARCHAR" />
+		<result column="partner_id" property="partnerId" jdbcType="INTEGER" />
+		<association property="user" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+			<result column="user_sex" property="userSex" jdbcType="INTEGER" />
+			<result column="head_card" property="headCard" jdbcType="VARCHAR" />
+			<result column="card_image" property="cardImage" jdbcType="VARCHAR" />
+		</association>
+		<collection property="shareList" resultMap="shareMap"></collection>
+	</resultMap>
+
+	<resultMap type="com.cofc.pojo.ShareContract" id="shareMap">
+		<id column="contract_id" property="contractId" jdbcType="INTEGER" />
+		<result column="reason_id" property="reasonId" jdbcType="INTEGER" />
+		<result column="contract_image" property="contractImage"
+			jdbcType="VARCHAR" />
+		<result column="shared_user_id" property="sharedUserId"
+			jdbcType="INTEGER" />
+		<result column="shared_deposit" property="sharedDeposit"
+			jdbcType="DOUBLE" />
+		<result column="content_id" property="contentId" jdbcType="INTEGER" />
+		<result column="punishment_id" property="punishmentId"
+			jdbcType="INTEGER" />
+		<result column="is_close" property="isClose" jdbcType="INTEGER" />
+		<result column="is_public" property="isPublic" jdbcType="INTEGER" />
+		<result column="shared_time" property="sharedTime" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+
+		<association property="content" javaType="com.cofc.pojo.ContractContent">
+			<id column="content_id" property="contentId" jdbcType="INTEGER" />
+			<result column="content_title" property="contentTitle"
+				jdbcType="VARCHAR" />
+		</association>
+
+		<association property="reason" javaType="com.cofc.pojo.ContractReason">
+			<id column="reason_id" property="reasonId" jdbcType="INTEGER" />
+			<result column="contract_title" property="contractTitle"
+				jdbcType="VARCHAR" />
+		</association>
+
+		<association property="punishment" javaType="com.cofc.pojo.ContractPunishment">
+			<id column="punishment_id" property="punishmentId" jdbcType="INTEGER" />
+			<result column="punishment_content" property="punishmentContent"
+				jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+
+	<select id="getContractRecordList" resultMap="RecordMap">
+		select * from TB_CONTRACT_RECORD cr
+		left join TB_SHARE_CONTRACT sc on
+		cr.contract_id=sc.contract_id
+		left join TB_CONTRACT_CONTENT cc on
+		sc.content_id=cc.content_id
+		left join TB_CONTRACT_REASON crr on
+		sc.reason_id=crr.reason_id
+		left join TB_CONTRACT_PUNISHMENT cp on
+		sc.punishment_id=cp.punishment_id
+		left join TB_USER_COMMON u on
+		cr.reward_user=u.user_id
+		where cr.pay_status=1
+
+	<!-- 查看打赏者信息 -->
+	<if test="type !=null">
+		<if test="type == 1">
+			<if test="userId != null">
+				and cr.reward_user=#{userId}
+			</if>
+		</if>
+		<!-- 查看自己发布的 -->
+		<if test="type ==2">
+			and cr.publisher_id=#{userId}
+		</if>
+	</if>
+	<if test="contractId != null">
+		and cr.contract_id=#{contractId}
+	</if>
+	order by cr.create_time desc limit #{pageNo},#{pageSize}
+	</select>
+
+	<select id="getgetContractRecordCount" resultType="int">
+		select count(*) from TB_CONTRACT_RECORD where 1=1
+		<if test="record != null">
+			<if test="record.recordId != null">
+				and record_id=#{record.recordId}
+			</if>
+			<if test="record.loginPlat != null">
+				and login_plat=#{record.loginPlat}
+			</if>
+		</if>
+	</select>
+	<insert id="addContractRecord" parameterType="com.cofc.pojo.ContractRecord"
+		useGeneratedKeys="true" keyProperty="recordId">
+		insert into TB_CONTRACT_RECORD
+		(contract_id,reward_deposit,reward_user,publisher_id,create_time,pay_status,login_plat,
+		out_trade_number,update_time,partner_id)
+		values(#{contractId},#{totalFee},#{rewardUser},#{publisherId},#{createTime},#{payStatus},
+		#{loginPlat},#{outTradeNumber},#{updateTime},#{partnerId})
+	</insert>
+	<update id="updateContractRecord" parameterType="com.cofc.pojo.ContractRecord">
+		update TB_CONTRACT_RECORD
+		<trim prefix="set" suffixOverrides=",">
+			<if test="realFee!=null">real_fee=#{realFee},</if>
+			<if test="updateTime!=null">update_time=#{updateTime},</if>
+			<if test="payStatus!=null">pay_status=#{payStatus},</if>
+			<if test="outTradeNumber!=null">out_trade_number=#{outTradeNumber},</if>
+		</trim>
+		where record_id =#{recordId}
+	</update>
+	<select id="getContractRecordById" resultMap="RecordMap">
+		select * from
+		TB_CONTRACT_RECORD where record_id =#{recordId}
+	</select>
+	<delete id="deleteContractRecord">
+	  delete from TB_CONTRACT_RECORD where record_id =#{recordId}
+	</delete>
+	<select id="getCountOfTradeMoney" resultType="String"> 
+	select sum(real_fee) from TB_CONTRACT_RECORD where pay_status=1
+		<if test="startTime!=null and startTime!=''">
+			and create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and create_time &lt;= #{endTime}
+		</if>
+	</select>
+</mapper>

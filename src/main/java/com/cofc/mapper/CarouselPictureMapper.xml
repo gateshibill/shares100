@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.CarouselPictureService">
+	<resultMap type="com.cofc.pojo.CarouselPicture" id="BaseResultMap">
+		<id column="picture_id" property="pictureId" jdbcType="INTEGER" />
+		<result column="picture_url" property="pictureUrl" jdbcType="VARCHAR" />
+		<result column="pc_picture_url" property="pcPictureUrl" jdbcType="VARCHAR" />
+		<result column="upload_user" property="uploadUser" jdbcType="VARCHAR" />
+		<result column="upload_time" property="uploadTime" jdbcType="TIMESTAMP" />
+		<result column="order_id" property="orderId" jdbcType="INTEGER" />
+		<result column="is_using" property="isUsing" jdbcType="INTEGER" />
+		<result column="picture_name" property="pictureName" jdbcType="INTEGER" />
+		<result column="sxj_user" property="sxjUser" jdbcType="INTEGER" />
+		<result column="href_url" property="hrefUrl" jdbcType="VARCHAR" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<association property="pictureUser" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<select id="findPictureByCriteria" resultMap="BaseResultMap">
+		select * from TB_CAROUSEL_PICTURE p left join TB_USER_COMMON u on
+		p.upload_user = u.user_id where 1 = 1
+		<if test="pictureId!=null">
+			and p.picture_id = #{pictureId}
+		</if>
+		<if test="picName!=null and picName!=''">
+			and p.picture_name like CONCAT('%',#{picName},'%')
+		</if>
+		<if test="isUsing!=null">
+			and p.is_using = #{isUsing}
+			<if test="isUsing == 1">
+				and order_id is not null
+			</if>
+		</if>
+		<if test="userId!=null">
+			and p.upload_user = #{userId}
+		</if>
+		<if test="userKeyWords!=null and userKeyWords !=''">
+			and(u.nick_name like CONCAT('%',#{userKeyWords},'%') or
+			u.real_name like CONCAT('%',#{userKeyWords},'%'))
+		</if>
+		<if test="loginPlat!=null">
+			and p.login_plat = #{loginPlat}
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and p.upload_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and p.upload_time &lt;= #{endTime}
+		</if>
+		order by p.is_using desc,p.order_id,p.upload_time
+		<if test="rowsId!=null and pageSize!=null">
+			limit #{rowsId},#{pageSize}
+		</if>
+	</select>
+	<insert id="addNewCarouselPic" parameterType="com.cofc.pojo.CarouselPicture"
+		useGeneratedKeys="true" keyProperty="pictureId">
+		insert into
+		TB_CAROUSEL_PICTURE(picture_url,upload_user,upload_time,order_id,is_using,
+		picture_name,sxj_user,href_url,login_plat,pc_picture_url)
+		values(#{pictureUrl},#{uploadUser},#{uploadTime},#{orderId},#{isUsing},
+		#{pictureName},#{sxjUser},#{hrefUrl},#{loginPlat},#{pcPictureUrl})
+	</insert>
+	<select id="getPictureById" resultMap="BaseResultMap">
+		select * from
+		TB_CAROUSEL_PICTURE where picture_id = #{pictureId}
+	</select>
+	<update id="changePicInfo" parameterType="com.cofc.pojo.CarouselPicture">
+		update TB_CAROUSEL_PICTURE
+		<trim prefix="set" suffixOverrides=",">
+			<if test="pictureUrl!=null and pictureUrl!=''">picture_url = #{pictureUrl},</if>
+			<if test="pictureName!=null and pictureName!=''">picture_name = #{pictureName},</if>
+			<if test="hrefUrl!=null and hrefUrl!=''">href_url = #{hrefUrl},</if>
+			<if test="orderId != null">order_id = #{orderId},</if>
+			<if test="isUsing!=null">is_using = #{isUsing},</if>
+			<if test="sxjUser!=null">sxj_user = #{sxjUser},</if>
+			<if test="pcPictureUrl!=null and pcPictureUrl!=''">pc_picture_url = #{pcPictureUrl},</if>
+		</trim>
+		where picture_id = #{pictureId}
+	</update>
+	<select id="getCountPictures" resultType="int">
+		select count(*) from TB_CAROUSEL_PICTURE p left join TB_USER_COMMON u
+		on p.upload_user = u.user_id where 1 = 1
+		<if test="pictureId!=null">
+			and p.picture_id = #{pictureId}
+		</if>
+		<if test="picName!=null and picName!=''">
+			and p.picture_name like CONCAT('%',#{picName},'%')
+		</if>
+		<if test="isUsing!=null">
+			and p.is_using = #{isUsing}
+		</if>
+		<if test="userId!=null">
+			and p.upload_user = #{userId}
+		</if>
+		<if test="loginPlat!=null">
+			and p.login_plat = #{loginPlat}
+		</if>
+		<if test="keyWords!=null and keyWords !=''">
+			and(u.nick_name like CONCAT('%',#{keyWords},'%') or
+			u.real_name like CONCAT('%',#{keyWords},'%'))
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and p.upload_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and p.upload_time &lt;= #{endTime}
+		</if>
+	</select>
+	<insert id="insertPictureBatch" parameterType="java.util.List">
+		insert into
+		TB_CAROUSEL_PICTURE(picture_url,upload_user,upload_time,order_id,is_using,
+		picture_name,sxj_user,href_url,login_plat)values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.pictureUrl},#{item.uploadUser},#{item.uploadTime},#{item.orderId},#{item.isUsing},
+			#{item.pictureName},#{item.sxjUser},#{item.hrefUrl},#{item.loginPlat})
+		</foreach>
+	</insert>
+	<select id="findCurrAppCarousels" resultMap="BaseResultMap">
+		select * from
+		TB_CAROUSEL_PICTURE where is_using = 1 and login_plat =#{loginPlat} 
+		order by order_id,picture_id
+		<if test="rowsId != null and pageSize != null">
+			limit #{rowsId},#{pageSize}
+		</if>
+	</select>
+	<!-- 新开方法：防止sql -->
+	<select id="getCountPicturesByLoginPlat" resultType="int">
+		select count(*) from TB_CAROUSEL_PICTURE p left join TB_USER_COMMON u
+		on p.upload_user = u.user_id where 1 = 1
+		<if test="pictureId!=null">
+			and p.picture_id = #{pictureId}
+		</if>
+		<if test="picName!=null and picName!=''">
+			and p.picture_name like CONCAT('%',#{picName},'%')
+		</if>
+		<if test="isUsing!=null">
+			and p.is_using = #{isUsing}
+		</if>
+		<if test="userId!=null">
+			and p.upload_user = #{userId}
+		</if>
+		
+		<if test="keyWords!=null and keyWords !=''">
+			and(u.nick_name like CONCAT('%',#{keyWords},'%') or
+			u.real_name like CONCAT('%',#{keyWords},'%'))
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and p.upload_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and p.upload_time &lt;= #{endTime}
+		</if>
+		and p.login_plat in 
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach> 
+	</select>
+	
+	<select id="findPictureByCriteriaByLoginPlat" resultMap="BaseResultMap">
+		select * from TB_CAROUSEL_PICTURE p left join TB_USER_COMMON u on
+		p.upload_user = u.user_id where 1 = 1
+		<if test="pictureId!=null">
+			and p.picture_id = #{pictureId}
+		</if>
+		<if test="picName!=null and picName!=''">
+			and p.picture_name like CONCAT('%',#{picName},'%')
+		</if>
+		<if test="isUsing!=null">
+			and p.is_using = #{isUsing}
+			<if test="isUsing == 1">
+				and order_id is not null
+			</if>
+		</if>
+		<if test="userId!=null">
+			and p.upload_user = #{userId}
+		</if>
+		<if test="userKeyWords!=null and userKeyWords !=''">
+			and(u.nick_name like CONCAT('%',#{userKeyWords},'%') or
+			u.real_name like CONCAT('%',#{userKeyWords},'%'))
+		</if>
+		<!-- <if test="loginPlat!=null">
+			and p.login_plat = #{loginPlat}
+		</if> -->
+		<if test="startTime!=null and startTime!=''">
+			and p.upload_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and p.upload_time &lt;= #{endTime}
+		</if>
+		and p.login_plat in
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach> 
+		order by p.is_using desc,p.order_id,p.upload_time
+		<if test="rowsId!=null and pageSize!=null">
+			limit #{rowsId},#{pageSize}
+		</if>
+	</select>
+	<delete id="delPictureById" parameterType="com.cofc.pojo.CarouselPicture">
+		delete from TB_CAROUSEL_PICTURE where picture_id = #{pictureId}
+	</delete>
+</mapper>

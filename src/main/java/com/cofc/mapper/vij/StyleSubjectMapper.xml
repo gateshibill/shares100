@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.StyleSubjectService">
+	<resultMap type="com.cofc.pojo.vij.StyleSubject" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="subject_title" property="subjectTitle" jdbcType="VARCHAR" />
+		<result column="subject_answer" property="subjectAnswer" jdbcType="VARCHAR" />
+		<result column="subject_type" property="subjectType" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+		<result column="subject_page" property="subjectPage" jdbcType="INTEGER" />
+		<result column="is_model_room" property="isModelRoom" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addStyleSubject" parameterType="com.cofc.pojo.vij.StyleSubject"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tv_style_subject(subject_title,subject_answer,subject_type,create_time,order_status,subject_page,is_model_room)
+		values(#{subjectTitle},#{subjectAnswer},#{subjectType},#{createTime},#{orderStatus},#{subjectPage},#{isModelRoom})
+	</insert>
+	<update id="updateStyleSubject" parameterType="com.cofc.pojo.vij.StyleSubject">
+		update tv_style_subject
+		<trim prefix="set" suffixOverrides=",">
+			<if test="subjectTitle!=null and subjectTitle!=''">subject_title = #{subjectTitle},</if>
+			<if test="subjectAnswer!=null and subjectAnswer!=''">subject_answer = #{subjectAnswer},</if>
+			<if test="subjectType != null">subject_type = #{subjectType},</if>
+			<if test="orderStatus != null">order_status = #{orderStatus},</if>
+			<if test="subjectPage!= null">subject_page = #{subjectPage},</if>
+			<if test="isModelRoom!= null">is_model_room = #{isModelRoom},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	
+	<select id="getStyleSubjectCount" resultType="int">
+		select count(*) from tv_style_subject where 1=1
+		<if test="subject.subjectType != null">
+			and subject_type = #{subject.subjectType}
+		</if>
+	</select>
+	<select id="getStyleSubjectList" resultMap="BaseResultMap">
+		select * from tv_style_subject where 1=1
+		<if test="subject.subjectType != null">
+			and subject_type = #{subject.subjectType}
+		</if>
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.SalesCustomerService">
+	<resultMap type="com.cofc.pojo.aida.SalesCustomer" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="sales_person_id" property="salesPersonId"
+			jdbcType="INTEGER" />
+		<result column="reliability" property="reliability" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="department_id" property="departmentId"
+			jdbcType="INTEGER" />
+		<result column="visited_card_count" property="visitedCardCount"
+			jdbcType="INTEGER" />
+		<result column="visited_website_count" property="visitedWebsiteCount"
+			jdbcType="INTEGER" />
+		<result column="visited_shop_count" property="visitedShopCount"
+			jdbcType="INTEGER" />
+		<result column="visited_game_count" property="visitedGameCount"
+			jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="last_time" property="lastTime" jdbcType="TIMESTAMP" />
+		<result column="last_chat_time" property="lastChatTime"
+			jdbcType="TIMESTAMP" />
+		<result column="is_top" property="isTop" jdbcType="INTEGER" />
+		<result column="is_pb" property="isPb" jdbcType="INTEGER" />
+		<result column="expected_date" property="expectedDate"
+			jdbcType="TIMESTAMP" />
+		<result column="expected_ratio" property="expectedRatio"
+			jdbcType="INTEGER" />
+		<result column="unread_message_count" property="unReadMessageCount"
+			jdbcType="INTEGER" />
+
+		<result column="nick_name" property="userName" jdbcType="VARCHAR" />
+		<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+
+		<!-- 存在字段冲突问题：冲突字段需要采用别名 -->
+		<association property="userCard" javaType="com.cofc.pojo.aida.UserCard">
+			<id column="card_id" property="cardId" jdbcType="INTEGER" />
+			<result column="c_app_id" property="appId" jdbcType="INTEGER" />
+			<result column="c_user_id" property="userId" jdbcType="INTEGER" />
+			<result column="c_real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="c_position" property="position" jdbcType="VARCHAR" />
+			<result column="c_email" property="email" jdbcType="VARCHAR" />
+			<result column="c_head_image" property="headImage" jdbcType="VARCHAR" />
+			<result column="c_phone" property="phone" jdbcType="VARCHAR" />
+			<result column="c_company" property="company" jdbcType="VARCHAR" />
+		</association>
+
+		<collection property="iMessageList" ofType="com.cofc.pojo.aida.IMessage"
+			column="id">
+			<id column="i_id" property="id" />
+			<result column="i_app_id" property="appId" jdbcType="INTEGER" />
+			<result column="from_id" property="fromId" jdbcType="INTEGER" />
+			<result column="i_user_id" property="userId" jdbcType="INTEGER" />
+			<result column="type" property="type" jdbcType="INTEGER" />
+			<result column="i_status" property="status" jdbcType="INTEGER" />
+			<result column="content" property="content" jdbcType="VARCHAR" />
+			<result column="i_create_time" property="createTime" jdbcType="TIMESTAMP" />
+			<result column="read_time" property="readTime" jdbcType="TIMESTAMP" />
+		</collection>
+	</resultMap>
+
+	<insert id="addSalesCustomer" parameterType="com.cofc.pojo.aida.SalesCustomer"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tf_sales_customer(app_id,user_id,sales_person_id,reliability,status,department_id,create_time,last_time,last_chat_time,expected_date,expected_ratio,visited_card_count,visited_website_count,visited_shop_count,visited_game_count)
+		values(#{appId},#{userId},#{salesPersonId},#{reliability},#{status},#{departmentId},#{createTime},#{lastTime},#{lastChatTime},#{expectedDate},#{expectedRatio},#{visitedCardCount},#{visitedWebsiteCount},#{visitedShopCount},#{visitedGameCount})
+	</insert>
+	<update id="updateSalesCustomer" parameterType="com.cofc.pojo.aida.SalesCustomer">
+		update tf_sales_customer
+		<trim prefix="set" suffixOverrides=",">
+			<if test="status!=null and status!=''">status=#{status},</if>
+			<if test="reliability!=null and reliability!=''">reliability=#{reliability},</if>
+			<if test="departmentId!=null and departmentId!=''">department_id=#{departmentId},</if>
+			<if test="visitedCardCount!=null and visitedCardCount!=''">visited_card_count=#{visitedCardCount},</if>
+			<if test="visitedWebsiteCount!=null and visitedWebsiteCount!=''">visited_website_count=#{visitedWebsiteCount},</if>
+			<if test="visitedShopCount!=null and visitedShopCount!=''">visited_shop_count=#{visitedShopCount},</if>
+			<if test="visitedGameCount!=null and visitedGameCount!=''">visited_game_count=#{visitedGameCount},</if>
+			<if test="expectedDate!=null ">expected_date=#{expectedDate},</if>
+			<if test="expectedRatio!=null ">expected_ratio=#{expectedRatio},</if>
+			<if test="lastTime!=null">last_time=#{lastTime},</if>
+			<if test="lastChatTime!=null">last_chat_time=#{lastChatTime},</if>
+			<if test="isTop!=null">is_top=#{isTop},</if>
+			<if test="isPb!=null">is_pb=#{isPb},</if>
+			<if test="isblock!=null">isblock=#{isblock},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<update id="updateSalesCustomerBatch" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index"
+			separator=";">
+			update tf_sales_customer
+			<trim prefix="set" suffixOverrides=",">
+				<if test="item.status!=null and item.status!=''">status=#{item.status},</if>
+				<if test="item.reliability!=null and item.reliability!=''">reliability=#{item.reliability},</if>
+				<if test="item.departmentId!=null and item.departmentId!=''">department_id=#{item.departmentId},</if>
+				<if test="item.visitedCardCount!=null and item.visitedCardCount!=''">visited_card_count=#{item.visitedCardCount},</if>
+				<if test="item.visitedWebsiteCount!=null and item.visitedWebsiteCount!=''">visited_website_count=#{item.visitedWebsiteCount},</if>
+				<if test="item.visitedShopCount!=null and item.visitedShopCount!=''">visited_shop_count=#{item.visitedShopCount},</if>
+				<if test="item.visitedGameCount!=null and item.visitedGameCount!=''">visited_game_count=#{item.visitedGameCount},</if>
+				<if test="item.expectedDate!=null ">expected_date=#{item.expectedDate},</if>
+				<if test="item.expectedRatio!=null ">expected_ratio=#{item.expectedRatio},</if>
+				<if test="item.lastTime!=null">last_time=#{item.lastTime},</if>
+				<if test="item.lastChatTime!=null">last_chat_time=#{item.lastChatTime},</if>
+				<if test="item.isTop!=null">is_top=#{item.isTop},</if>
+				<if test="item.isPb!=null">is_pb=#{item.isPb},</if>
+				<if test="item.isblock!=null">isblock=#{item.isblock},</if>
+			</trim>
+			where id = #{item.id}
+		</foreach>
+	</update>
+	<delete id="deleteSalesCustomer">
+		delete from tf_sales_customer where id =#{id}
+	</delete>
+
+	<select id="getCustomer" resultMap="BaseResultMap">
+		select * from
+		tf_sales_customer a left join tb_user_common b on a.user_id=b.user_id
+		where a.app_id =#{appId} and
+		a.user_id =#{userId}
+		and a.sales_person_id
+		=#{salesPersonId}
+	</select>
+
+	<select id="getCustomerCount" resultType="int">
+		select count(*)
+		from
+		tf_sales_customer where app_id =#{appId} and
+		(sales_person_id=#{salesPersonId} or 0=#{salesPersonId})
+	</select>
+
+	<select id="getCustomerCountEx" resultType="int">
+		select count(*)
+		from
+		tf_sales_customer where app_id =#{appId} and
+		(sales_person_id=#{salesPersonId} or 0=#{salesPersonId})
+		and
+		(0=#{status} or status=#{status})
+		and create_time &gt;= #{startTime}
+		and create_time &lt;= #{endTime}
+	</select>
+
+	<select id="getCustomerList" resultMap="BaseResultMap">
+		select * from
+		tf_sales_customer a left join tb_user_common b on a.user_id=b.user_id
+		where a.app_id =#{appId} and
+		(a.sales_person_id =#{salesPersonId} or
+		0=#{salesPersonId})
+		order
+		by a.last_time desc limit
+		#{pageNo},#{pageSize}
+	</select>
+	<select id="getAllCustomer" resultMap="BaseResultMap">
+		select * from
+		tf_sales_customer
+	</select>
+
+	<select id="getFollowingCustomerList" resultMap="BaseResultMap">
+		select * from
+		tf_sales_customer a left join tb_user_common b on a.user_id=b.user_id
+		where a.app_id =#{appId} and
+		(a.sales_person_id =#{salesPersonId} or
+		0=#{salesPersonId})
+		and (status &gt;0 and status &lt;3)
+		order
+		by
+		a.last_time desc limit
+		#{pageNo},#{pageSize}
+	</select>
+
+	<select id="getCustomerByUserId" resultMap="BaseResultMap">
+		select sa.*,c.app_id
+		c_app_id,c.user_id c_user_id,c.real_name c_real_name,
+		c.position
+		c_position,c.email c_email,c.head_image c_head_image,c.phone
+		c_phone,c.company c_company
+		from tf_sales_customer as sa left join
+		tf_user_card as c on c.user_id = sa.sales_person_id
+		where sa.user_id =
+		#{userId} and sa.app_id = #{appId}
+		order by sa.is_top
+		desc,sa.create_time desc
+		limit #{page},#{limit}
+	</select>
+	<select id="getCustomerByiMessage" resultMap="BaseResultMap">
+		select * from
+		tf_sales_customer a left join tb_user_common b on a.user_id=b.user_id
+		where
+		a.app_id = #{appId} and a.sales_person_id =
+		#{salesPersonId}
+		order
+		by
+		a.last_chat_time desc
+		limit #{page},#{limit}
+	</select>
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.CompanyAbstractService">
+	<resultMap type="com.cofc.pojo.CompanyAbstract" id="BaseResultMap">
+		<id column="abstract_id" property="abstractId" jdbcType="INTEGER" />
+		<result column="abstract_title" property="abstractTitle"
+			jdbcType="VARCHAR" />
+		<result column="abstract_content" property="abstractContent"
+			jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="abstract_pictures" property="abstractPictures" jdbcType="VARCHAR" />
+		<result column="company_address" property="companyAddress" jdbcType="VARCHAR" />
+		<result column="company_phone" property="companyPhone" jdbcType="VARCHAR" />
+		<result column="title_image" property="titleImage" jdbcType="VARCHAR" />
+	</resultMap>
+	<insert id="addAbstractForCompany" parameterType="com.cofc.pojo.CompanyAbstract"
+		useGeneratedKeys="true" keyProperty="abstractId">
+		insert into
+		TB_COMPANY_ABSTRACT(abstract_title,abstract_content,create_time,update_time,login_plat,abstract_pictures,
+		company_address,company_phone,title_image)
+		values(#{abstractTitle},#{abstractContent},#{createTime},#{updateTime},#{loginPlat},
+		#{abstractPictures},#{companyAddress},#{companyPhone},#{titleImage})
+	</insert>
+	<update id="updateAbstractContent" parameterType="com.cofc.pojo.CompanyAbstract">
+		update TB_COMPANY_ABSTRACT
+		<trim prefix="set" suffixOverrides=",">
+			<if test="abstractContent!=null">abstract_content=#{abstractContent},</if>
+			<if test="abstractTitle!=null">abstract_title=#{abstractTitle},</if>
+			<if test="updateTime!=null">update_time=#{updateTime},</if>
+			<if test="abstractPictures!=null and abstractPictures !=''">abstract_pictures=#{abstractPictures},</if>
+			<if test="companyAddress!=null">company_address=#{companyAddress},</if>
+			<if test="companyPhone!=null">company_phone=#{companyPhone},</if>
+			<if test="titleImage!=null and titleImage !=''">title_image=#{titleImage},</if>
+		</trim>
+		where abstract_id = #{abstractId}
+	</update>
+	
+	<update id="updateAbstractImage" parameterType="com.cofc.pojo.CompanyAbstract">
+		update TB_COMPANY_ABSTRACT
+		<trim prefix="set" suffixOverrides=",">
+			
+			<if test="updateTime!=null">update_time=#{updateTime},</if>
+			<if test="abstractPictures!=null">abstract_pictures=#{abstractPictures},</if>
+			<if test="titleImage!=null">title_image=#{titleImage},</if>
+		</trim>
+		where abstract_id = #{abstractId}
+	</update>
+	
+	<select id="getAbstractById" resultMap="BaseResultMap">
+		select * from TB_COMPANY_ABSTRACT where abstract_id = #{abstractId}
+	</select>
+	<select id="getAbstractByLoginPlat" resultMap="BaseResultMap">
+		select * from TB_COMPANY_ABSTRACT where login_plat = #{loginPlat}
+	</select>
+</mapper>

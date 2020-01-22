@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.activity.DtbtGoodsService">
+	<resultMap type="com.cofc.pojo.activity.DtbtGoods" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="level" property="level" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addDtbtGoods" parameterType="com.cofc.pojo.activity.DtbtGoods"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tc_dtbt_goods(app_id,user_id,goods_id,level,status,create_time)
+		values(#{appId},#{userId},#{goodsId},#{level},#{status},#{createTime})
+	</insert>
+	<update id="updateDtbtGoods" parameterType="com.cofc.pojo.activity.DtbtGoods">
+		update tc_dtbt_goods
+		<trim prefix="set" suffixOverrides=",">
+			<if test="level!=null and level!=''">level=#{level},</if>
+			<if test="status!=null and status!=''">status=#{status},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="delDtbtGoods" parameterType="com.cofc.pojo.activity.DtbtGoods">
+		delete from
+		tc_dtbt_goods
+		where id = #{id} and app_id = #{appId}
+	</delete>
+	<select id="getDtbtGoodsList" parameterType="com.cofc.pojo.activity.PinGoods"
+		resultMap="BaseResultMap">
+		SELECT * from tc_dtbt_goods where app_id= #{appId} and user_id= #{userId}
+	</select>
+	
+	<!-- 获取秒杀商品 -->
+	<select id="getDtbtByGoodsId" parameterType="Integer"
+		resultMap="BaseResultMap">
+		SELECT * from tc_dtbt_goods where goods_id= #{id}
+	</select>
+	
+	<!-- 修改秒杀状态 0-->
+	<update id="updateDtbtByGoodsId" parameterType="Integer">
+		update tc_dtbt_goods set status=0 where goods_id = #{id}
+	</update>
+	
+	<!-- 修改秒杀状态 1-->
+	<update id="updateDtbtByDtbtGoods" parameterType="com.cofc.pojo.activity.DtbtGoods">
+		update tc_dtbt_goods set level=#{level},status=#{status} where id = #{id}
+	</update>
+	
+	<!-- 添加秒杀商品-->
+	<insert id="addDtbtGoods_1" parameterType="com.cofc.pojo.activity.DtbtGoods">
+		insert into
+		tc_dtbt_goods(app_id,goods_id,level,create_time,status)
+		values(#{appId},#{goodsId},#{level},now(),#{status})
+	</insert>
+	
+	<!-- 查询全部秒杀商品-管理页-->
+	<select id="getAllDtbtGoodsList" resultMap="BaseResultMap">
+		SELECT * from tc_dtbt_goods order by id desc
+		limit #{page},#{limit};
+	</select>
+	
+	<!-- 查询全部秒杀商品-总数-->
+	<select id="findAllDtbtGoodsCount" resultType="Integer">
+		SELECT count(*) from tc_dtbt_goods 
+	</select>
+	
+	<!-- 根据id删除秒杀商品-->
+	<delete id="deleteDtbtGoodsById" parameterType="Integer">
+		delete from
+		tc_dtbt_goods
+		where id = #{id}
+	</delete>
+	
+	<!-- 根据id查询秒杀商品 -->
+	<select id="getDtbtByDtbtGoodsId" parameterType="Integer"
+		resultMap="BaseResultMap">
+		SELECT * from tc_dtbt_goods where id=#{id}
+	</select>
+</mapper>

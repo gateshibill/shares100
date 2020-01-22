@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.PrizeRecordService">
+	<resultMap type="com.cofc.pojo.PrizeRecord" id="BaseResultMap">
+		<id column="record_id" property="recordId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="prize_id" property="prizeId" jdbcType="INTEGER" />
+		<result column="prize_name" property="prizeName" jdbcType="VARCHAR" />
+		<result column="prize_time" property="prizeTime" jdbcType="TIMESTAMP" />
+		<result column="activity_id" property="activityId" jdbcType="INTEGER" />
+		<result column="curr_fee" property="currFee" jdbcType="DOUBLE" />
+		<result column="prize_fee" property="prizeFee" jdbcType="DOUBLE" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<association property="prizeInfo" javaType="com.cofc.pojo.PrizeCommon">
+			<id column="prize_id" property="prizeId" jdbcType="INTEGER" />
+			<result column="prize_name" property="prizeName" jdbcType="VARCHAR" />
+			<result column="prize_image" property="prizeImage" jdbcType="VARCHAR" />
+			<result column="get_prize" property="getPrize" jdbcType="INTEGER" />
+			<result column="is_prized" property="isPrized" jdbcType="INTEGER" />
+			<result column="prize_type" property="prizeType" jdbcType="INTEGER" />
+			<result column="multiple" property="multiple" jdbcType="DOUBLE" />
+		</association>
+		<association property="userInfo" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="phone" property="phone" jdbcType="VARCHAR" />
+			<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<insert id="addNewPrizeRecord" parameterType="com.cofc.pojo.PrizeRecord"
+		useGeneratedKeys="true" keyProperty="recordId">
+		insert into
+		TB_PRIZE_RECORD(user_id,prize_id,prize_name,prize_time,activity_id,curr_fee,prize_fee,status)
+		values(#{userId},#{prizeId},#{prizeName},#{prizeTime},#{activityId},#{currFee},#{prizeFee},#{status})
+	</insert>
+	<select id="findMygetPrizeRecord" resultMap="BaseResultMap">
+		select * from
+		TB_PRIZE_RECORD r left join TB_PRIZE_COMMON p on
+		r.prize_id =
+		p.prize_id where p.is_prized = 2 and
+		r.user_id = #{userId}
+		<if test="activityId!=null">
+			and r.activity_id =#{activityId}
+		</if>
+		order by prize_time desc limit #{rowsId},#{pageSize}
+	</select>
+	<select id="findPrizeRecordByActivity" resultMap="BaseResultMap">
+		select * from
+		TB_PRIZE_RECORD r left join TB_PRIZE_COMMON p on
+		r.prize_id = p.prize_id left join TB_USER_COMMON u on r.user_id =
+		u.user_id
+		where p.is_prized = 2
+		<if test="activityId!=null">
+			and r.activity_id =#{activityId}
+		</if>
+		order by r.prize_time desc limit #{pageNo},#{pageSize}
+	</select>
+	<select id="getPrizeRecordById" resultMap="BaseResultMap">
+		select * from
+		TB_PRIZE_RECORD r left join TB_PRIZE_COMMON p on
+		r.prize_id =
+		p.prize_id where r.record_id = #{recordId} and p.is_prized = 2
+	</select>
+	<update id="changePrizeRecordStatus" parameterType="com.cofc.pojo.PrizeRecord">
+		update
+		TB_PRIZE_RECORD set status = #{status} where record_id = #{recordId}
+	</update>
+	<select id="findMyTodayAllRecord" resultMap="BaseResultMap">
+		select * from
+		TB_PRIZE_RECORD r left join TB_PRIZE_COMMON p on
+		r.prize_id =
+		p.prize_id left join TB_USER_COMMON u on r.user_id =
+		u.user_id
+		where
+		r.activity_id =#{activityId} and r.user_id = #{userId}
+		and r.prize_time
+		&gt;= #{startTime} and r.prize_time &lt;= #{endTime}
+	</select>
+	
+	<select id="getshowWinningList" resultMap="BaseResultMap">
+	select * from TB_PRIZE_RECORD pr
+	left join TB_PRIZE_COMMON pc on pr.prize_id=pc.prize_id
+	left join TB_USER_COMMON u on pr.user_id=u.user_id
+	where pc.is_prized=2
+	<if test="type != null">
+	  and pr.status=2
+	</if>
+	<if test="record != null">
+	<if test="record.userId != null">
+		and pr.user_id=#{record.userId}
+	</if>
+	<if test="record.status != null">
+		and pr.status=#{record.status}
+	</if>
+    </if>
+	<if test="startTime!=null and startTime!=''">
+		and pr.prize_time &gt;= #{startTime}
+	</if>
+	<if test="endTime!=null and endTime!=''">
+		and pr.prize_time &lt;= #{endTime}
+	</if>
+	<if test="userKeyWords!=null and userKeyWords!=''">
+		and (u.nick_name like CONCAT('%',#{userKeyWords},'%') or
+		u.real_name like CONCAT('%',#{userKeyWords},'%'))
+	</if>
+	order by pr.prize_time desc limit #{page},#{limit}
+	</select>
+	
+	<select id="getgetshowWinningCount" resultType="int">
+	  select count(*) from TB_PRIZE_RECORD pr
+	left join TB_PRIZE_COMMON pc on pr.prize_id=pc.prize_id
+	left join TB_USER_COMMON u on pr.user_id=u.user_id
+	where pc.is_prized=2
+	<if test="type != null">
+	  and pr.status=2
+	</if>
+		<if test="record != null">
+	<if test="record.userId != null">
+		and pr.user_id=#{record.userId}
+	</if>
+	<if test="record.status != null">
+		and pr.status=#{record.status}
+	</if>
+     </if>
+	<if test="startTime!=null and startTime!=''">
+		and pr.prize_time &gt;= #{startTime}
+	</if>
+	<if test="endTime!=null and endTime!=''">
+		and pr.prize_time &lt;= #{endTime}
+	</if>
+	<if test="userKeyWords!=null and userKeyWords!=''">
+		and (u.nick_name like CONCAT('%',#{userKeyWords},'%') or
+		u.real_name like CONCAT('%',#{userKeyWords},'%'))
+	</if>
+	</select>
+	<update id="updatePrizeRecord" parameterType="com.cofc.pojo.PrizeRecord">
+	  update TB_PRIZE_RECORD set status=#{status} where record_id=#{recordId}
+	</update>
+	<delete id="deletePrizeRecord">
+	delete from TB_PRIZE_RECORD where record_id=#{recordId}
+	</delete>
+	
+	<select id="getRecordIds" resultMap="BaseResultMap">
+	  select * from TB_PRIZE_RECORD where record_id in 
+	  <foreach item="item" index="index" collection="ids" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+</mapper>

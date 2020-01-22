@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.WeixinPushService">
+	<resultMap type="com.cofc.pojo.WeixinPush" id="BaseResultMap">
+		<id column="wx_id" property="wxId" jdbcType="INTEGER" />
+		<result column="app_id" property="appId"
+			jdbcType="VARCHAR" />
+		<result column="app_secret" property="appSecret" jdbcType="VARCHAR" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<select id="getWXConfig" resultMap="BaseResultMap">
+	  select * from tb_weixin_push where login_plat = #{loginPlat}
+	</select>
+	
+</mapper>

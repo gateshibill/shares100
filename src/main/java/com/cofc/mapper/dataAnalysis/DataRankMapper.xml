@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.dataAnalysis.DataRankService">
+	<resultMap type="com.cofc.pojo.dataAnalysis.DataRank" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="rank" property="rank" jdbcType="INTEGER" />
+		<result column="times" property="times" jdbcType="INTEGER" />
+	</resultMap>
+
+	<select id="getDataRankOld" resultMap="BaseResultMap">
+		select t.* ,
+		case when
+		@preRank = times then @curRank
+		when @preRank := times then @curRank :=
+		@curRank+1
+		end as rank
+		from (
+		SELECT app_id,sales_person_id as
+		user_id,count(*) as times
+		FROM tf_action_record where ((app_id=#{appId} and type=0 and
+		object_type=0 and #{userId}=0)or (app_id=#{appId} and type=#{type} and object_type=#{objectType} and
+		user_id=#{userId})) GROUP BY
+		sales_person_id ) t,(select @curRank
+		:=0,@preRank:=0)r
+		ORDER BY times desc
+	</select>
+		<select id="getDataRank" resultMap="BaseResultMap">
+		select t.* ,
+		case when
+		@preRank = times then @curRank
+		when @preRank := times then @curRank :=
+		@curRank+1
+		end as rank
+		from (
+		SELECT app_id,sales_person_id as
+		user_id,count(*) as times
+		FROM tf_action_record where (app_id=#{appId} and type=#{type} and
+		object_type=#{objectType}) GROUP BY
+		sales_person_id ) t,(select @curRank
+		:=0,@preRank:=0)r
+		ORDER BY times desc
+	</select>
+</mapper>

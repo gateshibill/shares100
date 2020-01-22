@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.UserConcernService">
+	<resultMap type="com.cofc.pojo.UserConcern" id="BaseResultMap">
+		<id column="concern_id" property="concernId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="concerned_user_id" property="concernedUserId"
+			jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" />
+		<result column="is_remove" property="isRemove" jdbcType="INTEGER" />
+		<association property="concernedUser" javaType="com.cofc.pojo.UserCommon">
+			<id column="concerned_user_id" property="concernedUserId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+			<result column="user_sex" property="userSex" jdbcType="INTEGER" />
+		</association>
+	</resultMap>
+	<select id="findSHUserConcernedUsers" resultMap="BaseResultMap">
+		select * from TB_USER_CONCERN c left join TB_USER_COMMON us on 	
+		<if test="type == 1"><!-- 我关注别人 -->
+		c.concerned_user_id = us.user_id  where 1=1 and c.user_id = #{userId}
+		</if>
+		<if test="type == 2"><!-- 被关注 -->
+		c.user_id = us.user_id  where 1=1 and concerned_user_id=#{userId}
+		</if>
+		 and c.is_remove=0 order by c.create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	
+	<insert id="addNewUserConcern" parameterType="com.cofc.pojo.UserConcern">
+		insert into
+		TB_USER_CONCERN
+		(user_id,concerned_user_id,create_time,is_remove)values(#{userId},#{concernedUserId},#{createTime},#{isRemove})
+	</insert>
+	<select id="ConfirmIConcernedHim" resultMap="BaseResultMap">
+		select * from TB_USER_CONCERN where user_id = #{userId} and concerned_user_id =#{concernedUserId}
+	</select>
+	<update id="updateConcernUser" parameterType="com.cofc.pojo.UserConcern">
+		update TB_USER_CONCERN
+		<trim prefix="set" suffixOverrides=",">
+			<if test="isRemove!=null">is_remove=#{isRemove},</if>
+			<if test="createTime!=null">create_time=#{createTime},</if>
+		</trim>
+		where user_id = #{userId} and concerned_user_id =#{concernedUserId}
+	</update>
+</mapper>

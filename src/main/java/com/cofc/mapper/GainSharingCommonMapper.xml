@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.GainSharingCommonService">
+	<resultMap type="com.cofc.pojo.GainSharingCommon" id="BaseResultMap">
+		<id column="sharing_id" property="sharingId" jdbcType="INTEGER" />
+		<result column="groupowner_persent" property="groupownerPersent" jdbcType="DOUBLE" />
+		<result column="shareuser_persent" property="shareuserPersent" jdbcType="DOUBLE" />
+		<result column="withdraw_persent" property="withdrawPersent" jdbcType="DOUBLE" />
+	</resultMap>
+	<select id="getTheAcqierementSharing" resultMap="BaseResultMap">
+		select * from TB_GAINSHARING_COMMMON where sharing_id = 1
+	</select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ApplicationCodeService">
+  <resultMap type="com.cofc.pojo.ApplicationCode" id="CodeMap">
+       <id column="code_id" property="codeId" jdbcType="INTEGER" />
+       <result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+       <result column="login_subplat" property="loginSubplat" jdbcType="INTEGER" />
+       <result column="download_url" property="downloadUrl" jdbcType="VARCHAR" />
+        <result column="path" property="path" jdbcType="VARCHAR" />
+       <result column="create_time" property="createTime"  />
+  </resultMap>
+  
+  <select id="getApplicationCodeById" resultMap="CodeMap">
+    select * from tb_application_code where code_id=#{codeId}
+  </select>
+  
+  <select id="findLoginPlat" resultMap="CodeMap">
+  select * from tb_application_code where login_plat=#{loginPlat} and login_subplat=#{loginSubplat}
+  </select>
+  
+  <insert id="addApplicationCommon" parameterType="com.cofc.pojo.ApplicationCode" 
+       useGeneratedKeys="true" keyProperty="codeId">
+     insert into tb_application_code (login_plat,login_subplat,download_url,create_time,path)
+                        values(#{loginPlat},#{loginSubplat},#{downloadUrl},#{createTime},#{path})
+  </insert>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.activity.BrokerageService">
+	<resultMap type="com.cofc.pojo.activity.Brokerage" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="source" property="source" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="DOUBLE" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addBrokerage" parameterType="com.cofc.pojo.activity.Brokerage"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tg_brokerage_user(app_id,user_id,type,source,price,status,create_time)
+		values(#{appId},#{userId},#{type},#{source},#{price},#{status},#{createTime})
+	</insert>
+	<update id="updateBrokerage" parameterType="com.cofc.pojo.activity.Brokerage">
+		update tg_brokerage_user
+		<trim prefix="set" suffixOverrides=",">
+			<if test="status!=null and status!=''">status=#{status},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="delBrokerage" parameterType="com.cofc.pojo.activity.Brokerage">
+		delete from
+		tg_brokerage_user
+		where id = #{id} and app_id = #{appId}
+	</delete>
+	<select id="getBrokerageList" parameterType="com.cofc.pojo.activity.Brokerage"
+		resultMap="BaseResultMap">
+		SELECT * from tg_brokerage_user where app_id= #{appId} and user_id= #{userId}
+	</select>
+		<select id="getBrokerageListByStatus" parameterType="com.cofc.pojo.activity.Brokerage"
+		resultMap="BaseResultMap">
+		SELECT * from tg_brokerage_user where app_id= #{appId} and user_id= #{userId} and status=#{status}
+	</select>
+</mapper>

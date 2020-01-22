@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ProjectDesignService">
+	<resultMap type="com.cofc.pojo.vij.ProjectDesign" id="BaseResultMap">
+		<id column="design_id" property="designId" jdbcType="INTEGER" />
+		<result column="project_id" property="projectId" jdbcType="INTEGER" />
+		<result column="image_list" property="imageList" jdbcType="VARCHAR" />
+		<result column="design_type" property="designType" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="design_type" property="designType" jdbcType="INTEGER" />
+		<result column="design_intro" property="designIntro" jdbcType="VARCHAR" />
+	</resultMap>
+	<insert id="addOfferDesign" parameterType="com.cofc.pojo.vij.ProjectDesign" 
+				useGeneratedKeys="true" keyProperty="designId" >
+	INSERT INTO tv_project_design(project_id,image_list,create_time,design_type,design_intro)
+	VALUES(#{projectId},#{imageList},#{createTime},#{designType},#{designIntro})
+	</insert>
+	<update id="updateOfferDesign" parameterType="com.cofc.pojo.vij.ProjectDesign">
+		UPDATE tv_project_design 
+			<trim prefix="set" suffixOverrides=",">
+			<if test="projectId !=null">
+				project_id = #{projectId},
+			</if>
+			<if test="imageList != null and imageList !=''">
+				image_list = #{imageList},
+			</if>
+			<if test="designType !=null">
+				design_type = #{designType},
+			</if>
+			<if test="designIntro !=null and designIntro != ''">
+				design_intro = #{designIntro},
+			</if>
+		</trim>
+		 WHERE design_id =#{designId}
+	</update>
+	<delete id="delOfferDesign" parameterType="com.cofc.pojo.vij.ProjectDesign">
+		DELETE FROM tv_project_design WHERE design_id = #{designId}
+	</delete>
+	<select id="getDesignByProjectId" resultMap="BaseResultMap">
+		SELECT * FROM tv_project_design WHERE project_id = #{projectId}
+	</select>
+	<select id="getDesignByProjectIdType" resultMap="BaseResultMap">
+		SELECT * FROM tv_project_design WHERE project_id = #{projectId}
+		and design_type = #{designType}
+	</select>
+	<select id="getDesignCountByProjectId" resultType="int">
+		SELECT count(*) FROM tv_project_design WHERE project_id = #{projectId}
+		and design_type = #{designType}
+	</select>
+	 
+	<select id="getOfferDesignById" resultMap="BaseResultMap">
+		SELECT * FROM tv_project_design WHERE design_id = #{designId}
+	</select>
+	</mapper>

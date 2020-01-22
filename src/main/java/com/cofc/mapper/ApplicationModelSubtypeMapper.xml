@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ApplicationModelSubtypeService">
+
+<resultMap type="com.cofc.pojo.ApplicationModelSubtype" id="ModelSubtypeMap">
+
+       <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="model_id" property="modelId" jdbcType="INTEGER" />
+        <result column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="model_name" property="modelName" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="order_no" property="orderNo" jdbcType="INTEGER" />
+		<result column="is_using" property="isUsing" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		
+	  <association property="model" javaType="com.cofc.pojo.ApplicationModel">
+		<id column="model_id" property="modelId" jdbcType="INTEGER" />
+		<result column="model_name" property="modelName" jdbcType="VARCHAR" />
+		<result column="model_carousel" property="modelCarousel" jdbcType="VARCHAR" />
+		</association>
+</resultMap>
+<select id="getModelSubtypeModelId" resultMap="ModelSubtypeMap">
+  select * from tb_application_model_subtype a left join tb_application_model m on a.model_id=m.model_id
+    where type_id=#{typeId}
+</select>
+
+</mapper>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.DescoveryloginPlatTypeService">
+	<resultMap type="com.cofc.pojo.DescoveryloginPlatType" id="loginPlatMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="type_status" property="typeStatus" jdbcType="INTEGER" />
+		<result column="order_no" property="orderNo" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" />
+		<result column="create_time" property="updateTime" />
+		
+		<association property="app" javaType="com.cofc.pojo.ApplicationCommon">
+		<id column="application_id" property="applicationId" jdbcType="INTEGER" />
+		<result column="application_name" property="applicationName" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	
+	<select id="getloginPlatById" resultMap="loginPlatMap">
+	  select * from tb_descovery_loginplat_type where id=#{id}
+	</select>
+	
+	<!--前端拿类型列表  -->
+	<select id="getloginPlatTypeList" resultMap="loginPlatMap">
+	  select * from tb_descovery_loginplat_type where login_plat=#{loginPlat} and type_status=1
+	  order by order_no
+	</select>
+	
+	<!-- 后台拿类型列表 -->
+	<select id="findLoginPplatList" resultMap="loginPlatMap">
+	select * from tb_descovery_loginplat_type d 
+	  left join TB_APPLICATION_COMMON a on d.login_plat=a.application_id
+	  where 1=1 
+	  <if test="type.typeName != null and type.typeName != ''">
+	    and d.type_name like CONCAT('%',#{type.typeName},'%')
+	  </if>
+	  <if test="type.loginPlat != null">
+	  and d.login_plat=#{type.loginPlat}
+	  </if>
+	  order by d.order_no limit #{page},#{limit}
+	</select>
+	
+	<select id="findLoginPplatCount" resultType="int">
+	  select count(*) from tb_descovery_loginplat_type where 1=1
+	  <if test="type.typeName != null and type.typeName != ''">
+	   and type_name like CONCAT('%',#{type.typeName},'%')
+	  </if>
+	  <if test="type.loginPlat != null">
+	  and login_plat=#{type.loginPlat}
+	  </if>
+	</select>
+	
+	<select id="getTypePlatName" resultMap="loginPlatMap">
+	  select * from tb_descovery_loginplat_type where login_plat=#{loginPlat} and type_name=#{typeName}
+	</select>
+	
+	<insert id="addDescoveryloginPlatType" parameterType="com.cofc.pojo.DescoveryloginPlatType">
+	  insert into tb_descovery_loginplat_type (type_id,type_name,login_plat,type_status,order_no,create_time) 
+	       values(#{typeId},#{typeName},#{loginPlat},#{typeStatus},#{orderNo},#{createTime})
+	</insert>
+	
+	<update id="updateLoginPlatType" parameterType="com.cofc.pojo.DescoveryloginPlatType">
+	 update tb_descovery_loginplat_type 
+	 <set>
+	   update_time=#{updateTime},
+	   <if test="typeName != null and typeName !=''">
+	     type_name=#{typeName},
+	   </if>
+	   <if test="orderNo != null">
+	      order_no=#{orderNo}
+	   </if>
+	   <if test="typeStatus != null">
+	      type_status=#{typeStatus}
+	   </if>
+	 </set>
+	 where id=#{id}
+	</update>
+	
+	<!-- 新开方法：防止sql冲突 -->
+	<select id="findLoginPplatListByLoginPlat" resultMap="loginPlatMap">
+	select * from tb_descovery_loginplat_type d 
+	  left join TB_APPLICATION_COMMON a on d.login_plat=a.application_id
+	  where 1=1 
+	  <if test="type.typeName != null and type.typeName != ''">
+	    and d.type_name like CONCAT('%',#{type.typeName},'%')
+	  </if>
+	  and d.login_plat in
+	   <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+		</foreach>
+	  order by d.order_no 
+	  <if test="page!=null and limit!=null">
+	   	  limit #{page},#{limit}
+	  </if>
+	</select>
+	
+	<select id="findLoginPplatCountByLoginPlat" resultType="int">
+	  select count(*) from tb_descovery_loginplat_type where 1=1
+	  <if test="type.typeName != null and type.typeName != ''">
+	   and type_name like CONCAT('%',#{type.typeName},'%')
+	  </if>
+	  and login_plat in
+	   <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+		</foreach>
+	</select>
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.TravelJoinService">
+	<resultMap type="com.cofc.pojo.TravelJoin" id="BaseResultMap">
+		<id column="join_id" property="joinId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="travel_id" property="travelId" jdbcType="INTEGER" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<association property="joinUser" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		</association>
+		<association property="joinTravel" javaType="com.cofc.pojo.TravelCommon">
+			<id column="travel_id" property="travelId" jdbcType="INTEGER" />
+			<id column="state" property="state" jdbcType="INTEGER" />
+			<result column="travel_title" property="travelTitle" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+
+	<insert id="addTravelJoin" parameterType="com.cofc.pojo.TravelJoin"
+		useGeneratedKeys="true" keyProperty="JoinId">
+		insert into
+		TB_TRAVEL_JOIN(user_id,travel_id,state,create_time)values(#{userId},#{travelId},#{state},#{createTime})
+	</insert>
+
+	<select id="getTravelJoinListInfo" resultMap="BaseResultMap">
+		select * from TB_TRAVEL_JOIN as j left join TB_USER_COMMON as c on
+		j.user_id = c.user_id left join TB_TRAVEL_COMMON as t on
+		t.travel_id = j.travel_id where j.state &lt;&gt;0 and j.state &lt;&gt;3  and j.travel_id = #{travelId}
+		order by j.create_time desc limit #{pageNo},#{pageSize}
+	</select>
+
+	<select id="getAlreadyJoin" resultMap="BaseResultMap">
+		select * from TB_TRAVEL_JOIN where travel_id = #{travelId} and user_id =
+		#{userId}
+	</select>
+	<select id="getMyJoinTravel" resultMap="BaseResultMap">
+		select * from TB_TRAVEL_JOIN as j left join TB_USER_COMMON as c on c.user_id
+		= j.user_id left join
+		TB_TRAVEL_COMMON as t on t.travel_id = j.travel_id where j.user_id = #{userId} and t.login_plat = #{loginPlat} order
+		by j.create_time desc limit #{pageNo},#{pageSize}
+	</select>
+	<!-- <update id="quitTravel">
+	  update TB_TRAVEL_JOIN set state = 3 where travel_id = #{travelId} and user_id = #{userId}
+	</update> -->
+	<delete id="quitTravel">
+	   delete from TB_TRAVEL_JOIN where travel_id = #{travelId} and user_id = #{userId}
+	</delete>
+	
+	<select id="getJoinPeopleCountByTravelId" resultType="int">
+	  select count(*) from TB_TRAVEL_JOIN where state&lt;&gt;0 and state&lt;&gt;3 and travel_id = #{travelId}
+	</select>
+</mapper>

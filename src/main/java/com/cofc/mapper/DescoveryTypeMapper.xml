@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.DescoveryTypeService">
+	<resultMap type="com.cofc.pojo.DescoveryType" id="BaseResultMap">
+		<id column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="login_plat" property="loginPlat" jdbcType="VARCHAR" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+		<result column="order_no" property="orderNo" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="findAllDescoveryType" resultMap="BaseResultMap">
+		select * from
+		TB_DESCOVERY_TYPE where is_effect = 1
+		order by order_no;
+	</select>
+	
+	<select id="getfilterDescoveryType" resultMap="BaseResultMap">
+	select * from
+		TB_DESCOVERY_TYPE where is_effect = 1 and type_id &lt;&gt;6 and type_id &lt;&gt;7
+		order by order_no;
+	</select>
+	
+	<select id="getAllDescoveryType" resultMap="BaseResultMap">
+		select * from TB_DESCOVERY_TYPE order by type_id limit 0,4;
+	</select>
+	<insert id="addNewDescoveryType" parameterType="com.cofc.pojo.DescoveryType"
+		useGeneratedKeys="true" keyProperty="typeId">
+		insert into TB_DESCOVERY_TYPE(type_name,create_time,login_plat,is_effect,order_no)
+			values(#{typeName},#{createTime},#{loginPlat},#{groupId},#{isEffect},#{orderNo})
+	</insert>
+	
+	<select id="getDescoveryTypeList" resultMap="BaseResultMap">
+	select * from
+		TB_DESCOVERY_TYPE where (type_id=5 or type_id=8 or type_id=9 or type_id=6 or type_id=7) and is_effect = 1
+		ORDER BY order_no=3,order_no=2,order_no=7,order_no=1
+	</select>
+	<select id="getTypeByLoginPlat" resultMap="BaseResultMap">
+		select * from TB_DESCOVERY_TYPE where is_effect = 1
+		and login_plat in 
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach>
+	    order by order_no
+	</select>
+	<select id="getListByAppId" resultMap="BaseResultMap">
+		select * from TB_DESCOVERY_TYPE where is_effect = 1
+		and login_plat = #{loginPlat} order by order_no
+	</select>
+</mapper>

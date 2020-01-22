@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ApplicationCommonService">
+	<resultMap type="com.cofc.pojo.ApplicationCommon" id="BaseResultMap">
+		<id column="application_id" property="applicationId" jdbcType="INTEGER" />
+		<result column="application_owner" property="applicationOwner"
+			jdbcType="INTEGER" />
+		<result column="model_id" property="modelId" jdbcType="INTEGER" />
+		<result column="application_name" property="applicationName"
+			jdbcType="VARCHAR" />
+		<result column="application_status" property="applicationStatus"
+			jdbcType="INTEGER" />
+		<result column="app_create_time" property="appCreateTime"
+			jdbcType="TIMESTAMP" />
+		<result column="app_update_time" property="appUpdateTime"
+			jdbcType="TIMESTAMP" />
+		<result column="app_id" property="appId" jdbcType="VARCHAR" />
+		<result column="app_secret" property="appSecret" jdbcType="VARCHAR" />
+		<result column="plan_stop_time" property="planStopTime"
+			jdbcType="TIMESTAMP" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="application_type" property="applicationType"
+			jdbcType="INTEGER" />
+		<result column="group_type" property="groupType" jdbcType="INTEGER" />
+		<result column="creater_name" property="createrName" jdbcType="VARCHAR" />
+		<result column="creater_phone" property="createrPhone"
+			jdbcType="VARCHAR" />
+		<result column="is_recommend" property="isRecommend" jdbcType="INTEGER" />
+		<result column="group_card" property="groupCard" jdbcType="VARCHAR" />
+		<result column="small_routine" property="smallRoutine"
+			jdbcType="INTEGER" />
+		<result column="mchid" property="mchid" jdbcType="VARCHAR" />
+		<result column="visitor_count" property="visitorCount"
+			jdbcType="INTEGER" />
+		<result column="sale_status" property="saleStatus" jdbcType="VARCHAR" />
+		<result column="application_creator" property="applicationCreator" jdbcType="INTEGER" />
+		<result column="api_key" property="apiKey" jdbcType="VARCHAR" />
+       	<result column="create_qq" property="createQQ" jdbcType="VARCHAR" />
+        <result column="app_logo" property="appLogo" jdbcType="VARCHAR" />
+        <result column="wx_open_app_id" property="wxOpenAppId" jdbcType="VARCHAR" />
+        
+        <result column="wx_service_app_id" property="wxServiceAppId" jdbcType="VARCHAR" />
+        <result column="wx_public_app_id" property="wxPublicAppId" jdbcType="VARCHAR" />
+
+		<association property="appOwner" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="phone" property="phone" jdbcType="VARCHAR" />
+			<result column="e_mail" property="email" jdbcType="VARCHAR" />
+		</association>
+
+		<association property="types" javaType="com.cofc.pojo.GroupTypes">
+			<id column="type_id" property="typeId" jdbcType="INTEGER" />
+			<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+			<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		</association>
+		
+		<association property="apptype" javaType="com.cofc.pojo.ApplicationType">
+			<id column="type_id" property="typeId" jdbcType="INTEGER" />
+			<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+		</association>
+
+		<association property="appModel" javaType="com.cofc.pojo.ApplicationModel">
+			<id column="model_id" property="modelId" jdbcType="INTEGER" />
+			<result column="model_url" property="modelUrl" jdbcType="VARCHAR" />
+			<result column="model_name" property="modelName" jdbcType="VARCHAR" />
+			<result column="model_create_time" property="modelCreateTime"
+				jdbcType="TIMESTAMP" />
+		</association>
+	</resultMap>
+
+	<insert id="createNewApplication" parameterType="com.cofc.pojo.ApplicationCommon"
+		useGeneratedKeys="true" keyProperty="applicationId">
+		insert into
+		TB_APPLICATION_COMMON(application_owner,model_id,application_name,application_status,app_create_time,app_update_time,
+		app_id,app_secret,plan_stop_time,parent_id,application_type,group_type,creater_name,creater_phone,is_recommend,
+		group_card,small_routine,mchid,sale_status,application_creator,app_logo,wx_open_app_id,wx_service_app_id,wx_public_app_id)
+		values(#{applicationOwner},#{modelId},#{applicationName},#{applicationStatus},#{appCreateTime},#{appUpdateTime},
+		#{appId},#{appSecret},#{planStopTime},#{parentId},#{applicationType},#{groupType},#{createrName},#{createrPhone},
+		#{isRecommend},#{groupCard},#{smallRoutine},#{mchid},#{saleStatus},#{applicationCreator},#{appLogo},
+		#{wxOpenAppId},#{wxServiceAppId},#{wxPublicAppId})
+	</insert>
+	
+	<select id="getApplicationName" resultMap="BaseResultMap">
+	select * from TB_APPLICATION_COMMON where application_name=#{applicationName}
+	</select>
+	
+	<select id="findApplicationsByCriteria" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_COMMON a left join TB_APPLICATION_MODEL m
+		on a.model_id = m.model_id left join TB_USER_COMMON u on
+		a.application_owner = u.user_id 
+	   left join tb_application_type t on a.group_type=t.type_id
+		where 1=1
+		<if test="type != null">
+		<if test="type == 1">
+		  and a.application_type=1
+		</if>
+		<if test="type == 3">
+		 and (a.application_type=3 or a.application_type=2)
+		</if>
+		</if>
+		<if test="modelName!=null and modelName!=''">
+			and m.model_name like CONCAT('%',#{modelName},'%')
+		</if>
+		<if test="applicationName!=null and applicationName!=''">
+			and a.application_name like
+			CONCAT('%',#{applicationName},'%')
+		</if>
+		<if test="applicationStatus!=null">
+			and a.application_status = #{applicationStatus}
+		</if>
+		<if test="isRecommend!=null">
+			and a.is_recommend = #{isRecommend}
+		</if>
+		<if test="userId!=null">
+			and a.application_owner = #{userId}
+		</if>
+		<if test="groupType!=null">
+			and a.group_type = #{groupType}
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (u.nick_name like CONCAT('%',#{userKeyWords},'%') or
+			u.real_name like CONCAT('%',#{userKeyWords},'%'))
+		</if>
+		<if test="applicationType!=null">
+			and a.application_type = #{applicationType}
+		</if>
+		order by a.app_create_time desc
+		<if test="rowsId!=null and pageSize!=null">
+			limit #{rowsId},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="findApplicationsByCount" resultType="int">
+	   select count(*) from TB_APPLICATION_COMMON a 
+	    left join TB_APPLICATION_MODEL m on a.model_id = m.model_id
+		left join TB_USER_COMMON u on a.application_owner = u.user_id 
+		where 1=1
+		<if test="type == 1">
+		 and a.application_type=1
+		</if>
+		<if test="type == 3">
+		   and (a.application_type=3 or a.application_type=2)
+		</if>
+	   <if test="modelName!=null and modelName!=''">
+			and m.model_name like CONCAT('%',#{modelName},'%')
+		</if>
+		<if test="applicationName!=null and applicationName!=''">
+			and a.application_name like
+			CONCAT('%',#{applicationName},'%')
+		</if>
+		<if test="applicationStatus!=null">
+			and a.application_status = #{applicationStatus}
+		</if>
+		<if test="isRecommend!=null">
+			and a.is_recommend = #{isRecommend}
+		</if>
+		<if test="userId!=null">
+			and a.application_owner = #{userId}
+		</if>
+		<if test="groupType!=null">
+			and a.group_type = #{groupType}
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (u.nick_name like CONCAT('%',#{userKeyWords},'%') or
+			u.real_name like CONCAT('%',#{userKeyWords},'%'))
+		</if>
+		<if test="applicationType!=null">
+			and a.application_type = #{applicationType}
+		</if>
+	</select>
+	
+	<select id="getApplicationsByCriteria" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_COMMON a 
+		left join TB_APPLICATION_MODEL m on a.model_id=m.model_id
+		left join TB_USER_COMMON u on a.application_owner =u.user_id 
+		where a.application_id = #{appId}
+	</select>
+	
+	<update id="updateApplicationStatus" parameterType="com.cofc.pojo.ApplicationCommon">
+		update TB_APPLICATION_COMMON
+		<trim prefix="set" suffixOverrides=",">
+			<if test="appUpdateTime!=null">app_update_time = #{appUpdateTime},</if>
+			<if test="applicationStatus!=null">application_status=#{applicationStatus},</if>
+			<if test="appId!=null and appId !=''">app_id=#{appId},</if>
+			<if test="appSecret!=null and appSecret !=''">app_secret=#{appSecret},</if>
+			<if test="mchid!=null and mchid !=''">mchid=#{mchid},</if>
+			<if test="apiKey!=null and apiKey !=''">api_key=#{apiKey},</if>
+			<if test="groupCard!=null and groupCard !=''">group_card=#{groupCard},</if>
+			<if test="isRecommend!=null">is_recommend=#{isRecommend},</if>
+			<if test="applicationName!=null">application_name=#{applicationName},</if>
+			<if test="modelId!=null">model_id=#{modelId},</if>
+			<if test="groupType!=null">group_type=#{groupType},</if>
+			<if test="createrPhone!=null">creater_phone=#{createrPhone},</if>
+			<if test="createrName!=null">creater_name=#{createrName},</if>
+			<if test="visitorCount!=null">visitor_count=#{visitorCount},</if>
+			<if test="saleStatus!=null">sale_status=#{saleStatus},</if>
+			<if test="applicationOwner !=null">application_owner=#{applicationOwner},</if>
+			<if test="createQQ !=null and createQQ != ''">create_qq = #{createQQ}</if>
+			<if test="appLogo !=null and appLogo != ''">app_logo = #{appLogo}</if>
+		</trim>
+		where application_id = #{applicationId}
+	</update>
+	<!-- 修改应用归属者 -->
+<update id="updateApplicationOwner" parameterType="com.cofc.pojo.ApplicationCommon">
+	update TB_APPLICATION_COMMON set app_update_time =
+	#{appUpdateTime},application_owner=#{applicationOwner}
+	where application_id = #{applicationId}
+</update>
+	
+	<select id="comfirmIsCreated" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_COMMON where 1=1
+		<if test="groupType!=null">
+			and group_type = #{groupType}
+		</if>
+		<if test="groupName!=null">
+			and application_name = #{groupName}
+		</if>
+		<if test="userId!=null">
+			and application_owner = #{userId}
+		</if>
+	</select>
+	
+	<select id="findGroupsByCriteria" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_COMMON where application_status &lt;&gt;3 and application_type &lt;&gt;1
+		<if test="aplic!=null">
+			<if test="aplic.applicationId!=null">
+				and application_id = #{aplic.applicationId}
+			</if>
+			<if test="aplic.applicationType!=null">
+				and application_type = #{aplic.applicationType}
+			</if>
+			<if test="aplic.applicationName!=null">
+				and application_name like
+				CONCAT('%',#{aplic.applicationName},'%')
+			</if>
+			<if test="aplic.parentId!=null">
+				and parent_id = #{aplic.parentId}
+			</if>
+			<if test="aplic.isRecommend!=null">
+				and is_recommend = #{aplic.isRecommend}
+			</if>
+			<if test="aplic.applicationOwner!=null">
+				and application_owner = #{aplic.applicationOwner}
+			</if>
+		</if>
+		order by app_create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	
+	<select id="findMyJoinedGroups" resultMap="BaseResultMap">
+		select ug.* from
+		TB_GROUP_USERS gu left join TB_APPLICATION_COMMON ug on gu.group_id =
+		ug.application_id where gu.user_id = #{userId} and ug.application_status &lt;&gt;3
+		<if test="applicationType != null">
+		and ug.application_type= #{applicationType}
+		</if>
+		<if test="applicationType == null">
+		and (ug.application_type= 2 or ug.application_type=3)
+		</if>
+		<if test="applicationName != null and applicationName !=''">
+		and ug.application_name like CONCAT('%',#{applicationName},'%')
+		</if>
+		 and ug.parent_id = #{loginPlat} and gu.is_creater= 0
+		order by gu.join_time desc limit #{rowsId},#{pageSize}
+	</select>
+	
+	<select id="findOthersCreatedByCriteria" resultMap="BaseResultMap">
+		SELECT a.*
+		FROM TB_APPLICATION_COMMON a WHERE a.application_type
+		=#{applicationType} AND a.parent_id = #{loginPlat} AND NOT EXISTS(
+		SELECT * FROM TB_GROUP_USERS g WHERE g.group_id = a.application_id AND
+		g.user_id = #{userId} AND a.application_type =#{applicationType})
+		order by a.app_create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	<select id="getApplicationById" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_COMMON where 1=1
+		<if test="applicId!=null">
+			and application_id = #{applicId}
+		</if>
+	</select>
+	<select id="countMyCreatedGoups" resultType="int">
+		select count(*) from
+		TB_APPLICATION_COMMON where application_owner=#{appowner} and
+		application_type=#{apptype} and parent_id =#{parentId}
+	</select>
+	<select id="findApplicationCommon" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_COMMON where 1=1
+		<if test="smallRoutine != null">
+			and application_id=#{smallRoutine}
+		</if>
+	</select>
+	<select id="findMyCreatedGroups" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_COMMON where 1=1 and application_status &lt;&gt;3 and application_type &lt;&gt;1	
+		<if test="applicationType != null">
+		and application_type = #{applicationType}
+		</if>
+		<if test="applicationType == null">
+		 and (application_type =2 or application_type = 3)
+		</if>
+		<if test="applicationName != null and applicationName !=''">
+		 and application_name like CONCAT('%',#{applicationName},'%')
+		</if>
+		and parent_id = #{loginPlat} and application_owner = #{createrId} 
+		order by app_create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	
+	<!-- 推荐社区和应用 -->
+	<select id="getRecommendList" resultMap="BaseResultMap">
+	select * from TB_APPLICATION_COMMON where is_recommend=1 and application_status &lt;&gt;3 and application_type &lt;&gt;1
+	   <if test="loginPlat != null">
+	      and small_routine=#{loginPlat}
+	   </if>
+	   <if test="applicationName != null and applicationName !=''">
+	   and application_name like CONCAT('%',#{applicationName},'%')
+	   </if>
+		order by app_create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	
+	<select id="findMyCreatedChildApplication" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_COMMON where 1=1 and application_status &lt;&gt;3 and application_type &lt;&gt;1
+		<if test="applicationType != null">
+		 and application_type = #{applicationType}
+		</if>
+		<if test="applicationType == null">
+		 and (application_type =2 or application_type = 3)
+		</if>
+		<if test="applicationName != null and applicationName !=''">
+		 and application_name like CONCAT('%',#{applicationName},'%')
+		</if>
+		   and application_owner = #{createrId} 
+		 order by app_create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	<select id="findMyJoinedChildApplication" resultMap="BaseResultMap">
+		select ug.*
+		from TB_GROUP_USERS gu left join TB_APPLICATION_COMMON ug on
+		gu.group_id = ug.application_id where gu.user_id = #{userId} and ug.application_status &lt;&gt;3
+		<if test="applicationType != null">
+		and ug.application_type = #{applicationType}
+		</if>
+		<if test="applicationType == null">
+		 and (ug.application_type= 2 or ug.application_type=3)
+		</if>
+		<if test="applicationName != null and applicationName !=''">
+		 and ug.application_name like CONCAT('%',#{applicationName},'%')
+		</if>
+<!-- 		 and ug.small_routine =#{smallRoutine}  -->
+		 and gu.is_creater= 0
+		order by gu.join_time desc limit #{rowsId},#{pageSize}
+	</select>
+	<select id="findOthersCreatedChildApplication" resultMap="BaseResultMap">
+		SELECT
+		a.* FROM TB_APPLICATION_COMMON a WHERE a.application_type
+		=#{applicationType} AND a.small_routine = #{smallRoutine} AND NOT
+		EXISTS(
+		SELECT * FROM TB_GROUP_USERS g WHERE g.group_id =
+		a.application_id AND
+		g.user_id = #{userId}
+		AND a.application_type
+		=#{applicationType})
+		order
+		by
+		app_create_time desc limit
+		#{rowsId},#{pageSize}
+	</select>
+	<select id="findAllxiaochengxuByCriteria" parameterType="java.util.List"
+		resultMap="BaseResultMap">
+		select * from TB_APPLICATION_COMMON where parent_id is null
+		<if test="userIds!=null">
+			and application_owner in
+			<foreach item="item" index="index" collection="ids" open="("
+				separator="," close=")">
+				#{item.userId}
+			</foreach>
+		</if>
+	</select>
+	<select id="getApplicationCommonList" resultMap="BaseResultMap">
+		select * from
+		TB_APPLICATION_COMMON ac left join TB_GROUP_TYPES gt on
+		ac.group_type=gt.type_id
+		where 1=1 order by ac.application_id desc
+		limit #{pageNo},#{pageSize}
+	</select>
+	<select id="getApplicationCommonCount" resultType="int">
+		select
+		count(*) from
+		TB_APPLICATION_COMMON where 1=1
+	</select>
+	<select id="confirmCurrAPPbelong" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_COMMON where application_id =
+		#{loginPlat}
+		<if test="idsList!=null">
+			and application_owner in
+			<foreach item="item" index="index" collection="ids" open="("
+				separator="," close=")">
+				#{item.userId}
+			</foreach>
+		</if>
+	</select>
+	<select id="findMyCreatedAllAppications" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_COMMON where 1 = 1
+		and application_owner
+		in
+		<foreach item="item" index="index" collection="apuids" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="findCurrTypeApplication" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_COMMON where application_type
+		=#{applicationType}
+		<if test="loginPlat!=null">
+			and application_id = #{loginPlat}
+		</if>
+	</select>
+	
+	<select id="getApplicationAndGroup" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_COMMON where
+		application_type=#{applicationType} and group_type=#{groupType}
+	</select>
+	
+	<select id="getApplicationCommonById" resultMap="BaseResultMap">
+		select * from
+		TB_APPLICATION_COMMON where application_id=#{applicationId}
+	</select>
+	
+	<!-- 社区或应用 -->
+	<select id="findAllApplicationTypeis2" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_COMMON where 1=1 and application_status &lt;&gt;3 and application_type &lt;&gt;1
+		<if test="applicationType != null">
+	<if test="applicationType == 2">
+		and application_type = 2 and group_type=9
+	</if>
+	<if test="applicationType == 3">
+		and application_type = 3 and group_type=1
+	</if>
+      </if>
+		<if test="applicationType == null">
+		 and application_type =2 or application_type = 3
+		</if>
+		<if test="loginPlat != null">
+		and parent_id = #{loginPlat}
+		</if>
+		<if test="applicationName != null and applicationName !=''">
+		 and application_name like CONCAT('%',#{applicationName},'%')
+		</if>
+		order by app_create_time desc limit #{pageNo},#{pageSize}
+	</select>
+	
+	
+	<!-- 应用分类 -->
+	<select id="getAppClassifyList" resultMap="BaseResultMap">
+	SELECT * FROM tb_application_common where group_type=#{type}  and application_status &lt;&gt;3 and application_type &lt;&gt;1
+	
+	   <if test="loginPlat != null">
+	     and parent_id=#{loginPlat}
+	   </if>
+	   <if test="applicationName != null and applicationName!=''">
+	   and application_name like CONCAT('%',#{applicationName},'%')
+	   </if>
+	   order by app_create_time desc limit #{pageNo},#{pageSize}
+	</select>
+	
+	<!-- 所有社区和应用 -->
+	<select id="findApptypeis3bySmallroutine" resultMap="BaseResultMap">
+		select *
+		from TB_APPLICATION_COMMON where small_routine =#{smallRoutine} 
+		and application_type in(2,3) order by app_create_time desc
+		limit #{pageNo},#{pageSize}
+	</select>
+	
+	<resultMap type="com.cofc.pojo.ApplicationCommon" id="BaseResultMap2">
+		<id column="application_id" property="applicationId" jdbcType="INTEGER" />
+		<result column="application_owner" property="applicationOwner"
+			jdbcType="INTEGER" />
+		<result column="model_id" property="modelId" jdbcType="INTEGER" />
+		<result column="application_name" property="applicationName"
+			jdbcType="VARCHAR" />
+		<result column="application_status" property="applicationStatus"
+			jdbcType="INTEGER" />
+		<result column="app_create_time" property="appCreateTime"
+			jdbcType="TIMESTAMP" />
+		<result column="app_update_time" property="appUpdateTime"
+			jdbcType="TIMESTAMP" />
+		<result column="app_id" property="appId" jdbcType="VARCHAR" />
+		<result column="app_secret" property="appSecret" jdbcType="VARCHAR" />
+		<result column="plan_stop_time" property="planStopTime"
+			jdbcType="TIMESTAMP" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="application_type" property="applicationType"
+			jdbcType="INTEGER" />
+		<result column="group_type" property="groupType" jdbcType="INTEGER" />
+		<result column="creater_name" property="createrName" jdbcType="VARCHAR" />
+		<result column="creater_phone" property="createrPhone"
+			jdbcType="VARCHAR" />
+		<result column="is_recommend" property="isRecommend" jdbcType="INTEGER" />
+		<result column="group_card" property="groupCard" jdbcType="VARCHAR" />
+		<result column="small_routine" property="smallRoutine"
+			jdbcType="INTEGER" />
+		<result column="mchid" property="mchid" jdbcType="VARCHAR" />
+
+	</resultMap>
+	
+	<select id="findApplication" resultMap="BaseResultMap2">
+		select * from TB_APPLICATION_COMMON limit #{rowsId},#{pageSize}
+	</select>
+	
+	<delete id="deleteApplication">
+	  delete from TB_APPLICATION_COMMON where application_id=#{applicationId}
+	</delete>
+	<!-- 应用访客量 -->
+	<select id="getAppVisitorCount" resultType="int">
+	select sum(visitor_count) as visitor_count from TB_APPLICATION_COMMON where 1=1
+	<if test="loginPlat != null">
+      and application_id=#{loginPlat} 
+	</if>
+	</select>
+	
+	<select id="getAppIsExpire" resultMap="BaseResultMap">
+	  select * from TB_APPLICATION_COMMON where application_owner=#{userId} and application_status =3
+	</select>
+	
+	
+	<select id="getAppList" resultMap="BaseResultMap">
+	select * from TB_APPLICATION_COMMON where 1=1
+	<if test="type != null">
+	and application_type =1
+    </if>
+	<if test="userId != null">
+		and (application_owner=#{userId} or application_creator =#{userId})
+	</if>	
+	</select>
+	
+	<!-- 防止前端接口调用过之前的sql,增量的sql重写  -->
+	<select id="getApplicationByLoginPlat" resultMap="BaseResultMap">
+	  select * from TB_APPLICATION_COMMON where application_type = 1 and  application_id in
+	  <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	  </foreach>
+	</select>
+	
+		
+	<select id="findApplicationsByCriteriaByLoginPlat" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_COMMON a left join TB_APPLICATION_MODEL m
+		on a.model_id = m.model_id left join TB_USER_COMMON u on
+		a.application_owner = u.user_id 
+	   left join tb_application_type t on a.group_type=t.type_id
+		where 1=1
+		<if test="type != null">
+		<if test="type == 1">
+		  and a.application_type=1
+		</if>
+		<if test="type == 3">
+		 and (a.application_type=3 or a.application_type=2)
+		</if>
+		</if>
+		<if test="modelName!=null and modelName!=''">
+			and m.model_name like CONCAT('%',#{modelName},'%')
+		</if>
+		<if test="applicationName!=null and applicationName!=''">
+			and a.application_name like
+			CONCAT('%',#{applicationName},'%')
+		</if>
+		<if test="applicationStatus!=null">
+			and a.application_status = #{applicationStatus}
+		</if>
+		<if test="isRecommend!=null">
+			and a.is_recommend = #{isRecommend}
+		</if>
+		<if test="userId!=null">
+			and a.application_owner = #{userId}
+		</if>
+		<if test="groupType!=null">
+			and a.group_type = #{groupType}
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (u.nick_name like CONCAT('%',#{userKeyWords},'%') or
+			u.real_name like CONCAT('%',#{userKeyWords},'%'))
+		</if>
+		<if test="applicationType!=null">
+			and a.application_type = #{applicationType}
+		</if>
+		and (a.application_id in
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	  </foreach>
+	    or parent_id in  
+	    <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach>
+	   )
+		order by a.app_create_time desc
+		<if test="rowsId!=null and pageSize!=null">
+			limit #{rowsId},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="findApplicationsByCountByLoginPlat" resultType="int">
+	   select count(*) from TB_APPLICATION_COMMON a 
+	    left join TB_APPLICATION_MODEL m on a.model_id = m.model_id
+		left join TB_USER_COMMON u on a.application_owner = u.user_id 
+		where 1=1
+		<if test="type == 1">
+		 and a.application_type=1
+		</if>
+		<if test="type == 3">
+		   and (a.application_type=3 or a.application_type=2)
+		</if>
+	   <if test="modelName!=null and modelName!=''">
+			and m.model_name like CONCAT('%',#{modelName},'%')
+		</if>
+		<if test="applicationName!=null and applicationName!=''">
+			and a.application_name like
+			CONCAT('%',#{applicationName},'%')
+		</if>
+		<if test="applicationStatus!=null">
+			and a.application_status = #{applicationStatus}
+		</if>
+		<if test="isRecommend!=null">
+			and a.is_recommend = #{isRecommend}
+		</if>
+		<if test="userId!=null">
+			and a.application_owner = #{userId}
+		</if>
+		<if test="groupType!=null">
+			and a.group_type = #{groupType}
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (u.nick_name like CONCAT('%',#{userKeyWords},'%') or
+			u.real_name like CONCAT('%',#{userKeyWords},'%'))
+		</if>
+		<if test="applicationType!=null">
+			and a.application_type = #{applicationType}
+		</if>
+		and (a.application_id in
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	  </foreach>
+	    or parent_id in  
+	    <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach>
+	   )
+	</select>
+	<select id="getAllAppcalitionCount" resultType="int">
+	 select count(*) from TB_APPLICATION_COMMON
+	</select>
+	
+	<!-- 优化查询 -->
+	<select id="getNewApplicationList" resultMap="BaseResultMap">
+		select application_id,application_name,app_logo from TB_APPLICATION_COMMON where 1 =1
+		<if test="loginPlatList != null">
+			and application_id in
+			<foreach item="item"  index="index" collection="loginPlatList" open="("
+						separator="," close=")">
+						#{item}
+		    </foreach>
+		</if>
+	</select>
+	
+</mapper>

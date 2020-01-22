@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.TravelViewService">
+	<resultMap type="com.cofc.pojo.TravelView" id="BaseResultMap">
+		<id column="view_id" property="viewId" jdbcType="INTEGER" />
+		<result column="travel_id" property="travelId" jdbcType="INTEGER" />
+		<result column="qqmap_view_id" property="qqmapViewId" jdbcType="VARCHAR" />
+		<result column="location" property="location" jdbcType="VARCHAR" />
+	    <result column="latitude" property="latitude" jdbcType="VARCHAR" />
+	    <result column="longitude" property="longitude" jdbcType="VARCHAR" />
+	    <result column="redbag_count" property="redbagCount" jdbcType="INTEGER" />
+	    <result column="is_order" property="isOrder" jdbcType="INTEGER" />  
+	</resultMap>
+	
+	<insert id="addTravelViewInfo" parameterType="com.cofc.pojo.TravelView"
+		useGeneratedKeys="true" keyProperty="viewId">
+	   insert into TB_TRAVEL_VIEW(travel_id,qqmap_view_id,location,latitude,longitude,redbag_count,is_order)values(#{travelId},#{qqmapViewId},
+	   #{location},#{latitude},#{longitude},#{redbagCount},#{isOrder})
+	</insert>
+	
+	<select id="getTravelViewByTravelId" resultMap="BaseResultMap">
+	  select * from TB_TRAVEL_VIEW where travel_id = #{travelId}
+	</select>
+	
+	<select id="getTravelViewByqqViewId" resultMap="BaseResultMap">
+	  select * from TB_TRAVEL_VIEW where view_id = #{viewId} and travel_id = #{travelId}
+	</select>
+	<update id="updateViewInfo">
+	  update TB_TRAVEL_VIEW
+	  <trim prefix="set" suffixOverrides=",">
+	    <if test="qqmapViewId != null and qqmapViewId!=''">qqmap_view_id = #{qqmapViewId},</if>
+	    <if test="location != null and location!=''">location = #{location},</if>
+	    <if test="latitude != null and latitude!=''">latitude = #{latitude},</if>
+	    <if test="longitude != null and longitude!=''">longitude = #{longitude},</if>
+	    <if test="redbagCount != null">redbag_count = #{redbagCount},</if>
+	    <if test="isOrder != null">is_order = #{isOrder},</if>
+	  </trim>
+	  where view_id = #{viewId}
+	</update>
+	 <update id="updateRedbag">
+	  update TB_TRAVEL_VIEW set redbag_count = #{redbagCount}
+	  where travel_id = #{travelId} and qqmap_view_id = #{qqmapViewId}
+	</update>
+	<update id="updateAllRedbag">
+	update TB_TRAVEL_VIEW 
+    <trim prefix="set" suffixOverrides=",">
+    <if test="redbagCount!=null">redbag_count = #{redbagCount},</if>
+	</trim>
+	  where travel_id = #{travelId}
+	</update>
+	 <select id="getIsOrderViewByTravelId" resultType="int">
+	  select count(*) from TB_TRAVEL_VIEW where is_order = 1
+	 </select>
+	 <select id="getViewCount" resultType="int">
+	  select count(*) from TB_TRAVEL_VIEW
+	 </select>
+	 <select id="getViewList" resultMap="BaseResultMap">
+	  select * from TB_TRAVEL_VIEW where travel_id = #{travelId} limit #{page},#{limit}
+	</select>
+	
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.dataAnalysis.AiTrendService">
+	<resultMap type="com.cofc.pojo.dataAnalysis.AiTrend" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="days" property="days" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="list" property="list" jdbcType="VARCHAR" />
+		<result column="last_time" property="lastTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addAiTrend" parameterType="com.cofc.pojo.dataAnalysis.AiTrend"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		td_change_trend(app_id,user_id,days,type,list,last_time)
+		values(#{appId},#{userId},#{days},#{type},#{list},#{lastTime})
+	</insert>
+	<update id="updateAiTrend" parameterType="com.cofc.pojo.dataAnalysis.AiTrend">
+		update td_change_trend
+		<trim prefix="set" suffixOverrides=",">
+			<if test="list!=null ">list=#{list},</if>
+			<if test="lastTime!=null">last_time=#{lastTime},</if>
+		</trim>
+		where id = #{id}
+	</update>
+
+	<delete id="deleteAiTrend">
+		delete from td_change_trend where id =#{id}
+	</delete>
+
+	<select id="getAiTrend" resultMap="BaseResultMap">
+		select * from td_change_trend where
+		app_id=#{appId} and
+		user_id =#{userId} and
+		days=#{days}
+		and
+		type=#{type}
+	</select>
+</mapper>

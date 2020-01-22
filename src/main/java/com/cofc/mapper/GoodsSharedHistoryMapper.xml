@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.GoodsSharedHistoryService">
+	<resultMap type="com.cofc.pojo.GoodsSharedHistory" id="BaseResultMap">
+		<id column="shared_id" property="sharedId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="shared_time" property="sharedTime" />
+		<result column="is_back" property="isBack" jdbcType="INTEGER" />
+	</resultMap>
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.TaskCompeteService">
+	<resultMap type="com.cofc.pojo.TaskCompete" id="BaseResultMap">
+		<id column="compete_id" property="competeId" jdbcType="INTEGER" />
+		<result column="competitor_user" property="competitorUser"
+			jdbcType="INTEGER" />
+		<result column="compete_time" property="competeTime" jdbcType="TIMESTAMP" />
+		<result column="compete_fee" property="competeFee" jdbcType="DOUBLE" />
+		<result column="compete_service" property="competeService"
+			jdbcType="VARCHAR" />
+		<result column="compete_longitude" property="competeLongitude"
+			jdbcType="VARCHAR" />
+		<result column="compete_latitude" property="competeLatitude"
+			jdbcType="VARCHAR" />
+		<result column="compete_lacation" property="competeLacation"
+			jdbcType="VARCHAR" />
+		<result column="compete_status" property="competeStatus"
+			jdbcType="INTEGER" />
+		<result column="select_time" property="selectTime" jdbcType="TIMESTAMP" />
+		<result column="partner_id" property="partnerId" jdbcType="INTEGER" />
+		<result column="star_rate" property="starRate" jdbcType="INTEGER" />
+		<result column="compete_task" property="competeTask" jdbcType="INTEGER" />
+		<association property="competerInfo" javaType="com.cofc.pojo.UserCommon">
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<insert id="userCompeteTask" parameterType="com.cofc.pojo.TaskCompete"
+		useGeneratedKeys="true" keyProperty="competeId">
+		insert into
+		TB_TASK_COMPETE(competitor_user,compete_time,compete_fee,compete_service,compete_longitude,
+		compete_latitude,compete_lacation,compete_status,select_time,partner_id,star_rate,compete_task)
+		values(#{competitorUser},#{competeTime},#{competeFee},#{competeService},#{competeLongitude},
+		#{competeLatitude},#{competeLacation},#{competeStatus},#{selectTime},#{partnerId},#{starRate}
+		,#{competeTask});
+	</insert>
+	<select id="confirmCompetedThisTask" resultMap="BaseResultMap">
+		select * from
+		TB_TASK_COMPETE where competitor_user = #{userId} and compete_task =
+		#{taskId}
+	</select>
+	<select id="findAllCompetedRecord" resultMap="BaseResultMap">
+		select * from
+		TB_TASK_COMPETE t left join TB_USER_COMMON u on t.competitor_user =
+		u.user_id where compete_task = #{taskId} order by t.compete_status
+	</select>
+	<select id="getCompeteRecordById" resultMap="BaseResultMap">
+		select * from
+		TB_TASK_COMPETE where compete_id = #{competeId}
+	</select>
+	<update id="publisherChooseCompeter" parameterType="com.cofc.pojo.TaskCompete">
+		update TB_TASK_COMPETE
+		<trim prefix="set" suffixOverrides=",">
+			<if test="competeStatus!=null">compete_status=#{competeStatus},</if>
+			<if test="selectTime!=null">select_time=#{selectTime},</if>
+		</trim>
+		where compete_id = #{competeId}
+	</update>
+	<update id="publisherDischooseCompeter" parameterType="com.cofc.pojo.TaskCompete">
+		update TB_TASK_COMPETE
+		<trim prefix="set" suffixOverrides=",">
+			<if test="competeStatus!=null">compete_status=#{competeStatus},</if>
+			<if test="selectTime!=null">select_time=#{selectTime},</if>
+		</trim>
+		where compete_task = #{competeTask} and competitor_user &lt;&gt;
+		#{competitorUser}
+	</update>
+	<select id="getCurrTaskSelected" resultMap="BaseResultMap">
+		select * from TB_TASK_COMPETE where compete_status=#{competeStatus} and compete_task = #{taskId}
+	</select>
+</mapper>

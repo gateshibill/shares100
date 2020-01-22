@@ -1,0 +1,792 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.GoodsCommonService">
+	<resultMap type="com.cofc.pojo.GoodsCommon" id="BaseResultMap">
+		<id column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+		<result column="publisher_id" property="publisherId" jdbcType="INTEGER" />
+		<result column="is_hot" property="isHot" jdbcType="INTEGER" />
+		<result column="is_cut" property="isCut" jdbcType="INTEGER" />
+		<result column="is_pin" property="isPin" jdbcType="INTEGER" />
+		<result column="is_dtbt" property="isDtbt" jdbcType="INTEGER" />
+		<result column="first_cost" property="firstCost" jdbcType="DOUBLE" />
+		<result column="goods_stock" property="goodsStock" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" />
+		<result column="publisher_name" property="publisherName" jdbcType="VARCHAR" />
+		<result column="publisher_id" property="publisherId" jdbcType="INTEGER" />
+		<result column="sell_price" property="sellPrice" jdbcType="VARCHAR" />
+		<result column="is_selled" property="isSelled" jdbcType="INTEGER" />
+		<result column="goods_image" property="goodsImage" jdbcType="VARCHAR" />
+		<result column="goods_details" property="goodsDetails"
+			jdbcType="INTEGER" />
+		<result column="goods_type" property="goodsType" jdbcType="INTEGER" />
+		<result column="update_time" property="updateTime" />
+		<result column="selled_count" property="selledCount" jdbcType="INTEGER" />
+		<result column="sell_or_rent" property="sellOrRent" jdbcType="INTEGER" />
+		<result column="is_pass_sell" property="isPassSell" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="is_recommend" property="isRecommend" jdbcType="INTEGER" />
+		<result column="is_new" property="isNew" jdbcType="INTEGER" />
+		<result column="small_image" property="smallImage" jdbcType="VARCHAR" />
+		<result column="recommend_way" property="recommendWay" jdbcType="VARCHAR" />
+		<result column="goods_status" property="goodsStatus" jdbcType="INTEGER" />
+		<result column="details_image" property="detailsImage" jdbcType="VARCHAR" />
+		<result column="goods_browse" property="goodsBrowse" jdbcType="INTEGER" />
+		<result column="vip_price" property="vipPrice" jdbcType="DOUBLE" />
+		<result column="goods_rebate" property="goodsRebate" jdbcType="DOUBLE" />
+		<result column="is_score" property="isScore" jdbcType="INTEGER" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="score_count" property="scoreCount" jdbcType="INTEGER" />
+		<result column="is_more_spec" property="isMoreSpec" jdbcType="INTEGER" />
+		<result column="good_sort" property="goodSort" jdbcType="INTEGER" />
+		<result column="good_child_type" property="goodChildType" jdbcType="INTEGER" />
+		<result column="ms_time" property="msTime" jdbcType="INTEGER" />
+		<result column="seckill_start_time" property="seckillStartTime" jdbcType="INTEGER"/>
+		<result column="good_recommend_pic" property="goodRecommendPic" jdbcType="VARCHAR" />
+		<result column="brand_id" property="brandId" jdbcType="INTEGER" />
+		<!--  -->
+		<association property="goodsUser" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="phone" property="phone" jdbcType="VARCHAR" />
+			<result column="e_mail" property="email" jdbcType="VARCHAR" />
+			<result column="sex" property="sex" jdbcType="INTEGER" />
+			<result column="create_time" property="createTime" />
+			<result column="compony" property="compony" jdbcType="VARCHAR" />
+			<result column="compony_introduce" property="componyIntroduce"
+				jdbcType="VARCHAR" />
+			<result column="open_id" property="openId" jdbcType="VARCHAR" />
+		</association>
+
+		<association property="gType" javaType="com.cofc.pojo.GoodsType">
+			<id column="type_id" property="typeId" jdbcType="INTEGER" />
+			<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+			<result column="create_time" property="createTime" />
+		</association>
+		<association property="app" javaType="com.cofc.pojo.ApplicationCommon">
+			<id column="application_id" property="applicationId" jdbcType="INTEGER" />
+		<result column="application_name" property="applicationName"
+			jdbcType="VARCHAR" />
+		</association>
+		<!-- -->
+		<association property="recommend" javaType="com.cofc.pojo.RecommendCommon">
+			<id column="recommend_id" property="recommendId" jdbcType="INTEGER" />
+			<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+			<result column="descovery_id" property="descoveryId" jdbcType="INTEGER" />
+		</association>
+	</resultMap>
+	
+	<!-- 后台商品列表 -->
+	<select id="findGoodsList2" resultMap="BaseResultMap">
+		select * from TB_GOODS_COMMON g 
+		left join TB_USER_COMMON u on g.publisher_id = u.user_id 
+		left join TB_GOODS_TYPE t on g.goods_type=t.type_id
+		LEFT JOIN TB_RECOMMEND_COMMON re ON g.goods_id=re.goods_id
+		left join tb_goods_type gt on g.goods_type=gt.type_id
+		left join tb_application_common app on g.login_plat=app.application_id
+		where 1=1
+		<if test="goods.loginPlat != null">
+		and (g.login_plat = #{goods.loginPlat} or re.login_plat =
+		#{goods.loginPlat})
+		</if>
+		<if test="goods.goodsName!=null and goods.goodsName!=''">
+			and g.goods_name like CONCAT('%',#{goods.goodsName},'%')
+		</if>
+		<if test="userName!=null and userName!=''">
+			and u.nick_name like CONCAT('%',#{userName},'%') or u.real_name like CONCAT('%',#{userName},'%')
+		</if>
+		<if test="goods.publisherId!=null">
+			and g.publisher_id = #{goods.publisherId}
+		</if>
+		<if test="goods.goodsType!=null">
+			and g.goods_type = #{goods.goodsType}
+		</if>
+		<if test="goods.goodChildType!=null">
+            and g.good_child_type = #{goods.goodChildType}
+        </if>
+		<if test="goods.isRecommend !=null">
+			and g.is_recommend =#{goods.isRecommend}
+		</if>
+		<if test="goods.isHot !=null">
+			and g.is_hot =#{goods.isHot}
+		</if>
+		<if test="goods.isSelled !=null">
+			and g.is_selled =#{goods.isSelled}
+		</if>
+		<if test="goods.isScore !=null">
+			and g.is_score =#{goods.isScore}
+		</if>
+		<if test="goods.isDtbt !=null">
+			and g.is_dtbt =#{goods.isDtbt}
+		</if>
+		<if test="goods.isPassSell!=null">
+			and g.is_pass_sell = #{goods.isPassSell}
+		</if>
+		<if test="goods.goodsStatus !=null">
+			and g.goods_status = 2
+		</if>
+		<if test="goods.goodsStatus ==null">
+			and g.goods_status=1
+		</if>
+		<if test="goods.isNew !=null">
+			and g.is_new = #{goods.isNew}
+		</if>
+		<if test="goods.goodsId !=null">
+	      	and g.goods_id =#{goods.goodsId}
+	    </if>
+		<if test="startTime!=null and startTime!=''">
+			and g.create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and g.create_time &lt;= #{endTime}
+		</if>
+		<if test="loginPlat!=null and loginPlat!=''">
+			and g.login_plat = #{loginPlat}
+		</if>
+		<if test="appName !=null and appName !=''">
+			and app.application_name like CONCAT('%',#{appName},'%') 
+		</if>
+		order by g.good_sort,g.create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	
+	<!-- 后台  -->
+	<select id="getCountGoods" resultType="int">
+		select count(*) from TB_GOODS_COMMON g left join TB_USER_COMMON u on
+		g.publisher_id =u.user_id left join TB_GOODS_TYPE t on g.goods_type=
+		t.type_id LEFT JOIN TB_RECOMMEND_COMMON re ON g.goods_id=re.goods_id
+		left join tb_application_common ap on g.login_plat=ap.application_id
+		where 1=1
+		<if test="goods != null">
+		<if test="goods.loginPlat != null">
+		and (g.login_plat = #{goods.loginPlat} or re.login_plat =
+		#{goods.loginPlat})
+		</if>
+		<if test="goods.goodsName!=null and goods.goodsName!=''">
+			and g.goods_name like CONCAT('%',#{goods.goodsName},'%')
+		</if>
+		
+		<if test="goods.publisherId!=null">
+			and g.publisher_id = #{goods.publisherId}
+		</if>
+		<if test="goods.isRecommend !=null">
+			and g.is_recommend =#{goods.isRecommend}
+		</if>
+		<if test="goods.isHot !=null">
+			and g.is_hot =#{goods.isHot}
+		</if>
+		<if test="goods.isSelled !=null">
+			and g.is_selled =#{goods.isSelled}
+		</if>
+		<if test="goods.isScore !=null">
+			and g.is_score =#{goods.isScore}
+		</if>
+		<if test="goods.isDtbt !=null">
+			and g.is_dtbt =#{goods.isDtbt}
+		</if>
+		<if test="goods.isPassSell!=null">
+			and g.is_pass_sell = #{goods.isPassSell}
+		</if>
+		<if test="goods.goodsType!=null">
+			and g.goods_type = #{goods.goodsType}
+		</if>
+		<if test="goods.goodChildType!=null">
+			and g.good_child_type = #{goods.goodChildType}
+		</if>
+		<if test="goods.goodsStatus !=null">
+			and g.goods_status =2
+		</if>
+		<if test="goods.goodsStatus ==null">
+			and g.goods_status=1
+		</if>
+		<if test="goods.isNew !=null">
+			and g.is_new = #{goods.isNew}
+		</if>
+		<if test="goods.goodsId !=null">
+			and g.goods_id =#{goods.goodsId}
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and g.create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and g.create_time &lt;= #{endTime}
+		</if>
+		<if test="loginPlat!=null and loginPlat!=''">
+			and g.login_plat = #{loginPlat}
+		</if>
+		</if>
+		<if test="userName!=null and userName!=''">
+			and u.nick_name like CONCAT('%',#{userName},'%') or u.real_name like CONCAT('%',#{userName},'%')
+		</if>
+		<if test="appName !=null and appName !=''">
+			and ap.application_name like CONCAT('%',#{appName},'%') 
+		</if>
+	</select>
+	
+	<!-- 商家销量 -->
+	<select id="getLoginPlatSelledCount" resultType="string">
+	select sum(selled_count) as selled_count from TB_GOODS_COMMON where 1=1
+		<if test="goods.loginPlat != null">
+		and login_plat = #{goods.loginPlat} 
+		</if>
+		<if test="goods.goodsName!=null and goods.goodsName!=''">
+			and goods_name like CONCAT('%',#{goods.goodsName},'%')
+		</if>
+		<if test="goods.goodsType!=null">
+			and goods_type = #{goods.goodsType}
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and create_time &lt;= #{endTime}
+		</if>
+	</select>
+	<!-- 商品浏览量 -->
+	<select id="getgoodsBrowseCount" resultType="integer">
+	select sum(goods_browse) as goods_browse from TB_GOODS_COMMON where 1=1
+		<if test="goods.loginPlat != null">
+		and login_plat = #{goods.loginPlat} 
+		</if>
+		<if test="goods.goodsName!=null and goods.goodsName!=''">
+			and goods_name like CONCAT('%',#{goods.goodsName},'%')
+		</if>
+		<if test="goods.goodsType!=null">
+			and goods_type = #{goods.goodsType}
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and create_time &lt;= #{endTime}
+		</if>
+	</select>
+	
+	<!-- 前端商品列表 -->
+	<select id="findGoodsList" resultMap="BaseResultMap">
+		select * from TB_GOODS_COMMON g 
+		left join TB_USER_COMMON u on g.publisher_id=u.user_id 
+		left join TB_GOODS_TYPE t on g.goods_type=t.type_id 
+		where g.is_selled=1 and g.goods_status=1
+		<if test="goods.goodsName!=null and goods.goodsName!=''">
+			and g.goods_name like CONCAT('%',#{goods.goodsName},'%')
+		</if>
+		<if test="goods.loginPlat!=null">
+			and g.login_plat =#{goods.loginPlat}
+		</if>
+		<if test="goods.publisherId!=null">
+			and g.publisher_id = #{goods.publisherId}
+		</if>
+		<if test="goods.isRecommend !=null">
+			and g.is_recommend = 1
+		</if>
+		<if test="goods.isHot !=null">
+			and g.is_hot =1 
+		</if>
+		<if test="goods.isDtbt !=null">
+			and g.is_dtbt =1 
+		</if>
+		<if test="goods.isPassSell!=null">
+			and g.is_pass_sell = #{goods.isPassSell}
+		</if>
+		<if test="goods.isScore !=null">
+			and g.is_score =#{goods.isScore}
+		</if>
+		<if test="goods.isNew !=null">
+			and g.is_new =#{goods.isNew}
+		</if>
+		<if test="goods.goodsType!=null">
+			and g.goods_type = #{goods.goodsType}
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and g.create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and g.create_time &lt;= #{endTime}
+		</if>
+		order by g.good_sort,g.create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	
+	   <!-- 前端我的（发布）商品列表 -->
+       <select id="getMyGoodsList" resultMap="BaseResultMap">
+		select * from TB_GOODS_COMMON g 
+		left join TB_USER_COMMON u on g.publisher_id=u.user_id 
+		left join TB_GOODS_TYPE t on g.goods_type=t.type_id 
+		where g.goods_status=1
+		<if test="goods.goodsName!=null and goods.goodsName!=''">
+			and g.goods_name like CONCAT('%',#{goods.goodsName},'%')
+		</if>
+		<if test="goods.loginPlat!=null">
+			and g.login_plat =#{goods.loginPlat}
+		</if>
+		
+		<if test="goods.goodsType!=null">
+			and g.goods_type =#{goods.goodsType}
+		</if>
+		<if test="goods.goodChildType!=null">
+			and g.good_child_type=#{goods.goodChildType}
+		</if>
+		<if test="goods.publisherId!=null">
+			and g.publisher_id = #{goods.publisherId}
+		</if>
+		
+		<if test="goods.isPassSell!=null">
+			and g.is_pass_sell = #{goods.isPassSell}
+		</if>
+		
+		<if test="goods.isRecommend!=null">
+			and g.is_recommend = #{goods.isRecommend}
+		</if>
+		
+		<if test="goods.isSelled!=null">
+			and g.is_selled = #{goods.isSelled}
+		</if>
+		
+		<if test="goods.isNew!=null">
+			and g.is_new = #{goods.isNew}
+		</if>
+		<if test="goods.isDtbt!=null">
+			and g.is_dtbt = #{goods.isDtbt}
+		</if>
+		<if test="goods.brandId != null"> 
+			and g.brand_id = #{goods.brandId}
+		</if>
+		order by g.good_sort,g.create_time desc 
+		<if test="rowsId != null and pageSize != null">
+			limit #{rowsId},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="getMyGoodsCount" resultType="int">
+		select count(*) from TB_GOODS_COMMON g 
+		left join TB_USER_COMMON u on g.publisher_id=u.user_id 
+		left join TB_GOODS_TYPE t on g.goods_type=t.type_id 
+		where g.goods_status=1
+		<if test="goods.goodsName!=null and goods.goodsName!=''">
+			and g.goods_name like CONCAT('%',#{goods.goodsName},'%')
+		</if>
+		<if test="goods.loginPlat!=null">
+			and g.login_plat =#{goods.loginPlat}
+		</if>
+		
+		<if test="goods.goodsType!=null">
+			and g.goods_type =#{goods.goodsType}
+		</if>
+		<if test="goods.goodChildType!=null">
+			and g.good_child_type=#{goods.goodChildType}
+		</if>
+		<if test="goods.publisherId!=null">
+			and g.publisher_id = #{goods.publisherId}
+		</if>
+		
+		<if test="goods.isPassSell!=null">
+			and g.is_pass_sell = #{goods.isPassSell}
+		</if>
+		
+		<if test="goods.isRecommend!=null">
+			and g.is_recommend = #{goods.isRecommend}
+		</if>
+		
+		<if test="goods.isSelled!=null">
+			and g.is_selled = #{goods.isSelled}
+		</if>
+		
+		<if test="goods.isNew!=null">
+			and g.is_new = #{goods.isNew}
+		</if>
+		<if test="goods.isDtbt!=null">
+			and g.is_dtbt = #{goods.isDtbt}
+		</if>
+		<if test="goods.brandId != null"> 
+			and g.brand_id = #{goods.brandId}
+		</if>
+	</select>
+	
+	<select id="getGoodsById" resultMap="BaseResultMap"
+		parameterType="Integer">
+		select * from TB_GOODS_COMMON g left join TB_GOODS_TYPE
+		t on g.goods_type = t.type_id where goods_id = #{0}
+	</select>
+	<select id="getDtbtGoodsByUserId" resultMap="BaseResultMap">
+		select * from TB_GOODS_COMMON g left join TB_GOODS_TYPE
+		t on g.goods_type = t.type_id left join tc_dtbt_goods dt on g.goods_id=dt.goods_id
+		where dt.user_id = #{userId}
+	</select>
+		
+	<insert id="addNewGoods" parameterType="com.cofc.pojo.GoodsCommon"
+		useGeneratedKeys="true" keyProperty="goodsId">
+		insert into TB_GOODS_COMMON
+		(goods_name,is_hot,first_cost,goods_stock,create_time,publisher_id,sell_price,is_selled,goods_details,goods_type,
+		goods_image,selled_count,login_plat,sell_or_rent,is_pass_sell,is_recommend,small_image,recommend_way,details_image,vip_price,
+		goods_rebate,is_score,score_count,parent_id,is_more_spec,good_sort,publisher_name,is_new,good_child_type,ms_time,is_dtbt,
+		seckill_start_time,good_recommend_pic,brand_id)
+		values(#{goodsName},#{isHot},#{firstCost},#{goodsStock},#{createTime},#{publisherId},#{sellPrice}
+		,#{isSelled},#{goodsDetails},#{goodsType},#{goodsImage},#{selledCount},#{loginPlat},#{sellOrRent},#{isPassSell}
+		,#{isRecommend},#{smallImage},#{recommendWay},#{detailsImage},#{vipPrice},#{goodsRebate},#{isScore},#{scoreCount},#{parentId},
+		#{isMoreSpec},#{goodSort},#{publisherName},#{isNew},#{goodChildType},#{msTime},#{isDtbt},#{seckillStartTime},
+		#{goodRecommendPic},#{brandId})
+	</insert>
+	
+	<update id="updateGoodsInfo" parameterType="com.cofc.pojo.GoodsCommon">
+		update TB_GOODS_COMMON
+		<set>
+			update_time =#{updateTime}
+			<if test="goodsName!=null and goodsName!=''">
+				,goods_name =#{goodsName}
+			</if>
+			<if test="isHot!=null">
+				,is_hot=#{isHot}
+			</if>
+			<if test="isCut!=null">
+				,is_cut=#{isCut}
+			</if>
+			<if test="isPin!=null">
+				,is_pin=#{isPin}
+			</if>
+			<if test="isDtbt!=null">
+				,is_dtbt=#{isDtbt}
+			</if>
+			<if test="isRecommend!=null">
+				,is_recommend=#{isRecommend}
+			</if>
+			<if test="firstCost!=null and firstCost!=''">
+				,first_cost=#{firstCost}
+			</if>
+			<if test="goodsStock!=null">
+				,goods_stock=#{goodsStock}
+			</if>
+			
+			<if test="selledCount!=null and selledCount!=''">
+				,selled_count=#{selledCount}
+			</if>
+			
+			<if test="sellPrice!=null and sellPrice!=''">
+				,sell_price=#{sellPrice}
+			</if>
+			<if test="vipPrice!=null and vipPrice!=''">
+				,vip_price=#{vipPrice}
+			</if>
+			<if test="goodsRebate != null and goodsRebate!=''">
+			   ,goods_rebate = #{goodsRebate}
+			</if>
+			<if test="isSelled!=null">
+				,is_selled=#{isSelled}
+			</if>
+			<if test="isPassSell!=null">
+				,is_pass_sell=#{isPassSell}
+			</if>
+			<if test="goodsBrowse != null">
+			,goods_browse=#{goodsBrowse}
+			</if>
+			<if test="goodsDetails!=null and goodsDetails!=''">
+				,goods_details=#{goodsDetails}
+			</if>
+			<if test="goodsImage!=null">
+				,goods_image=#{goodsImage}
+			</if>
+			<if test="detailsImage !=null">
+				,details_image=#{detailsImage} 
+			</if>
+			<if test="smallImage !=null and smallImage !=''">
+				,small_image=#{smallImage} 
+			</if>
+			<if test="selledCount!=null">
+				,selled_count=#{selledCount}
+			</if>
+			<if test="goodsStatus!=null">
+				,goods_status=#{goodsStatus}
+			</if>
+			<if test="goodsType!=null">
+				,goods_type=#{goodsType}
+			</if>
+			<if test="goodChildType!=null">
+				,good_child_type=#{goodChildType}
+			</if>
+			<if test="isScore!=null">
+				,is_score=#{isScore}
+			</if>
+			<if test="scoreCount!=null">
+				,score_count=#{scoreCount}
+			</if>
+			<if test="goodSort!=null">
+				,good_sort=#{goodSort}
+			</if>
+			<if test="isNew!=null">
+				,is_new=#{isNew}
+			</if>
+			<if test="msTime!=null">
+				,ms_time=#{msTime}
+			</if>
+			<if test="seckillStartTime != null">
+				,seckill_start_time = #{seckillStartTime}
+			</if>
+			<if test="goodRecommendPic != null and goodRecommendPic != ''">			
+			,good_recommend_pic = #{goodRecommendPic}
+			</if>
+			<if test="brandId!=null">
+				,brand_id=#{brandId}
+			</if>
+		</set>
+		where goods_id = #{goodsId}
+	</update>
+	<update id="goodsUndercarriage">
+		update TB_GOODS_COMMON
+		<set>
+			is_selled=0
+		</set>
+		where goods_id in
+		<foreach item="item" index="index" collection="idsList" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<update id="managerShenheGoods">
+		update TB_GOODS_COMMON set is_pass_sell = 1 where
+		goods_id = #{goodsId}
+	</update>
+	<insert id="addNewBatchGoods" parameterType="java.util.List">
+		insert into TB_GOODS_COMMON
+		(goods_name,is_hot,first_cost,goods_stock,create_time,publisher_id,sell_price,is_selled,goods_details,goods_type,
+		goods_image,selled_count,login_plat,sell_or_rent,is_pass_sell,is_recommend,small_image)values
+		<foreach collection="goodsList" item="item" index="index"
+			separator=",">
+			(#{item.goodsName},#{item.isHot},#{item.firstCost},#{item.goodsStock},#{item.createTime},#{item.publisherId},#{item.sellPrice}
+			,#{item.isSelled},#{item.goodsDetails},#{item.goodsType},#{item.goodsImage},#{item.selledCount},#{item.loginPlat},#{item.sellOrRent},#{item.isPassSell}
+			,#{item.isRecommend},#{item.smallImage})
+		</foreach>
+	</insert>
+	
+	<delete id="deleteGoodsCommon">
+	   delete from TB_GOODS_COMMON where goods_id=#{goodsId}
+	</delete>
+	<select id="findGoodsTypeIsNull" resultMap="BaseResultMap">
+	 select * from TB_GOODS_COMMON where goods_type=#{typeId} and login_plat=#{loginPlat}
+	</select>
+	
+	<select id="getGoodsByIds" resultMap="BaseResultMap">
+	  select * from TB_GOODS_COMMON where goods_id in
+	  <foreach item="item" index="index" collection="ids" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- 防止跟前端冲突，新开sql -->
+	<select id="getGoodsByLoginPlat" resultMap="BaseResultMap">
+	  select * from TB_GOODS_COMMON g 
+		left join TB_USER_COMMON u on g.publisher_id = u.user_id 
+		left join TB_GOODS_TYPE t on g.goods_type=t.type_id
+		LEFT JOIN TB_RECOMMEND_COMMON re ON g.goods_id=re.goods_id
+		left join tb_goods_type gt on g.goods_type=gt.type_id
+		left join tb_application_common app on g.login_plat=app.application_id
+		where 1=1
+		<if test="goods.goodsName!=null and goods.goodsName!=''">
+			and g.goods_name like CONCAT('%',#{goods.goodsName},'%')
+		</if>
+		<if test="userName!=null and userName!=''">
+			and u.nick_name like CONCAT('%',#{userName},'%') or u.real_name like CONCAT('%',#{userName},'%')
+		</if>
+		<if test="goods.publisherId!=null">
+			and g.publisher_id = #{goods.publisherId}
+		</if>
+		<if test="goods.goodsType!=null">
+			and g.goods_type = #{goods.goodsType}
+		</if>
+		<if test="goods.goodChildType!=null">
+            and g.good_child_type = #{goods.goodChildType}
+        </if>
+		<if test="goods.isRecommend !=null">
+			and g.is_recommend =#{goods.isRecommend}
+		</if>
+		<if test="goods.isHot !=null">
+			and g.is_hot =#{goods.isHot}
+		</if>
+		<if test="goods.isSelled !=null">
+			and g.is_selled =#{goods.isSelled}
+		</if>
+		<if test="goods.isScore !=null">
+			and g.is_score =#{goods.isScore}
+		</if>
+		<if test="goods.isDtbt !=null">
+			and g.is_dtbt =#{goods.isDtbt}
+		</if>
+		<if test="goods.isPassSell!=null">
+			and g.is_pass_sell = #{goods.isPassSell}
+		</if>
+		<if test="goods.goodsStatus !=null">
+			and g.goods_status = 2
+		</if>
+		<if test="goods.goodsStatus ==null">
+			and g.goods_status=1
+		</if>
+		<if test="goods.isNew !=null">
+			and g.is_new = #{goods.isNew}
+		</if>
+		<if test="goods.goodsId !=null">
+	      	and g.goods_id =#{goods.goodsId}
+	    </if>
+		<if test="startTime!=null and startTime!=''">
+			and g.create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and g.create_time &lt;= #{endTime}
+		</if>
+		<if test="appName !=null and appName !=''">
+			and app.application_name like CONCAT('%',#{appName},'%') 
+		</if>
+		 and g.login_plat in 
+		 <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach> 
+	    or  re.login_plat  in
+	     <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach> 
+		order by g.good_sort,g.create_time desc limit #{page},#{limit}
+	</select>
+	
+	<select id="getCountGoodsByLoginPlat" resultType="int">
+		select count(*) from TB_GOODS_COMMON g left join TB_USER_COMMON u on
+		g.publisher_id =u.user_id left join TB_GOODS_TYPE t on g.goods_type=
+		t.type_id LEFT JOIN TB_RECOMMEND_COMMON re ON g.goods_id=re.goods_id
+		left join tb_application_common ap on g.login_plat=ap.application_id
+		where 1=1
+		<if test="goods != null">
+		<if test="goods.goodsName!=null and goods.goodsName!=''">
+			and g.goods_name like CONCAT('%',#{goods.goodsName},'%')
+		</if>
+		
+		<if test="goods.publisherId!=null">
+			and g.publisher_id = #{goods.publisherId}
+		</if>
+		<if test="goods.isRecommend !=null">
+			and g.is_recommend =#{goods.isRecommend}
+		</if>
+		<if test="goods.isHot !=null">
+			and g.is_hot =#{goods.isHot}
+		</if>
+		<if test="goods.isSelled !=null">
+			and g.is_selled =#{goods.isSelled}
+		</if>
+		<if test="goods.isScore !=null">
+			and g.is_score =#{goods.isScore}
+		</if>
+		<if test="goods.isDtbt !=null">
+			and g.is_dtbt =#{goods.isDtbt}
+		</if>
+		<if test="goods.isPassSell!=null">
+			and g.is_pass_sell = #{goods.isPassSell}
+		</if>
+		<if test="goods.goodsType!=null">
+			and g.goods_type = #{goods.goodsType}
+		</if>
+		<if test="goods.goodChildType!=null">
+            and g.good_child_type = #{goods.goodChildType}
+        </if>
+		<if test="goods.goodsStatus !=null">
+			and g.goods_status =2
+		</if>
+		<if test="goods.goodsStatus ==null">
+			and g.goods_status=1
+		</if>
+		<if test="goods.isNew !=null">
+			and g.is_new = #{goods.isNew}
+		</if>
+		<if test="goods.goodsId !=null">
+	     	 and g.goods_id =#{goods.goodsId}
+	    </if>
+		<if test="startTime!=null and startTime!=''">
+			and g.create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and g.create_time &lt;= #{endTime}
+		</if>
+		</if>
+		<if test="userName!=null and userName!=''">
+			and u.nick_name like CONCAT('%',#{userName},'%') or u.real_name like CONCAT('%',#{userName},'%')
+		</if>
+		<if test="appName !=null and appName !=''">
+			and ap.application_name like CONCAT('%',#{appName},'%') 
+		</if>
+		 and g.login_plat in 
+		 <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach> 
+	    or  re.login_plat  in
+	     <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach> 
+	</select>
+	
+	<select id="getSelledCountByLoginPlat" resultType="string">
+	select sum(selled_count) as selled_count from TB_GOODS_COMMON where 1=1
+		<if test="goods.goodsName!=null and goods.goodsName!=''">
+			and goods_name like CONCAT('%',#{goods.goodsName},'%')
+		</if>
+		<if test="goods.goodsType!=null">
+			and goods_type = #{goods.goodsType}
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and create_time &lt;= #{endTime}
+		</if>
+		and login_plat in 
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	  </foreach>
+	</select>
+	<update id="updateGoodsStock">
+	   update TB_GOODS_COMMON set goods_stock = #{goodsStock} where goods_id = #{goodsId}
+	</update>
+	<update id="updateIsScore">
+		update TB_GOODS_COMMON set is_score = #{isScore} where goods_id = #{goodId}
+	</update>
+	
+	<!-- 前端商品列表 -->
+	<select id="newfindGoodsList" resultMap="BaseResultMap">
+		select * from TB_GOODS_COMMON g 
+		left join TB_USER_COMMON u on g.publisher_id=u.user_id 
+		left join TB_GOODS_TYPE t on g.goods_type=t.type_id 
+		where g.is_selled=1 and g.goods_status=1
+		<if test="goods.goodsName!=null and goods.goodsName!=''">
+			and g.goods_name like CONCAT('%',#{goods.goodsName},'%')
+		</if>
+		<if test="goods.loginPlat!=null">
+									<!-- 查出父级 -->
+			and (g.login_plat =#{goods.loginPlat} or g.parent_id = #{goods.loginPlat})
+		</if>
+		<if test="goods.publisherId!=null">
+			and g.publisher_id = #{goods.publisherId}
+		</if>
+		<if test="goods.isRecommend !=null">
+			and g.is_recommend = 1
+		</if>
+		<if test="goods.isHot !=null">
+			and g.is_hot =1 
+		</if>
+		<if test="goods.isPassSell!=null">
+			and g.is_pass_sell = #{goods.isPassSell}
+		</if>
+		<if test="goods.isScore !=null">
+			and g.is_score =#{goods.isScore}
+		</if>
+		<if test="goods.goodsType!=null">
+			and g.goods_type = #{goods.goodsType}
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and g.create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and g.create_time &lt;= #{endTime}
+		</if>
+		order by g.good_sort,g.create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	
+</mapper>

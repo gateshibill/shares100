@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ProjectOfferService">
+	<resultMap type="com.cofc.pojo.vij.ProjectOffer" id="BaseResultMap">
+		<id column="poffer_id" property="pofferId" jdbcType="INTEGER" />
+		<result column="project_id" property="projectId" jdbcType="INTEGER" />
+		<result column="offer_type_id" property="offerTypeId" jdbcType="INTEGER" />
+		<result column="offer_type_name" property="offerTypeName" jdbcType="VARCHAR" />
+		<result column="cover_image" property="coverImage" jdbcType="VARCHAR" />
+		<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<insert id="addOffer" parameterType="com.cofc.pojo.vij.ProjectOffer" 
+				useGeneratedKeys="true" keyProperty="pofferId" >
+	INSERT INTO tv_project_offer(project_id,offer_type_id)
+	VALUES(#{projectId},#{offerTypeId})
+	</insert>
+	<update id="updateOffer" parameterType="com.cofc.pojo.vij.ProjectOffer">
+		UPDATE tv_project_offer 
+	<trim prefix="set" suffixOverrides=",">
+	<if test="projectId !=null">
+		project_id = #{projectId},
+	</if>
+	<if test="offerTypeId != null ">
+		offer_Type_id = #{offerTypeId},
+	</if>
+	</trim>
+		 WHERE offer_id = #{offerId}
+	</update>
+	<delete id="delOffer" parameterType="com.cofc.pojo.vij.ProjectOffer">
+		DELETE FROM tv_project_offer WHERE poffer_id = #{pofferId}
+	</delete>
+	<select id="getOfferByProjectId" resultMap="BaseResultMap">
+		SELECT * FROM tv_project_offer as o left join tv_project_offer_type as t
+		on t.offer_type_id = o.offer_type_id WHERE o.project_id = #{projectId}
+	</select>
+	<select id="getOfferByProjectIdType" resultMap="BaseResultMap">
+		SELECT * FROM tv_project_offer WHERE project_id = #{projectId}
+		and offer_type_id = #{offerTypeId}
+	</select>
+	<select id="getOfferCountByProjectId" resultType="int">
+		SELECT count(*) FROM tv_project_offer WHERE project_id = #{projectId}
+		and offer_type_id = #{offerTypeId}
+	</select>
+	
+	</mapper>

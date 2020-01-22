@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.video.SourceService">
+	<resultMap type="com.cofc.pojo.video.Source" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="ip" property="ip" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="vod_id" property="vodId" jdbcType="VARCHAR" />
+		<result column="vod_name" property="vodName" jdbcType="VARCHAR" />
+		<result column="sub_id" property="subId" jdbcType="VARCHAR" />
+		<result column="sub_name" property="subName" jdbcType="VARCHAR" />		
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="last_time" property="lastTime" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addSource" parameterType="com.cofc.pojo.video.Source"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		mac_source(ip,name,vod_id,vod_name,sub_id,sub_name,create_time,last_time,status)
+		values(#{ip},#{name},#{vodId},#{vodName},#{subId},#{subName}#{createTime},#{lastTime},#{status})
+	</insert>
+	<update id="updateSource" parameterType="com.cofc.pojo.video.Source">
+		update mac_source
+		<trim prefix="set" suffixOverrides=",">
+			<if test="lastTime!=null">last_time = #{lastTime},</if>
+			<if test="status">status = #{status},</if>
+			</trim>
+		where id = #{id}
+	</update>
+	<delete id="delSource" parameterType="com.cofc.pojo.video.Source">
+		delete from mac_source where id = #{id}
+	</delete>
+
+	<select id="getSourceCount" resultType="int">
+		select count(*) from mac_source where 1=1
+	</select>
+	
+	<select id="getSourceList" resultMap="BaseResultMap">
+		select * from mac_source where 1=1
+		order by last_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	
+	<select id="getSourceListByVodIdAndSubId" resultMap="BaseResultMap">
+		select * from mac_source
+		where vod_id=#{vodId}
+		and sub_id=#{subId}
+		and status=0
+		order by last_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+</mapper>

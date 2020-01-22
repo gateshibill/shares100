@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.goods.BrokerageGoodsService">
+	<resultMap type="com.cofc.pojo.goods.BrokerageGoods" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="frist_class" property="fristClass" jdbcType="DOUBLE" />
+		<result column="second_class" property="secondClass" jdbcType="DOUBLE" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addBrokerageGoods" parameterType="com.cofc.pojo.goods.BrokerageGoods"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tg_brokerage_goods(app_id,goods_id,type,frist_class,second_class,create_time)
+		values(#{appId},#{goodsId},#{type},#{fristClass},#{secondClass},#{createTime})
+	</insert>
+	<update id="updateBrokerageGoods" parameterType="com.cofc.pojo.goods.BrokerageGoods">
+		update tg_brokerage_goods
+		<trim prefix="set" suffixOverrides=",">
+			<if test="type1!=null">type=#{type},</if>
+			<if test="fristClass ">frist_class=#{fristClass},</if>
+			<if test="secondClass">second_class=#{secondClass},</if>
+		</trim>
+		where id = #{id}
+	</update>
+
+	<delete id="deleteBrokerageGoods" parameterType="com.cofc.pojo.goods.BrokerageGoods">
+		delete from tg_brokerage_goods where id =#{id}
+	</delete>
+
+	<select id="getBrokerageGoods" resultMap="BaseResultMap">
+		select * from tg_brokerage_goods
+		where 1=1
+		<if test="appId != null">and app_id=#{appId}</if>
+		<if test="goodsId != null">and goods_id =#{goodsId}</if>
+	</select>
+</mapper>

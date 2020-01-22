@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.BackUserService">
+	<resultMap type="com.cofc.pojo.BackUser" id="BaseResultMap">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="VARCHAR" />
+		<association property="userRole" javaType="com.cofc.pojo.UserRole">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		 <result column="role_id" property="roleId" jdbcType="VARCHAR" />
+		</association>
+		
+		<association property="backRole" javaType="com.cofc.pojo.BackRole">
+		<id column="role_id" property="roleId" jdbcType="INTEGER" />
+		 <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+		</association>
+		
+	</resultMap>
+	
+	<select id="getUserByUserName" resultMap="BaseResultMap"
+		parameterType="String">
+		select * from TB_BACK_USER where user_name =#{userName}
+	</select>
+	<select id="getBackUserById" resultMap="BaseResultMap">
+	select * from TB_BACK_USER where user_id =#{userId}
+	</select>
+	<select id="showBackUserList" resultMap="BaseResultMap">
+		select * from TB_BACK_USER u 
+		left join TB_USER_ROLE ur on u.user_id=ur.user_id
+		left join TB_BACK_ROLE r on ur.role_id=r.role_id
+		 where 1=1
+		<if test="userId != null">
+			and u.user_id=#{userId}
+		</if>
+		<if test="roleName != null and roleName !=''">
+			and (u.real_name like CONCAT('%',#{roleName},'%') or r.role_name like CONCAT('%',#{roleName},'%'))
+		</if>
+		order by u.user_id desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	<select id="showBackUserCount" resultType="int">
+		select count(*) from TB_BACK_USER u 
+		left join TB_USER_ROLE ur on u.user_id=ur.user_id
+		left join TB_BACK_ROLE r on ur.role_id=r.role_id
+		 where 1=1
+		<if test="userId != null">
+			and u.user_id=#{userId}
+		</if>
+		<if test="roleName != null and roleName !=''">
+			and (u.real_name like CONCAT('%',#{roleName},'%') or r.role_name like CONCAT('%',#{roleName},'%'))
+		</if>
+	</select>
+	<update id="updateBackUser" parameterType="com.cofc.pojo.BackUser">
+	update TB_BACK_USER set real_name=#{realName},user_name=#{userName}
+	     <if test="headImage != null and headImage !=''">
+	     ,head_image=#{headImage}
+	     </if>
+	     <if test="isEffect != null">
+	     ,is_effect = #{isEffect}
+	     </if>
+	     <if test="loginPlat != null and loginPlat != ''">
+	     ,login_plat = #{loginPlat}
+	     </if>
+	      where user_id=#{userId}
+	</update>
+	
+	<delete id="deleteUserId">
+	 delete from TB_BACK_USER  where user_id=#{userId}
+	</delete>
+	<insert id="addBackUser" parameterType="com.cofc.pojo.BackUser"
+	  useGeneratedKeys="true" keyProperty="userId">
+	   insert into TB_BACK_USER (user_name,password,real_name,head_image,create_time,is_effect,login_plat) 
+	          values(#{userName},#{password},#{realName},#{headImage},#{createTime},#{isEffect},#{loginPlat})
+	</insert>
+	<update id="updatePassword" parameterType="com.cofc.pojo.BackUser">
+	  update TB_BACK_USER set password=#{password} where user_id=#{userId}
+	</update>
+</mapper>

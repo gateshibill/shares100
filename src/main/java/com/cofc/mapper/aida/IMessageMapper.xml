@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.IMessageService">
+	<resultMap type="com.cofc.pojo.aida.IMessage" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="model" property="model" jdbcType="INTEGER" />
+		<result column="from_id" property="fromId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="read_time" property="readTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addIMessage" parameterType="com.cofc.pojo.aida.IMessage"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tf_imessage(app_id,model,from_id,user_id,type,status,content,create_time,read_time)
+		values(#{appId},#{model},#{fromId},#{userId},#{type},#{status},#{content},#{createTime},#{readTime})
+	</insert>
+
+	<update id="updateIMessage" parameterType="com.cofc.pojo.aida.IMessage">
+		update tf_imessage
+		<trim prefix="set" suffixOverrides=",">
+			<if test="status!=null">status=#{status},</if>
+			<if test="readTime!=null">read_time=#{readTime},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<update id="updateIMessageBatch" parameterType="java.util.List">
+		<foreach collection="list" item="item"
+			index="index" separator=";">
+			update tf_imessage
+			<trim prefix="set" suffixOverrides=",">
+				<if test="item.status!=null">status=#{item.status},</if>
+				<if test="item.readTime!=null">read_time=#{item.readTime},</if>
+			</trim>
+			where id = #{item.id}
+		</foreach>
+	</update>
+	<delete id="delIMessage" parameterType="com.cofc.pojo.aida.IMessage">
+		delete from tf_imessage
+		where id = #{id} and app_id = #{appId}
+	</delete>
+	<select id="getIMessageList" resultMap="BaseResultMap">
+		select * from
+		tf_imessage
+		where app_id =#{appId} and ((user_id =#{userId} and from_id
+		=#{salesPersonId}) or (user_id =#{salesPersonId} and from_id
+		=#{userId}))
+		order by
+		create_time asc
+	</select>
+	<select id="getUnreadIMessageCount" resultType="int">
+		select count(*)
+		from
+		tf_imessage where app_id =#{appId}
+		and (from_id =#{fromId} or 0=#{fromId})
+		and user_id =#{userId}
+		and status =0
+	</select>
+</mapper>

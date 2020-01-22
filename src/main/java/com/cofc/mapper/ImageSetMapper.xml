@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ImageSetService">
+	<resultMap type="com.cofc.pojo.ImageSet" id="BaseResultMap">
+		<id column="set_id" property="setId" jdbcType="INTEGER" />
+		<result column="head_width" property="headWidth" jdbcType="INTEGER" />
+		<result column="head_height" property="headHeight" jdbcType="INTEGER" />
+		<result column="uimage_width" property="uimageWidth" jdbcType="INTEGER" />
+		<result column="uimage_height" property="uimageHeight"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<select id="getImageSetInfo" resultMap="BaseResultMap">
+		select * from
+		TB_IMAGE_SET
+	</select>
+	<update id="updateImageSet" parameterType="com.cofc.pojo.ImageSet">
+		update TB_IMAGE_SET
+		<trim prefix="set" suffixOverrides=",">
+			<if test="headWidth!=null">head_width=#{headWidth},</if>
+			<if test="headHeight!=null">head_height=#{headHeight},</if>
+			<if test="uimageWidth!=null">uimage_width=#{uimageWidth},</if>
+			<if test="uimageHeight!=null">uimage_height=#{uimageHeight},</if>
+		</trim>
+	</update>
+</mapper>

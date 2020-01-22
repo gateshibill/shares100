@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ProjectCheckViewService">
+	<resultMap type="com.cofc.pojo.vij.ProjectCheckView" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="small_plan_id" property="smallPlanId" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="image_list" property="imageList" jdbcType="VARCHAR" />
+		<result column="is_deal" property="isDeal" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addCheckView" parameterType="com.cofc.pojo.vij.ProjectCheckView"
+		useGeneratedKeys="true" keyProperty="id">
+		 INSERT INTO tv_project_check_view(small_plan_id,content,image_list,is_deal,create_time) 
+ 		 	VALUES(#{smallPlanId},#{content},#{imageList},#{isDeal},#{createTime})
+	</insert>
+	
+	<select id="getProjectCheckViewList" resultMap="BaseResultMap">
+		select * from tv_project_check_view where 1=1
+		<if test="pCheckView.smallPlanId != null">
+			and small_plan_id = #{pCheckView.smallPlanId}
+		</if>
+		<if test="pCheckView.content != null and pCheckView.content !=''">
+			and content = #{pCheckView.content}
+		</if>
+		<if test="pCheckView.isDeal != null">
+			and is_deal = #{pCheckView.isDeal}
+		</if>
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	<select id="getProjectCheckViewCount" resultType="int">
+			select count(*) from tv_project_check_view where 1=1
+		<if test="pCheckView.smallPlanId != null">
+			and small_plan_id = #{pCheckView.smallPlanId}
+		</if>
+		<if test="pCheckView.content != null and pCheckView.content !=''">
+			and content = #{pCheckView.content}
+		</if>
+		<if test="pCheckView.isDeal != null">
+			and is_deal = #{pCheckView.isDeal}
+		</if>
+	</select>
+	<update id="uploadProjectCheckView" parameterType="com.cofc.pojo.vij.ProjectCheckView">
+		update tv_project_check_view 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="smallPlanId !=null">
+				small_plan_id = #{smallPlanId},
+			</if>
+			<if test="content != null and content !=''">
+				content = #{content},
+			</if>
+			<if test="imageList !=null and imageList !=''">
+				image_list = #{imageList},
+			</if>
+			<if test="isDeal != null">
+				is_deal = #{isDeal},			
+			</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<select id="getProjectCheckViewById" resultMap="BaseResultMap">
+		select * from tv_project_check_view where small_plan_id = #{smallPlanId}
+	</select>
+</mapper>

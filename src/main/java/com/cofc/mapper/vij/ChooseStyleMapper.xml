@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ChooseStyleService">
+	<resultMap type="com.cofc.pojo.vij.ChooseStyle" id="BaseResultMap">
+		<id column="style_id" property="styleId" jdbcType="INTEGER" />
+		<result column="home_people" property="homePeople" jdbcType="VARCHAR" />
+		<result column="function_home" property="functionHome" jdbcType="VARCHAR" />
+		<result column="home_style" property="homeStyle" jdbcType="VARCHAR" />
+		<result column="template_id" property="templateId" jdbcType="INTEGER" />
+		<result column="home_type" property="homeType" jdbcType="VARCHAR" />
+		<result column="floor_decorate" property="floorDecorate" jdbcType="VARCHAR" />
+		<result column="wall_decorate" property="wallDecorate" jdbcType="VARCHAR" />
+		<result column="back_decorate" property="backDecorate" jdbcType="VARCHAR" />
+		<result column="top_decorate" property="topDecorate" jdbcType="VARCHAR" />
+		<result column="home_device" property="homeDevice" jdbcType="VARCHAR" />
+		<result column="decorate_price" property="decoratePrice" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="project_id" property="projectId" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="is_deal" property="isDeal" jdbcType="INTEGER" />
+		<result column="decorate_time" property="decorateTime" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<insert id="addStyle" parameterType="com.cofc.pojo.vij.ChooseStyle"
+		useGeneratedKeys="true" keyProperty="styleId">
+		INSERT INTO tv_choose_style(home_people,function_home,home_style,template_id,home_type,floor_decorate,wall_decorate,back_decorate,top_decorate,home_device,decorate_price,content,project_id,create_time,user_id,is_deal,decorate_time)
+		VALUES(#{homePeople},#{functionHome},#{homeStyle},#{templateId},#{homeType},#{floorDecorate},#{wallDecorate},#{backDecorate},#{topDecorate},#{homeDevice},#{decoratePrice},#{content},#{projectId},#{createTime},#{userId},#{isDeal},#{decorateTime})
+	</insert>
+	<update id="updateStyle" parameterType="com.cofc.pojo.vij.ChooseStyle">
+		UPDATE tv_choose_style
+		<trim prefix="set" suffixOverrides=",">
+		<if test="homePeople !=null and homePeople !=''" >
+			home_people =#{homePeople},
+		</if>
+		<if test="functionHome!=null and functionHome!=''">
+			function_home =#{functionHome},
+		</if>
+		<if test="homeStyle !=null and homeStyle !=''">
+			home_style = #{homeStyle},
+		</if>
+		<if test="homeType !=null and homeType !=''">
+			home_type = #{homeType},
+		</if>
+		<if test="floorDecorate !=null and floorDecorate !=''">
+			floor_decorate = #{floorDecorate},
+		</if>
+		<if test="wallDecorate !=null and wallDecorate !=''">
+			wall_decorate = #{wallDecorate},
+		</if>
+		<if test="backDecorate !=null and backDecorate !=''">
+			back_decorate = #{backDecorate},
+		</if>
+		<if test="topDecorate !=null and topDecorate !=''">
+			top_decorate = #{topDecorate},
+		</if>
+		<if test="homeDevice !=null and homeDevice !=''">
+			home_device = #{homeDevice},
+		</if>
+		<if test="decoratePrice !=null and decoratePrice !=''">
+			decorate_price = #{decoratePrice},
+		</if>
+		<if test="content !=null and content !=''">
+			content = #{content},
+		</if>
+		<if test="decorateTime != null and decorateTime != ''">
+			decorate_time = #{decorateTime}
+		</if>
+		<if test="projectId !=null">
+			project_id = #{projectId},
+		</if>
+		<if test="isDeal !=null">
+			is_deal = #{isDeal},
+		</if>
+		</trim>
+		where style_id = #{styleId}
+	</update>
+	<delete id="delStyle" parameterType="com.cofc.pojo.vij.ChooseStyle">
+		DELETE FROM tv_choose_style WHERE style_id = #{styleId}
+	</delete>
+	
+	<select id="getStyleById" resultMap="BaseResultMap">
+		select *from tv_choose_style WHERE project_id = #{projectId}
+	</select>
+	
+	</mapper>

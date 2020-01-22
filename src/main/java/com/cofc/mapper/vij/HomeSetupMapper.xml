@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.HomeSetupService">
+  
+	<resultMap type="com.cofc.pojo.vij.HomeSetup" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR"/> 
+		<result column="call_name" property="callName" jdbcType="VARCHAR"/> 
+		<result column="home_area" property="homeArea" jdbcType="INTEGER"/> 
+		<result column="home_type" property="homeType" jdbcType="VARCHAR"/> 
+		<result column="home_time" property="homeTime" jdbcType="VARCHAR"/> 
+		<result column="home_address" property="homeAddress" jdbcType="INTEGER"/> 
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/> 
+		<result column="room_number" property="roomNumber" jdbcType="INTEGER"/>
+		<result column="type" property="type" jdbcType="INTEGER"/>
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="owner_id" property="ownerId" jdbcType="INTEGER"/>
+		<result column="waiter_id" property="waiterId" jdbcType="INTEGER"/>
+	</resultMap>
+	<insert id="addHomeSetup" parameterType="com.cofc.pojo.vij.HomeSetup" useGeneratedKeys="true" keyProperty="id">
+	insert into
+	tv_home_setup(phone,city,call_name,home_area,home_type,home_time,home_address,create_time)
+	VALUES(#{phone},#{city},#{callName},#{homeArea},#{homeType},#{homeTime},#{homeAddress},#{createTime})
+	</insert>
+	<!-- 查询总的量房的人数 -->
+	<select id="getCountHomeSetup" parameterType="int">
+		SELECT count(*) from tv_home_setup where 1=1
+		<if test="hSetup.phone !=null and hSetup.phone !=''">and phone=#{hSetup.phone}</if>
+		<if test="hSetup.city !=null and hSetup.city!=''">and city=#{hSetup.city}</if>
+		<if test="hSetup.callName !=null and hSetup.callName !=''">and call_name=#{hSetup.callName}</if>
+		<if test="hSetup.homeArea!=null">and home_area!={hSetup.homeArea}</if>
+		<if test="hSetup.homeType!=null and hSetup.homeType !=''">and home_type=#{hSetup.homeType}</if>
+		<if test="hSetup.homeAddress !=null">and home_address=#{hSetup.homeAddress}</if>
+	</select>
+	<!-- 查询总的量房的详情 -->
+	<select id="queryHomeSetup" resultMap="BaseResultMap">
+		SELECT * from tv_home_setup where 1=1
+		<if test="hSetup.phone !=null and hSetup.phone !=''">and phone=#{hSetup.phone}</if>
+		<if test="hSetup.city !=null and hSetup.city!=''">and city=#{hSetup.city}</if>
+		<if test="hSetup.callName !=null and hSetup.callName !=''">and call_name=#{hSetup.callName}</if>
+		<if test="hSetup.homeArea!=null">and home_area!={hSetup.homeArea}</if>
+		<if test="hSetup.homeType!=null and hSetup.homeType !=''">and home_type=#{hSetup.homeType}</if>
+		<if test="hSetup.homeAddress !=null">and home_address=#{hSetup.homeAddress}</if>
+		order by create_time desc
+		<if test="page !=null and limit != null">
+		limit #{page},#{limit}
+		</if>
+	</select>
+	<!-- 查询某个房子 -->
+	<select id="getInfoByHome" resultMap="BaseResultMap">
+		SELECT * from tv_home_setup where id =#{id}
+	</select>
+	<!-- 修改某个房子的参数 -->
+	<insert id="updateHomeSetup" parameterType="com.cofc.pojo.vij.HomeSetup">
+		UPDATE tv_home_setup SET
+		<trim prefix="set" suffixOverrides=",">
+			<if test="phone !=null and phone !=''">phone=#{phone},</if>
+			<if test="city !=null and city!=''">city=#{city},</if>
+			<if test="callName !=null and callName !=''">call_name=#{callName},</if>
+			<if test="homeArea!=null">home_area!={homeArea},</if>
+			<if test="homeType!=null and homeType !=''">home_type=#{homeType},</if>
+			<if test="homeAddress !=null">home_address=#{homeAddress},</if>
+		</trim>
+		where id = #{id}
+	</insert>
+	<!-- 删除量房 -->
+	<delete id="deleteHomeSetup" parameterType="int">
+		DELETE from tv_home_setup where id =#{id}
+	</delete>
+</mapper>

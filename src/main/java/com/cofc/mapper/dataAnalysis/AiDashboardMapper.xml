@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.dataAnalysis.AiDashboardService">
+	<resultMap type="com.cofc.pojo.dataAnalysis.AiDashboard" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="days" property="days" jdbcType="INTEGER" />
+		<result column="order_count" property="orderCount"
+			jdbcType="INTEGER" />
+		<result column="customer_count" property="customerCount"
+			jdbcType="INTEGER" />
+		<result column="visited_count" property="visitedCount"
+			jdbcType="INTEGER" />
+		<result column="follow_order_count" property="followOrderCount"
+			jdbcType="INTEGER" />
+		<result column="shared_count" property="sharedCount" jdbcType="INTEGER" />
+		<result column="saved_count" property="savedCount" jdbcType="INTEGER" />
+		<result column="praised_count" property="praisedCount"
+			jdbcType="INTEGER" />
+		<result column="consult_count" property="consultCount"
+			jdbcType="INTEGER" />	
+		<result column="share_myself_count" property="shareMyselfCount"
+			jdbcType="INTEGER" />	
+		<result column="visited_product_count" property="visitedProductCount"
+			jdbcType="INTEGER" />
+		<result column="visited_website_count" property="visitedWebsiteCount"
+			jdbcType="INTEGER" />	
+		<result column="last_time" property="lastTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<insert id="addAiDashboard" parameterType="com.cofc.pojo.dataAnalysis.AiFunnel"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		td_dashboard(app_id,user_id,days,order_count,customer_count,visited_count,follow_order_count,shared_count,saved_count,praised_count,consult_count,share_myself_count,visited_product_count,visited_website_count,last_time)
+		values(#{appId},#{userId},#{days},#{orderCount},#{customerCount},#{visitedCount},#{followOrderCount},#{sharedCount},#{savedCount},#{praisedCount},#{consultCount},#{shareMyselfCount},#{visitedProductCount},#{visitedWebsiteCount},#{lastTime})
+	</insert>
+	<update id="updateAiDashboard" parameterType="com.cofc.pojo.dataAnalysis.AiFunnel">
+		update td_dashboard
+		<trim prefix="set" suffixOverrides=",">
+		    <if test="orderCount!=null ">order_count=#{orderCount},</if>
+			<if test="customerCount!=null ">customer_count=#{customerCount},</if>
+			<if test="visitedCount!=null">visited_count=#{visitedCount},</if>
+			<if test="followOrderCount!=null ">follow_order_count=#{followOrderCount},</if>
+			<if test="sharedCount!=null">shared_count=#{sharedCount},</if>
+			<if test="savedCount!=null ">saved_count=#{savedCount},</if>
+			<if test="praisedCount!=null ">praised_count=#{praisedCount},</if>
+			<if test="consultCount!=null ">consult_count=#{consultCount},</if>
+			<if test="shareMyselfCount!=null ">share_myself_count=#{shareMyselfCount},</if>
+			<if test="visitedProductCount!=null ">visited_product_count=#{visitedProductCount},</if>
+			<if test="visitedWebsiteCount!=null ">visited_website_count=#{visitedWebsiteCount},</if>
+			<if test="lastTime!=null">last_time=#{lastTime},</if>
+		</trim>
+		where id = #{id}
+	</update>
+
+	<delete id="deleteAiDashboard">
+		delete from td_dashboard where id =#{id}
+	</delete>
+
+	<select id="getAiDashboard" resultMap="BaseResultMap">
+		select * from td_dashboard
+		where app_id=#{appId} and
+		user_id =#{userId} and
+		days=#{days}
+	</select>
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.tx.CardOrderBehaviorService">
+	<resultMap type="com.cofc.pojo.tx.CardOrderBehavior" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+		<result column="agent_order_num" property="agentOrderNum" jdbcType="VARCHAR" />
+		<result column="agent_code" property="agentCode" jdbcType="VARCHAR" />
+		<result column="quantity" property="quantity" jdbcType="INTEGER" />
+		<result column="goods_code" property="goodsCode" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addCardOrderBehavior" parameterType="com.cofc.pojo.tx.CardOrderBehavior"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tx_card_order_behavior(order_num,agent_order_num,agent_code,quantity,goods_code,create_time)
+		values(#{orderNum},#{agentOrderNum},#{agentCode},#{quantity},#{goodsCode},#{createTime})
+	</insert>
+	
+	
+	<select id="getBehaviorInfo" resultMap="BaseResultMap">
+		select * from tx_card_order_behavior where 1=1
+		<if test="orderNum != null and orderNum !=''">
+			and order_num = #{orderNum}
+		</if>
+		<if test="agentOrderNum != null and agentOrderNum !=''">
+			and agent_order_num = #{agentOrderNum}
+		</if>
+		<if test="agentCode != null and agentCode !=''">
+			and agent_code = #{agentCode}
+		</if>
+	</select>
+	
+	
+</mapper>

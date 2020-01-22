@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ExamRecordService">
+	<resultMap type="com.cofc.pojo.ExamRecord" id="BaseResultMap">
+		<id column="record_id" property="recordId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="activity_id" property="activityId" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="is_remove" property="isRemove" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<insert id="addExamRecord" parameterType="com.cofc.pojo.ExamRecord"
+		useGeneratedKeys="true" keyProperty="recordId">
+		insert into
+		TB_EXAM_RECORD(user_id,activity_id,login_plat,is_remove,create_time)
+		values(#{userId},#{activityId},#{loginPlat},#{isRemove},#{createTime})
+	</insert>
+	<select id="getExamRecordCount" resultType="int">
+		select count(*) from TB_EXAM_RECORD where 1 = 1
+		<if test="record.userId!=null">
+			and user_id = #{record.userId}
+		</if>
+		<if test="record.activityId!=null">
+			and activity_id = #{record.activityId}
+		</if>
+		<if test="record.loginPlat!=null">
+			and login_plat = #{record.loginPlat}
+		</if>
+		<if test="record.isRemove!=null">
+			and is_remove = #{record.isRemove}
+		</if>
+	</select>
+	
+</mapper>

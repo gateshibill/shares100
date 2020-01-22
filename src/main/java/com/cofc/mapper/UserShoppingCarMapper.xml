@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.UserShoppingCarService">
+	<resultMap type="com.cofc.pojo.UserShoppingCar" id="BaseResultMap">
+		<id column="car_id" property="carId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="number" property="number" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="transfer_time" property="transferTime" jdbcType="TIMESTAMP"/>
+		<result column="remove_time" property="removeTime" jdbcType="TIMESTAMP"/>
+		<result column="spec_id" property="specId" jdbcType="INTEGER" />
+		
+		<association property="carGoods" javaType="com.cofc.pojo.GoodsCommon">
+			<id column="goods_id" property="goodsId" jdbcType="INTEGER" />
+			<result column="goods_name" property="goodsName" jdbcType="INTEGER" />
+			<result column="publisher_id" property="publisherId" jdbcType="INTEGER" />
+			<result column="is_hot" property="isHot" jdbcType="INTEGER" />
+			<result column="first_cost" property="firstCost" jdbcType="DOUBLE" />
+			<result column="goods_stock" property="goodsStock" jdbcType="INTEGER" />
+			<result column="create_time" property="createTime" />
+			<result column="publisher_id" property="publisherId" jdbcType="INTEGER" />
+			<result column="sell_price" property="sellPrice" jdbcType="DOUBLE" />
+			<result column="is_selled" property="isSelled" jdbcType="INTEGER" />
+			<result column="goods_image" property="goodsImage" jdbcType="VARCHAR" />
+			<result column="goods_details" property="goodsDetails"
+				jdbcType="INTEGER" />
+			<result column="vip_price" property="vipPrice" jdbcType="DOUBLE" />				
+		</association>
+		<association property="user" javaType="com.cofc.pojo.UserCommon">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<select id="findHisShoppingCar" resultMap="BaseResultMap"
+		parameterType="Integer">
+		select * from TB_USER_SHOPPING_CAR c left join tb_goods_common
+		g on c.goods_id = g.goods_id where c.user_id
+		=#{userId} and c.status=0
+		<if test="pageNo != null and pageSize != null">
+			limit #{pageNo},#{pageSize}
+		</if>
+	</select>
+	<select id="findShoppingCar" resultMap="BaseResultMap">
+		select * from tb_user_shopping_car where user_id = #{userid} and goods_id = #{goodsID} and `status` = #{status}
+	</select>
+    <select id="findSpecShoppingCar" resultMap="BaseResultMap">
+		select * from tb_user_shopping_car where user_id = #{userid} and goods_id = #{goodsID} 
+		and spec_id = #{specId} and `status` = #{status}
+	</select> 
+    <select id="findShoppingCarByOther" resultMap="BaseResultMap">
+		select * from tb_user_shopping_car c left join tb_goods_common
+		g on c.goods_id = g.goods_id where c.user_id = #{userid} and c.goods_id = #{goodsID} and c.status = #{status}
+	</select> 
+     
+	<update id="deleteGoodsInCar">
+		update tb_user_shopping_car set `status` = 2, remove_time = #{removeTime} where car_id = #{carId}
+	</update>
+	
+	<update id="deleteAllGoodsInCar">
+		update tb_user_shopping_car set `status` = 2, remove_time = #{removeTime} where car_id in 
+		 <foreach item="item"  index="index" collection="ids" open="("
+					separator="," close=")">
+					#{item}
+		</foreach>
+	</update>
+	
+	<update id="updateNumberByID">
+		update tb_user_shopping_car set `number` = #{number} where car_id = #{carId}
+	</update>
+	
+	<insert id="addGoodsInCar" parameterType="com.cofc.pojo.UserShoppingCar">
+		<selectKey resultType="int" order="AFTER" keyProperty="carId">
+          	SELECT LAST_INSERT_ID()
+      	</selectKey>
+		insert into
+		TB_USER_SHOPPING_CAR(user_id,goods_id,`number`,create_time,`status`,`spec_id`)
+		values(#{userId},#{goodsId},#{number},#{createTime},0,#{specId})
+	</insert>
+	<update id="transfer">
+		update tb_user_shopping_car set `status` = 1, transfer_time = #{transferTime} where car_id = #{carId}
+	</update>
+	<select id="getUserShoppingCarList" resultMap="BaseResultMap">
+	  select * from tb_user_shopping_car c 
+	    left join tb_goods_common g on c.goods_id=g.goods_id
+	    left join tb_user_common u on c.user_id=u.user_id
+	    where 1=1
+	    <if test="userName != null and userName !=''">
+	    and u.nick_name like CONCAT('%',#{userName},'%') or u.real_name like CONCAT('%',#{userName},'%')
+	    </if>
+	    <if test="startTime != null">
+		and c.create_time &gt;=#{startTime}
+		</if>
+		<if test="endTime != null">
+		and c.create_time &lt;=#{endTime}
+		</if>
+		order by c.create_time desc limit #{page},#{limit}
+	</select>
+	<select id="getUserShoppingCarCount" resultType="int">
+	select count(*) from tb_user_shopping_car c 
+	    left join tb_goods_common g on c.goods_id=g.goods_id
+	    left join tb_user_common u on c.user_id=u.user_id
+	    where 1=1
+	    <if test="userName != null and userName !=''">
+	    and u.nick_name like CONCAT('%',#{userName},'%') or u.real_name like CONCAT('%',#{userName},'%')
+	    </if>
+	    <if test="startTime != null">
+		and c.create_time &gt;=#{startTime}
+		</if>
+		<if test="endTime != null">
+		and c.create_time &lt;=#{endTime}
+		</if>
+	</select>
+	<delete id="deleteUserShoppingCar">
+	   delete from tb_user_shopping_car where car_id=#{carId}
+	</delete>
+	
+	<select id="getcarByIds" resultMap="BaseResultMap">
+	  select * from tb_user_shopping_car where car_id in
+	  <foreach item="item" index="index" collection="ids" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="getCarDetail" resultMap="BaseResultMap">
+	  select * from tb_user_shopping_car where car_id = #{carId} and status = #{status}
+	</select>
+	<select id="getCarCount" resultType="int">
+		select count(*) from tb_user_shopping_car where 1=1
+		<if test="userId != null">and user_id = #{userId}</if>
+		<if test="status != null">and status = #{status}</if>
+	</select>
+</mapper>

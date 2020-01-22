@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.DescoveryPariseService">
+	<resultMap type="com.cofc.pojo.DescoveryParise" id="BaseResultMap">
+		<id column="parise_id" property="pariseId" jdbcType="INTEGER" />
+		<result column="parised_userId" property="parisedUserId"
+			jdbcType="INTEGER" />
+		<result column="parised_descoveryId" property="parisedDescoveryId"
+			jdbcType="INTEGER" />
+		<result column="parise_time" property="pariseTime" jdbcType="TIMESTAMP" />
+		<result column="is_cancel" property="isCancel" jdbcType="INTEGER" />
+		<result column="cancel_time" property="cancelTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="userPariseDescovery" parameterType="com.cofc.pojo.DescoveryParise">
+		insert into
+		TB_DESCOVERY_COMMON_PARISE(parise_id,parised_userId,parised_descoveryId,parise_time
+		,is_cancel,cancel_time)values(#{pariseId},#{parisedUserId},#{parisedDescoveryId}
+		,#{pariseTime},#{isCancel},#{cancelTime})
+	</insert>
+	<update id="updatePariseStatus" parameterType="com.cofc.pojo.DescoveryParise">
+		update TB_DESCOVERY_COMMON_PARISE
+		<trim prefix="set" suffixOverrides=",">
+			<if test="isCancel!=null">is_cancel = #{isCancel},</if>
+			<if test="pariseTime!=null">parise_time=#{pariseTime},</if>
+			<if test="cancelTime!=null">cancel_time=#{cancelTime},</if>
+		</trim>
+		where parise_id = #{pariseId}
+	</update>
+	<select id="comfirmUserParisedDescovery" resultMap="BaseResultMap">
+		select * from
+		TB_DESCOVERY_COMMON_PARISE where parised_userId = #{userId} and
+		parised_descoveryId = #{descoveryId} 
+		<if test="isCancel != null">
+			and is_cancel = #{isCancel};
+		</if>
+	</select>
+</mapper>

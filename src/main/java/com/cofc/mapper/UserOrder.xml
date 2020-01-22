@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.UserOrderService">
+	<resultMap type="com.cofc.pojo.UserOrder" id="BaseResultMap">
+		<id column="order_id" property="orderID" jdbcType="INTEGER" />
+		<result column="object_id" property="objectID" jdbcType="INTEGER" />
+		<result column="order_type" property="orderType" jdbcType="INTEGER" />
+		<result column="user_id" property="userid" jdbcType="INTEGER" />
+		<result column="number" property="number" jdbcType="INTEGER" />
+		<result column="total_fee" property="totalFee" jdbcType="DOUBLE" />
+		<result column="real_fee" property="realFee" jdbcType="DOUBLE" />
+		<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="consignee" property="consignee" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="objects" property="objects" jdbcType="VARCHAR" />
+		<result column="multi_id" property="multiID" jdbcType="VARCHAR" />
+		<result column="remarks" property="remarks" jdbcType="VARCHAR" />
+		<result column="logistics_order" property="logisticsOrder"
+			jdbcType="VARCHAR" />
+		<result column="logistics_types" property="logisticsTypes"
+			jdbcType="INTEGER" />
+		<result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+		<result column="is_online" property="isOnline" jdbcType="INTEGER" />
+		<result column="rebate_money" property="rebateMoney" jdbcType="DOUBLE" />
+		<result column="desk_id" property="deskId" jdbcType="INTEGER" />
+		<result column="agent_id" property="agentId" jdbcType="INTEGER" />
+		<result column="pay_type" property="payType" jdbcType="INTEGER" />
+		<result column="score_count" property="scoreCount" jdbcType="INTEGER" />
+		<result column="is_invoice" property="isInvoice" jdbcType="INTEGER" />
+		<result column="invoice_str" property="invoiceStr" jdbcType="VARCHAR" />
+		<result column="is_ticket" property="isTicket" jdbcType="INTEGER" />
+		<result column="discount_money" property="discountMoney" jdbcType="INTEGER" />
+		<result column="ticket_info" property="ticketInfo" jdbcType="VARCHAR" />
+		<result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+		<result column="order_source" property="orderSource" jdbcType="INTEGER" />
+	    <result column="consume_type" property="consumeType" jdbcType="INTEGER" />
+		<association property="app" javaType="com.cofc.pojo.ApplicationCommon">
+			<id column="application_id" property="applicationId" jdbcType="INTEGER" />
+			<result column="application_name" property="applicationName"
+				jdbcType="VARCHAR" />
+		</association>
+
+	</resultMap>
+	<select id="findAllUserOrder" resultMap="BaseResultMap">
+		select * from
+		tb_user_order
+	</select>
+
+	<!--商家查看自己商家所有订单 -->
+	<select id="findUserloginPlatList" resultMap="BaseResultMap">
+		select * from tb_user_order where login_plat=#{loginPlat}
+		<if test="userId != null">
+			and user_id =#{userId}
+		</if>
+		<if test="orderStatus != null">
+			and order_status =#{orderStatus}
+		</if>
+		order by create_time desc limit #{pageNo},#{pageSize}
+	</select>
+	
+	<select id="getUserLoginPlatCount" resultType="int">
+		select count(*) from tb_user_order where login_plat=#{loginPlat}
+		<if test="userId != null">
+			and user_id =#{userId}
+		</if>
+		<if test="orderStatus != null">
+			and order_status =#{orderStatus}
+		</if>
+		
+	</select>
+		
+	<select id="getObjectNumberInOrder" resultType="int">
+		select
+		sum(`number`) from tb_user_order where object_id = #{id} and
+		order_type = #{type} and (order_status &lt; 5 and order_status &gt; 0)  group by object_id = #{id}
+	</select>
+	<insert id="addUserOrder" parameterType="com.cofc.pojo.UserOrder">
+		<selectKey resultType="int" order="AFTER" keyProperty="orderID">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into tb_user_order(object_id, order_type, user_id, `number`,
+		total_fee, real_fee, order_status, create_time, login_plat, consignee,
+		phone, address, `objects`,
+		multi_id,remarks,is_online,pay_status,rebate_money,desk_id,consume_type,agent_id,score_count,is_invoice,invoice_str,is_ticket,discount_money,ticket_info,order_no)
+		values(#{objectID}, #{orderType}, #{userid}, #{number}, #{totalFee},
+		#{realFee},
+		#{orderStatus}, #{createTime}, #{loginPlat}, #{consignee}, #{phone}, #{address},
+		#{objects},#{multiID},#{remarks},#{isOnline},#{payStatus},#{rebateMoney},#{deskId},#{consumeType},
+		#{agentId},#{scoreCount},#{isInvoice},#{invoiceStr},#{isTicket},#{discountMoney},#{ticketInfo},#{orderNo})
+	</insert>
+	<update id="updateStatus">
+		update tb_user_order
+		<trim prefix="set" suffixOverrides=",">
+			<if test="orderStatus != null">order_status = #{orderStatus},</if>
+			<if test="payStatus != null">pay_status = #{payStatus},</if>
+			<if test="orderSource != null">order_source = #{orderSource},</if>
+			<if test="payType != null">pay_type = #{payType},</if>
+		</trim>
+		where order_id = #{orderID}
+	</update>
+	<select id="findByID" resultMap="BaseResultMap">
+		select * from tb_user_order
+		where order_id = #{orderID}
+	</select>
+	<select id="getOrderByOrderNo" resultMap="BaseResultMap">
+		select * from tb_user_order
+		where order_no = #{orderNo}
+	</select>
+	<update id="updateUserOrder" parameterType="com.cofc.pojo.UserOrder">
+		update tb_user_order
+		<trim prefix="set" suffixOverrides=",">
+			update_time=#{updateTime},
+			<if test="address !=null and address !=''">address=#{address},</if>
+			<if test="phone !=null and phone !=''">phone=#{phone},</if>
+			<if test="consignee !=null and consignee !=''">consignee=#{consignee},</if>
+			<if test="realFee !=null">real_fee=#{realFee},</if>
+			<if test="orderStatus !=null">order_status=#{orderStatus},</if>
+			<if test="payStatus != null">pay_status = #{payStatus},</if>
+			<if test="number !=null">number=#{number},</if>
+			<if test="remarks !=null">remarks=#{remarks},</if>
+			<if test="logisticsTypes !=null">logistics_types=#{logisticsTypes},</if>
+			<if test="logisticsOrder !=null">logistics_order=#{logisticsOrder},</if>
+			<if test="scoreCount !=null">score_count=#{scoreCount},</if>
+			<if test="isTicket !=null">is_ticket=#{isTicket},</if>
+			<if test="discountMoney !=null">discount_money=#{discountMoney},</if>
+			<if test="ticketInfo !=null and ticketInfo !=''">ticket_info=#{ticketInfo},</if>
+		</trim>
+		where order_id=#{orderID}
+	</update>
+
+	<select id="getUserOrderList" resultMap="BaseResultMap">
+		select * from tb_user_order u left join tb_application_common app on
+		u.login_plat=app.application_id
+		where 1=1
+		<if test="order != null">
+			<if test="order.orderStatus != null">
+				and u.order_status = #{order.orderStatus}
+			</if>
+			<if test="order.loginPlat != null">
+				and u.login_plat = #{order.loginPlat}
+			</if>
+			<if test="order.payType != null">
+				and u.pay_type = #{order.payType}
+			</if>
+			<if test="order.consignee != null and order.consignee !=''">
+				and u.consignee like CONCAT('%',#{order.consignee},'%')
+			</if>
+			<if test="order.logisticsOrder != null and order.logisticsOrder != ''">
+				and u.logistics_order like CONCAT('%',#{order.logisticsOrder},'%')
+			</if>
+		</if>
+		<if test="startTime != null">
+			and u.create_time &gt;=#{startTime}
+		</if>
+		<if test="endTime != null">
+			and u.create_time &lt;=#{endTime}
+		</if>
+		order by u.create_time desc limit #{page},#{limit}
+	</select>
+
+	<select id="getUserOrderCount" resultType="int">
+		select count(*) from tb_user_order where 1=1
+		<if test="order != null">
+			<if test="order.orderStatus != null">
+				and order_status = #{order.orderStatus}
+			</if>
+			<if test="order.loginPlat != null">
+				and login_plat = #{order.loginPlat}
+			</if>
+			<if test="order.payType != null">
+				and u.pay_type = #{order.payType}
+			</if>
+			<if test="order.consignee != null and order.consignee !=''">
+				and consignee like CONCAT('%',#{order.consignee},'%')
+			</if>
+			<if test="order.logisticsOrder != null and order.logisticsOrder != ''">
+				and logistics_order like CONCAT('%',#{order.logisticsOrder},'%')
+			</if>
+		</if>
+		<if test="startTime != null">
+			and create_time &gt;=#{startTime}
+		</if>
+		<if test="endTime != null">
+			and create_time &lt;=#{endTime}
+		</if>
+	</select>
+
+	<!-- 平台订单总金额 -->
+	<select id="getOrderRealFeeCount" resultType="string">
+		select sum(real_fee) from tb_user_order where 1=1
+		<if test="order.loginPlat != null">
+			and login_plat = #{order.loginPlat}
+		</if>
+		<if test="startTime != null">
+			and create_time &gt;=#{startTime}
+		</if>
+		<if test="endTime != null">
+			and create_time &lt;=#{endTime}
+		</if>
+	</select>
+
+	<select id="getOrderRebateMoneyCount" resultType="string">
+		select sum(rebate_money) from tb_user_order where 1=1
+		<if test="order.loginPlat != null">
+			and login_plat = #{order.loginPlat}
+		</if>
+		<if test="startTime != null">
+			and create_time &gt;=#{startTime}
+		</if>
+		<if test="endTime != null">
+			and create_time &lt;=#{endTime}
+		</if>
+	</select>
+
+	<delete id="deleteUserOrderById">
+		delete from tb_user_order where order_id=#{orderID}
+	</delete>
+
+	<select id="findMyOrder" resultMap="BaseResultMap">
+		select * from tb_user_order where 1=1
+		<if test="userid != null">
+			and user_id = #{userid}
+		</if>
+		<if test="orderType != null">
+			and order_type = #{orderType}
+		</if>
+		<if test="orderStatus != null">
+			and order_status = #{orderStatus}
+		</if>
+		<if test="rowsId != null and pageSize != null">
+			order by create_time desc limit #{rowsId},#{pageSize}
+		</if>
+	</select>
+
+
+
+
+	<resultMap type="com.cofc.pojo.UserOrderException" id="UserOrderExceptionMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="order_id" property="orderID" jdbcType="VARCHAR" />
+		<result column="userid" property="userid" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="log" parameterType="com.cofc.pojo.UserOrderException">
+		insert into
+		tb_user_order_exception(`type`, `content`, order_id, userid,
+		create_time) values(#{type}, #{content}, #{orderID}, #{userid},
+		#{createTime});
+	</insert>
+
+	<!-- 新开方法：防止sql冲突 -->
+	<select id="getUserOrderListByLoginPlat" resultMap="BaseResultMap">
+		select * from tb_user_order u left join tb_application_common app on
+		u.login_plat=app.application_id
+		where 1=1
+		<if test="order != null">
+			<if test="order.orderStatus != null">
+				and u.order_status = #{order.orderStatus}
+			</if>
+			<!-- <if test="order.loginPlat != null"> and u.login_plat = #{order.loginPlat} 
+				</if> -->
+			<if test="order.payType != null">
+				and u.pay_type = #{order.payType}
+			</if>
+			<if test="order.consignee != null and order.consignee !=''">
+				and u.consignee like CONCAT('%',#{order.consignee},'%')
+			</if>
+			<if test="order.logisticsOrder != null and order.logisticsOrder != ''">
+				and u.logistics_order like CONCAT('%',#{order.logisticsOrder},'%')
+			</if>
+		</if>
+		<if test="startTime != null">
+			and u.create_time &gt;=#{startTime}
+		</if>
+		<if test="endTime != null">
+			and u.create_time &lt;=#{endTime}
+		</if>
+		and u.login_plat in
+		<foreach item="item" index="index" collection="loginPlatList"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		order by u.create_time desc limit #{page},#{limit}
+	</select>
+
+	<select id="getUserOrderCountByLoginPlat" resultType="int">
+		select count(*) from tb_user_order where 1=1
+		<if test="order != null">
+			<if test="order.orderStatus != null">
+				and order_status = #{order.orderStatus}
+			</if>
+			<if test="order.payType != null">
+				and pay_type = #{order.payType}
+			</if>
+			<!-- <if test="order.loginPlat != null"> and login_plat = #{order.loginPlat} 
+				</if> -->
+			<if test="order.consignee != null and order.consignee !=''">
+				and consignee like CONCAT('%',#{order.consignee},'%')
+			</if>
+			<if test="order.logisticsOrder != null and order.logisticsOrder != ''">
+				and logistics_order like CONCAT('%',#{order.logisticsOrder},'%')
+			</if>
+		</if>
+		<if test="startTime != null">
+			and create_time &gt;=#{startTime}
+		</if>
+		<if test="endTime != null">
+			and create_time &lt;=#{endTime}
+		</if>
+		and login_plat in
+		<foreach item="item" index="index" collection="loginPlatList"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 平台订单总金额 -->
+	<select id="getOrderRealFeeCountByLoginPlat" resultType="string">
+		select sum(real_fee) from tb_user_order where 1=1
+		<!-- <if test="order.loginPlat != null"> and login_plat = #{order.loginPlat} 
+			</if> -->
+		<if test="startTime != null">
+			and create_time &gt;=#{startTime}
+		</if>
+		<if test="endTime != null">
+			and create_time &lt;=#{endTime}
+		</if>
+		and login_plat in
+		<foreach item="item" index="index" collection="loginPlatList"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 平台订单返点总金额 -->
+	<select id="getOrderRebateMoneyCountByLoginPlat" resultType="string">
+		select sum(rebate_money) from tb_user_order where 1=1
+		<!-- <if test="order.loginPlat != null"> and login_plat = #{order.loginPlat} 
+			</if> -->
+		<if test="startTime != null">
+			and create_time &gt;=#{startTime}
+		</if>
+		<if test="endTime != null">
+			and create_time &lt;=#{endTime}
+		</if>
+		and login_plat in
+		<foreach item="item" index="index" collection="loginPlatList"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 获取支付成功的订单 -->
+	<select id="getPayList" resultMap="BaseResultMap">
+		select * from tb_user_order u left join tb_application_common app on
+		u.login_plat=app.application_id
+		where 1=1 and pay_status = 1
+		<if test="order != null">
+			<if test="order.orderStatus != null">
+				and u.order_status = #{order.orderStatus}
+			</if>
+			<if test="order.loginPlat != null">
+				and u.login_plat = #{order.loginPlat}
+			</if>
+			<if test="order.consignee != null and order.consignee !=''">
+				and u.consignee like CONCAT('%',#{order.consignee},'%')
+			</if>
+			<if test="order.logisticsOrder != null and order.logisticsOrder != ''">
+				and u.logistics_order like CONCAT('%',#{order.logisticsOrder},'%')
+			</if>
+		</if>
+		<if test="startTime != null">
+			and u.create_time &gt;=#{startTime}
+		</if>
+		<if test="endTime != null">
+			and u.create_time &lt;=#{endTime}
+		</if>
+
+		order by u.create_time desc limit #{page},#{limit}
+	</select>
+
+	<select id="getPayCount" resultType="int">
+		select count(*) from tb_user_order where 1=1 and pay_status = 1
+		<if test="order != null">
+			<if test="order.orderStatus != null">
+				and order_status = #{order.orderStatus}
+			</if>
+			<if test="order.loginPlat != null">
+				and login_plat = #{order.loginPlat}
+			</if>
+			<if test="order.consignee != null and order.consignee !=''">
+				and consignee like CONCAT('%',#{order.consignee},'%')
+			</if>
+			<if test="order.logisticsOrder != null and order.logisticsOrder != ''">
+				and logistics_order like CONCAT('%',#{order.logisticsOrder},'%')
+			</if>
+		</if>
+		<if test="startTime != null">
+			and create_time &gt;=#{startTime}
+		</if>
+		<if test="endTime != null">
+			and create_time &lt;=#{endTime}
+		</if>
+	</select>
+
+
+	<select id="getPayListByLoginPlat" resultMap="BaseResultMap">
+		select * from tb_user_order u left join tb_application_common app on
+		u.login_plat=app.application_id
+		where 1=1 and pay_status = 1
+		<if test="order != null">
+			<if test="order.orderStatus != null">
+				and u.order_status = #{order.orderStatus}
+			</if>
+			<!-- <if test="order.loginPlat != null"> and u.login_plat = #{order.loginPlat} 
+				</if> -->
+			<if test="order.consignee != null and order.consignee !=''">
+				and u.consignee like CONCAT('%',#{order.consignee},'%')
+			</if>
+			<if test="order.logisticsOrder != null and order.logisticsOrder != ''">
+				and u.logistics_order like CONCAT('%',#{order.logisticsOrder},'%')
+			</if>
+		</if>
+		<if test="startTime != null">
+			and u.create_time &gt;=#{startTime}
+		</if>
+		<if test="endTime != null">
+			and u.create_time &lt;=#{endTime}
+		</if>
+		and u.login_plat in
+		<foreach item="item" index="index" collection="loginPlatList"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		order by u.create_time desc limit #{page},#{limit}
+	</select>
+
+	<select id="getPayCountByLoginPlat" resultType="int">
+		select count(*) from tb_user_order where 1=1 and pay_status = 1
+		<if test="order != null">
+			<if test="order.orderStatus != null">
+				and order_status = #{order.orderStatus}
+			</if>
+			<!-- <if test="order.loginPlat != null"> and login_plat = #{order.loginPlat} 
+				</if> -->
+			<if test="order.consignee != null and order.consignee !=''">
+				and consignee like CONCAT('%',#{order.consignee},'%')
+			</if>
+			<if test="order.logisticsOrder != null and order.logisticsOrder != ''">
+				and logistics_order like CONCAT('%',#{order.logisticsOrder},'%')
+			</if>
+		</if>
+		<if test="startTime != null">
+			and create_time &gt;=#{startTime}
+		</if>
+		<if test="endTime != null">
+			and create_time &lt;=#{endTime}
+		</if>
+		and login_plat in
+		<foreach item="item" index="index" collection="loginPlatList"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="getOrderOfPayCount" resultType="int">
+		select count(*) from tb_user_order where 1=1
+		<if test="payStatus != null">
+			and pay_status = #{payStatus}
+		</if>
+		<if test="loginPlat != null">
+			and login_plat = #{loginPlat}
+		</if>
+	</select>
+	<select id="getOrderOfMoneyCount" resultType="string">
+		select sum(real_fee) from tb_user_order where 1=1 and pay_status = 1
+		<if test="orderType != null">
+			and order_type = #{orderType}
+		</if>
+		<if test="loginPlat != null">
+			and login_plat = #{loginPlat}
+		</if>
+	</select>
+	<select id="getOrderOfPayCountByLoginPlat" resultType="int">
+		select count(*) from tb_user_order where 1=1
+		<if test="payStatus != null">
+			and pay_status = #{payStatus}
+		</if>
+		and login_plat in
+		<foreach item="item" index="index" collection="loginPlatList"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+
+	</select>
+	<select id="getOrderOfMoneyCountByLoginPlat" resultType="string">
+		select sum(real_fee) from tb_user_order where 1=1 and pay_status = 1
+		<if test="orderType != null">
+			and order_type = #{orderType}
+		</if>
+		and login_plat in
+		<foreach item="item" index="index" collection="loginPlatList"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+    <select id="userVisitMoneyCount" resultType="string">
+      select sum(rebate_money) from tb_user_order where pay_status = 1 and login_plat = #{loginPlat} 
+      and agent_id = #{agentId}
+    </select>
+    <select id="userVisitOrder" resultMap="BaseResultMap">
+      select * from tb_user_order where pay_status = 1 and login_plat = #{loginPlat} 
+      and agent_id = #{agentId} order by create_time desc limit #{pageNo},#{pageSize}
+    </select>
+    <select id="userVisitOrderCount" resultType="int">
+      select count(*) from tb_user_order where pay_status = 1 and login_plat = #{loginPlat} 
+      and agent_id = #{agentId}
+    </select>
+    <select id="getOrderByPrice" resultMap="BaseResultMap">
+    	select * from tb_user_order where pay_status = 0 and order_status = 3
+    	<if test="loginPlat != null">
+    		and login_plat = #{loginPlat}
+    	</if>
+    	<if test="realFee != null">
+    		and real_fee = #{realFee}
+    	</if>
+    </select>
+    <select id="getNotPayOrder" resultMap="BaseResultMap">
+    	select * from tb_user_order where 1=1
+    	<if test="loginPlat != null">
+    		and login_plat = #{loginPlat}
+    	</if>
+    	<if test="goodId != null">
+    		and object_id = #{goodId}
+    	</if>
+    	<if test="payStatus != null">
+    		and pay_status = #{payStatus}
+    	</if>
+    	<if test="orderStatus != null">
+    		and order_status = #{orderStatus}
+    	</if>
+    	<if test="realFee != null">
+    		and real_fee = #{realFee}
+    	</if>
+    </select>
+    <select id="getIsNotDealOrder" resultMap="BaseResultMap">
+    	select * from tb_user_order where is_online = 3 and 
+    	pay_status = 1 and order_status = 5
+    	<if test="orderId != null"> and order_id = #{orderId}</if>
+    </select>
+</mapper>

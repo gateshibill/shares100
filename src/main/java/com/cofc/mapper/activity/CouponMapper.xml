@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.activity.CouponService">
+	<resultMap type="com.cofc.pojo.activity.Coupon" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="source" property="source" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="DOUBLE" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addCoupon" parameterType="com.cofc.pojo.activity.Coupon"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tc_coupon(app_id,user_id,type,source,price,status,create_time,end_time)
+		values(#{appId},#{userId},#{type},#{source},#{price},#{status},#{createTime},#{endTime})
+	</insert>
+	<update id="updateCoupon" parameterType="com.cofc.pojo.activity.Coupon">
+		update tc_coupon
+		<trim prefix="set" suffixOverrides=",">
+			<if test="status!=null and status!=''">status=#{status},</if>
+			<if test="endTime!=null and endTime''">end_time=#{endTime},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="delCoupon" parameterType="com.cofc.pojo.activity.Coupon">
+		delete from
+		tc_coupon
+		where id = #{id} and app_id = #{appId}
+	</delete>
+	<select id="getCouponList" parameterType="com.cofc.pojo.activity.PinGoods"
+		resultMap="BaseResultMap">
+		SELECT * from tc_coupon where app_id= #{appId} and user_id= #{userId}
+	</select>
+</mapper>

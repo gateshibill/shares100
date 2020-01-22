@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.UserCollectionService">
+	<resultMap type="com.cofc.pojo.UserCollection" id="BaseResultMap">
+		<id column="collection_id" property="collectionId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="descovery_id" property="descoveryId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" />
+		<result column="is_cancel" property="isCancel" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		
+		<association property="descoveryCommon" javaType="com.cofc.pojo.DescoveryCommon">
+			<id column="descovery_id" property="descoveryId" jdbcType="INTEGER" />
+			<result column="descovery_title" property="descoveryTitle" jdbcType="VARCHAR" />
+			<result column="descovery_image" property="descoveryImage" jdbcType="VARCHAR" />
+			<result column="parise_count" property="pariseCount" jdbcType="INTEGER" />
+			<result column="read_count" property="readCount" jdbcType="INTEGER" />
+			<result column="joined_count" property="joinedCount" jdbcType="INTEGER" />
+			<result column="collect_count" property="collectCount" jdbcType="INTEGER" />
+		</association>
+		
+		<association property="goodsCommon" javaType="com.cofc.pojo.GoodsCommon">
+			<id column="goods_id" property="goodsId" jdbcType="INTEGER" />
+			<result column="goods_name" property="goodsName" jdbcType="INTEGER" />
+			<result column="goods_image" property="goodsImage" jdbcType="VARCHAR" />
+			<result column="goods_details" property="goodsDetails"
+				jdbcType="INTEGER" />
+			<result column="first_cost" property="firstCost" jdbcType="DOUBLE" />
+			<result column="sell_price" property="sellPrice" jdbcType="VARCHAR" />
+			<result column="vip_price" property="vipPrice" jdbcType="DOUBLE" />
+		</association>
+		
+	</resultMap>
+	<select id="findMyGoodsCollection" resultMap="BaseResultMap">
+		select * from TB_USER_COLLECTION where user_id = #{userId}
+	</select>
+	<insert id="addNewCollection" parameterType="com.cofc.pojo.UserCollection"
+	   useGeneratedKeys="true" keyProperty="collectionId" >
+		insert into TB_USER_COLLECTION(goods_id,descovery_id,user_id,create_time,is_cancel,login_plat) 
+		values(#{goodsId},#{descoveryId},#{userId},#{createTime},#{isCancel},#{loginPlat})
+	</insert>
+	<select id="comfirmUserCollected" resultMap="BaseResultMap">
+		select * from TB_USER_COLLECTION where user_id = #{userId} 
+		<if test="loginPlat!=null">
+			and login_plat = #{loginPlat}
+		</if>
+		<if test="descoveryId!=null">
+			and descovery_id = #{descoveryId}
+		</if>
+		<if test="goodsId!=null">
+			and goods_id = #{goodsId}
+		</if>
+	</select>
+	<update id="cancelCollection" parameterType="com.cofc.pojo.UserCollection"
+	     useGeneratedKeys="true" keyProperty="collectionId">
+		update TB_USER_COLLECTION 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="isCancel!=null">is_cancel=#{isCancel},</if>
+			<if test="createTime!=null">create_time=#{createTime},</if>
+		</trim>
+		where collection_id = #{collectionId}
+	</update>
+	<select id="findMyDescoveryCollection" resultMap="BaseResultMap">
+		select * from TB_USER_COLLECTION c left join TB_DESCOVERY_COMMON d where is_cancel = 0 
+		<if test="loginPlat!=null">
+			and c.login_plat = #{loginPlat}
+		</if>
+		 order by c.create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	
+	<!-- 收藏的商品列表 -->
+	<select id="findMyGoodsCollectionList" resultMap="BaseResultMap">
+	  select * from TB_USER_COLLECTION u left join tb_goods_common g on u.goods_id=g.goods_id
+	    where u.goods_id is not null and u.user_id=#{userId} and is_cancel=0
+	    <if test="loginPlat!=null">
+			and u.login_plat = #{loginPlat}
+		</if>
+	    order by u.create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	
+	<select id="getUserCollectionById" resultMap="BaseResultMap">
+	select * from TB_USER_COLLECTION where collection_id = #{collectionId}
+	</select>
+</mapper>

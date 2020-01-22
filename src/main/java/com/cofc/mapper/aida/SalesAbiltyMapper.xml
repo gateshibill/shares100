@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.SalesAbilityService">
+	<resultMap type="com.cofc.pojo.aida.SalesAbility" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="sales_person_id" property="salesPersonId"
+			jdbcType="INTEGER" />
+		<result column="get_customer_bt" property="getCustomerBt"
+			jdbcType="INTEGER" />
+		<result column="charm_bt" property="charmBt" jdbcType="INTEGER" />
+		<result column="spread_product_bt" property="spreadProductBt"
+			jdbcType="INTEGER" />
+		<result column="spread_website_bt" property="spreadWebsiteBt"
+			jdbcType="INTEGER" />
+		<result column="customer_interact_bt" property="customerInteractBt"
+			jdbcType="INTEGER" />
+		<result column="sales_initiative_bt" property="salesInitiativeBt"
+			jdbcType="INTEGER" />
+	</resultMap>
+
+	<insert id="addSalesAbility" parameterType="com.cofc.pojo.aida.SalesAbility"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tf_sales_ability(app_id,sales_person_id,getcustomer_bt,charm_bt,spread_product_bt,spread_website_bt,customer_interact_bt,sales_initiative_bt)
+		values(#{appId},#{salesPersonId},#{getCustomerBt},#{charmBt},#{spreadProductBt},#{spreadWebsiteBt},#{customerInteractBt},#{salesInitiativeBt})
+	</insert>
+
+	<update id="updateSalesAbility" parameterType="com.cofc.pojo.aida.SalesAbility">
+		update tf_sales_ability
+		<trim prefix="set" suffixOverrides=",">
+			<if test="getCustomerBt!=null">getcustomer_bt=#{getCustomerBt},</if>
+			<if test="charmBt!=null">charm_bt=#{charmBt},</if>
+			<if test="spreadProductBt!=null">spread_product_bt=#{spreadProductBt},</if>
+			<if test="spreadWebsiteBt!=null">spread_website_bt=#{spreadWebsiteBt},</if>
+			<if test="customerInteractBt!=null">customer_interact_bt=#{customerInteractBt},</if>
+			<if test="salesInitiativeBt!=null">sales_initiative_bt=#{salesInitiativeBt},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="delSalesAbility" parameterType="com.cofc.pojo.aida.SalesAbility">
+		delete from
+		tf_sales_ability where id = #{id} and app_id = #{appId}
+	</delete>
+	<select id="getSalesAbility" resultMap="BaseResultMap">
+		select * from
+		tf_sales_ability where app_id =#{appId} and sales_person_id =#{salesPersonId}
+	</select>
+	<select id="getSalesAbilityList" resultMap="BaseResultMap">
+		select * from
+		tf_sales_ability where app_id =#{appId}
+	</select>
+</mapper>

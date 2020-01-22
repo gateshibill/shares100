@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ActivityCommonService">
+	<resultMap type="com.cofc.pojo.ActivityCommon" id="BaseResultMap">
+		<id column="activity_id" property="activityId" jdbcType="INTEGER" />
+		<result column="activity_name" property="activityName"
+			jdbcType="VARCHAR" />
+		<result column="activity_desc" property="activityDesc"
+			jdbcType="VARCHAR" />
+		<result column="activity_image" property="activityImage"
+			jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="count" property="count" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="raffle_rule" property="raffleRule" jdbcType="INTEGER" />
+		
+		<association property="activityUser" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<select id="findActivityByCriteria" resultMap="BaseResultMap">
+		select * from TB_ACTIVITY_COMMON where 1 = 1
+		<if test="acyCommon.type!=null">
+			and type = #{acyCommon.type}
+		</if>
+		<if test="acyCommon.loginPlat!=null">
+			and login_plat = #{acyCommon.loginPlat}
+		</if>
+			and parent_id is null
+		limit #{rowsId},#{pageSize}
+	</select>
+	<select id="getActivityById" resultMap="BaseResultMap">
+		select * from
+		TB_ACTIVITY_COMMON ac left join TB_USER_COMMON uc on ac.create_user =
+		uc.user_id where activity_id = #{activityId}
+	</select>
+	<insert id="createNewActivity" parameterType="com.cofc.pojo.ActivityCommon"
+		useGeneratedKeys="true" keyProperty="activityId">
+		insert into
+		TB_ACTIVITY_COMMON(activity_name,activity_desc,activity_image,type,count,status,
+		create_time,update_time,create_user,login_plat,parent_id,raffle_rule)
+		values(#{activityName},#{activityDesc},#{activityImage},#{type},#{count},#{status},
+		#{createTime},#{updateTime},#{createUser},#{loginPlat},#{parentId},#{raffleRule})
+	</insert>
+	<select id="getCountActivity" resultType="int">
+		select count(*) from TB_ACTIVITY_COMMON ac left join TB_USER_COMMON uc
+		on ac.create_user = uc.user_id
+		where 1 = 1
+		<if test="act.loginPlat!=null">
+			and ac.login_plat = #{act.loginPlat}
+		</if>
+		<if test="act.activityId!=null">
+			and ac.activity_id = #{act.activityId}
+		</if>
+		<if test="act.createUser!=null">
+			and ac.create_user = #{act.createUser}
+		</if>
+		<if test="act.activityName!=null">
+			and ac.activity_name like CONCAT
+			('%',#{act.activityName},'%')
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (uc.nick_name like CONCAT ('%',#{userKeyWords},'%')
+			or uc.real_name like CONCAT ('%',#{userKeyWords},'%'))
+		</if>
+		<if test="act.type!=null">
+			and ac.type = #{act.type}
+		</if>
+		<if test="act.status!=null">
+			and ac.status = #{act.status}
+		</if>
+		<if test="startTime!=null and startTime !=''">
+			and ac.create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and ac.create_time &lt;= #{endTime}
+		</if>
+	</select>
+	<select id="findActivityList" resultMap="BaseResultMap">
+		select * from TB_ACTIVITY_COMMON ac left join TB_USER_COMMON uc on
+		ac.create_user = uc.user_id
+		where 1 = 1
+		<if test="act.loginPlat!=null">
+			and ac.login_plat = #{act.loginPlat}
+		</if>
+		<if test="act.activityId!=null">
+			and ac.activity_id = #{act.activityId}
+		</if>
+		<if test="act.createUser!=null">
+			and ac.create_user = #{act.createUser}
+		</if>
+		<if test="act.activityName!=null">
+			and ac.activity_name like CONCAT
+			('%',#{act.activityName},'%')
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (uc.nick_name like CONCAT ('%',#{userKeyWords},'%')
+			or uc.real_name like CONCAT ('%',#{userKeyWords},'%'))
+		</if>
+		<if test="act.type!=null">
+			and ac.type = #{act.type}
+		</if>
+		<if test="act.status!=null">
+			and ac.status = #{act.status}
+		</if>
+		<if test="startTime!=null and startTime !=''">
+			and ac.create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and ac.create_time &lt;= #{endTime}
+		</if>
+		order by ac.create_time desc limit #{pageNo},#{pageSize}
+	</select>
+	<update id="updateActivityInfo" parameterType="com.cofc.pojo.ActivityCommon">
+		update TB_ACTIVITY_COMMON
+		<trim prefix="set" suffixOverrides=",">
+			<if test="activityDesc!=null">activity_desc=#{activityDesc},</if>
+			<if test="status!=null">status=#{status},</if>
+			<if test="updateTime!=null">update_time=#{updateTime},</if>
+		</trim>
+		where activity_id = #{activityId}
+	</update>
+	<select id="getParentActivity" resultMap="BaseResultMap">
+		select * from
+		TB_ACTIVITY_COMMON where parent_id = #{activity}
+	</select>
+	<select id="confirmSharedThisActivity" resultMap="BaseResultMap">
+		select * from
+		TB_ACTIVITY_COMMON where parent_id =#{parentId} and create_user
+		=#{userId}
+	</select>
+	<delete id="deleteActivity">
+	  delete from TB_ACTIVITY_COMMON where activity_id =#{activityId}
+	</delete>
+	
+	<!-- 区分应用，防止sql冲突 -->
+	
+	<select id="getCountActivityByLoginPlat" resultType="int">
+		select count(*) from TB_ACTIVITY_COMMON ac left join TB_USER_COMMON uc
+		on ac.create_user = uc.user_id
+		where 1 = 1
+		<!-- <if test="act.loginPlat!=null">
+			and ac.login_plat = #{act.loginPlat}
+		</if> -->
+		<if test="act.activityId!=null">
+			and ac.activity_id = #{act.activityId}
+		</if>
+		<if test="act.createUser!=null">
+			and ac.create_user = #{act.createUser}
+		</if>
+		<if test="act.activityName!=null">
+			and ac.activity_name like CONCAT
+			('%',#{act.activityName},'%')
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (uc.nick_name like CONCAT ('%',#{userKeyWords},'%')
+			or uc.real_name like CONCAT ('%',#{userKeyWords},'%'))
+		</if>
+		<if test="act.type!=null">
+			and ac.type = #{act.type}
+		</if>
+		<if test="act.status!=null">
+			and ac.status = #{act.status}
+		</if>
+		<if test="startTime!=null and startTime !=''">
+			and ac.create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and ac.create_time &lt;= #{endTime}
+		</if>
+		and ac.login_plat in 
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach>
+	</select>
+	<select id="findActivityListByLoginPlat" resultMap="BaseResultMap">
+		select * from TB_ACTIVITY_COMMON ac left join TB_USER_COMMON uc on
+		ac.create_user = uc.user_id
+		where 1 = 1
+		<!-- <if test="act.loginPlat!=null">
+			and ac.login_plat = #{act.loginPlat}
+		</if> -->
+		<if test="act.activityId!=null">
+			and ac.activity_id = #{act.activityId}
+		</if>
+		<if test="act.createUser!=null">
+			and ac.create_user = #{act.createUser}
+		</if>
+		<if test="act.activityName!=null">
+			and ac.activity_name like CONCAT
+			('%',#{act.activityName},'%')
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (uc.nick_name like CONCAT ('%',#{userKeyWords},'%')
+			or uc.real_name like CONCAT ('%',#{userKeyWords},'%'))
+		</if>
+		<if test="act.type!=null">
+			and ac.type = #{act.type}
+		</if>
+		<if test="act.status!=null">
+			and ac.status = #{act.status}
+		</if>
+		<if test="startTime!=null and startTime !=''">
+			and ac.create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and ac.create_time &lt;= #{endTime}
+		</if>
+		and ac.login_plat in
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach>
+		order by ac.create_time desc limit #{pageNo},#{pageSize}
+	</select>
+</mapper>

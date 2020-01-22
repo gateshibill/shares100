@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.UserWithdrawCashService">
+	<resultMap type="com.cofc.pojo.UserWithdrawCash" id="BaseResultMap">
+		<id column="withdraw_id" property="withdrawId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="withdraw_fee" property="withdrawFee" jdbcType="DOUBLE" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="deal_time" property="dealTime" jdbcType="TIMESTAMP" />
+		<result column="withdraw_type" property="withdrawType"
+			jdbcType="INTEGER" />
+		<result column="withdraw_state" property="withdrawState"
+			jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="withdraw_ip" property="withdrawIp" jdbcType="VARCHAR" />
+		<result column="withdraw_realName" property="withdrawRealName"
+			jdbcType="VARCHAR" />
+		<result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR" />
+	</resultMap>
+	<insert id="userWantWithdrawCash" parameterType="com.cofc.pojo.UserWithdrawCash"
+		useGeneratedKeys="true" keyProperty="withdrawId">
+		insert into
+		TB_USER_WITHDRAW_CASH
+		(withdraw_id,user_id,withdraw_fee,create_time,deal_time,withdraw_type,
+		withdraw_state,login_plat,withdraw_ip,withdraw_realName,out_trade_no)
+		values(#{withdrawId},#{userId},#{withdrawFee},#{createTime},#{dealTime},
+		#{withdrawType},#{withdrawState},#{loginPlat},#{withdrawIp},
+		#{withdrawRealName},#{outTradeNo})
+	</insert>
+	<update id="updateWithDrawInfo" parameterType="com.cofc.pojo.UserWithdrawCash">
+		update TB_USER_WITHDRAW_CASH
+		<trim prefix="set" suffixOverrides=",">
+			<if test="withdrawState!=null">withdraw_state=#{withdrawState},</if>
+			<if test="outTradeNo!=null">out_trade_no=#{outTradeNo},</if>
+			<if test="dealTime!=null">deal_time=#{dealTime},</if>
+		</trim>
+		where withdraw_id = #{withdrawId}
+	</update>
+	<select id="findWithRecordByCriteria" resultMap="BaseResultMap">
+		select * from TB_USER_WITHDRAW_CASH where 1 = 1
+		<if test="uwcash!=null">
+			<if test="uwcash.withdrawState!=null">
+				and withdraw_state = #{uwcash.withdrawState}
+			</if>
+			<if test="uwcash.loginPlat!=null and loginPlat2!=null">
+				and login_plat = #{loginPlat2}
+			</if>
+			<if test="uwcash.loginPlat!=null and loginPlat2==null">
+				and login_plat = #{uwcash.loginPlat}
+			</if>
+			<if test="uwcash.userId!=null">
+				and user_id =#{uwcash.userId}
+			</if>
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and withdraw_realName like
+			CONCAT('%',#{userKeyWords},'%')
+		</if>
+		<if test="applyStartTime!=null and applyStartTime!=''">
+			and create_time &gt;= #{applyStartTime}
+		</if>
+		<if test="applyEndTime!=null and applyEndTime!=''">
+			and create_time &lt;= #{applyEndTime}
+		</if>
+		<if test="dealStartTime!=null and dealStartTime!=''">
+			and deal_time &gt;= #{dealStartTime}
+		</if>
+		<if test="dealEndTime!=null and dealEndTime!=''">
+			and deal_time &lt;= #{dealEndTime}
+		</if>
+		order by create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	<select id="countAllWithdrawRecord" resultType="int">
+		select count(*) from TB_USER_WITHDRAW_CASH where 1 = 1
+		<if test="uwcash!=null">
+			<if test="uwcash.withdrawState!=null">
+				and withdraw_state = #{uwcash.withdrawState}
+			</if>
+			<if test="uwcash.loginPlat!=null and loginPlat2!=null">
+				and login_plat = #{loginPlat2}
+			</if>
+			<if test="uwcash.loginPlat!=null and loginPlat2==null">
+				and login_plat = #{uwcash.loginPlat}
+			</if>
+			<if test="uwcash.userId!=null">
+				and user_id =#{uwcash.userId}
+			</if>
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and withdraw_realName like
+			CONCAT('%',#{userKeyWords},'%')
+		</if>
+		<if test="applyStartTime!=null and applyStartTime!=''">
+			and create_time &gt;= #{applyStartTime}
+		</if>
+		<if test="applyEndTime!=null and applyEndTime!=''">
+			and create_time &lt;= #{applyEndTime}
+		</if>
+		<if test="dealStartTime!=null and dealStartTime!=''">
+			and deal_time &gt;= #{dealStartTime}
+		</if>
+		<if test="dealEndTime!=null and dealEndTime!=''">
+			and deal_time &lt;= #{dealEndTime}
+		</if>
+	</select>
+	<select id="getWithdrawRecordById" resultMap="BaseResultMap">
+		select * from
+		TB_USER_WITHDRAW_CASH where withdraw_id = #{withdrawId}
+	</select>
+	<select id="findWithdrawRecordById" resultMap="BaseResultMap">
+		select * from
+		TB_USER_WITHDRAW_CASH where withdraw_id in
+		<foreach item="item" index="index" collection="idsList" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="confirmCurrUserHasApplyedToday" resultMap="BaseResultMap">
+		select *
+		from TB_USER_WITHDRAW_CASH where user_id = #{userId}
+		and login_plat =
+		#{loginPlat} and create_time &gt;= #{startTime}
+		and
+		create_time &lt;=
+		#{endTime}
+	</select>
+	<select id="findMyWithdrawList" resultMap="BaseResultMap">
+		select *
+		from
+		TB_USER_WITHDRAW_CASH where user_id = #{userId} order by create_time
+		desc limit #{pageNo},#{pageSize}
+	</select>
+	
+	<!-- 增量开发：防止sql冲突 -->
+	<select id="findWithRecordByCriteriaByLoginPlat" resultMap="BaseResultMap">
+		select * from TB_USER_WITHDRAW_CASH where 1 = 1
+		<if test="uwcash!=null">
+			<if test="uwcash.withdrawState!=null">
+				and withdraw_state = #{uwcash.withdrawState}
+			</if>
+			<if test="uwcash.loginPlat!=null and loginPlat2!=null">
+				and login_plat = #{loginPlat2}
+			</if>
+			<!-- <if test="uwcash.loginPlat!=null and loginPlat2==null">
+				and login_plat = #{uwcash.loginPlat}
+			</if> -->
+			<if test="uwcash.userId!=null">
+				and user_id =#{uwcash.userId}
+			</if>
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and withdraw_realName like
+			CONCAT('%',#{userKeyWords},'%')
+		</if>
+		<if test="applyStartTime!=null and applyStartTime!=''">
+			and create_time &gt;= #{applyStartTime}
+		</if>
+		<if test="applyEndTime!=null and applyEndTime!=''">
+			and create_time &lt;= #{applyEndTime}
+		</if>
+		<if test="dealStartTime!=null and dealStartTime!=''">
+			and deal_time &gt;= #{dealStartTime}
+		</if>
+		<if test="dealEndTime!=null and dealEndTime!=''">
+			and deal_time &lt;= #{dealEndTime}
+		</if>
+		and login_plat in 
+		 <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+		</foreach>
+		order by create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	<select id="countAllWithdrawRecordByLoginPlat" resultType="int">
+		select count(*) from TB_USER_WITHDRAW_CASH where 1 = 1
+		<if test="uwcash!=null">
+			<if test="uwcash.withdrawState!=null">
+				and withdraw_state = #{uwcash.withdrawState}
+			</if>
+			<if test="uwcash.loginPlat!=null and loginPlat2!=null">
+				and login_plat = #{loginPlat2}
+			</if>
+			<!-- <if test="uwcash.loginPlat!=null and loginPlat2==null">
+				and login_plat = #{uwcash.loginPlat}
+			</if> -->
+			<if test="uwcash.userId!=null">
+				and user_id =#{uwcash.userId}
+			</if>
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and withdraw_realName like
+			CONCAT('%',#{userKeyWords},'%')
+		</if>
+		<if test="applyStartTime!=null and applyStartTime!=''">
+			and create_time &gt;= #{applyStartTime}
+		</if>
+		<if test="applyEndTime!=null and applyEndTime!=''">
+			and create_time &lt;= #{applyEndTime}
+		</if>
+		<if test="dealStartTime!=null and dealStartTime!=''">
+			and deal_time &gt;= #{dealStartTime}
+		</if>
+		<if test="dealEndTime!=null and dealEndTime!=''">
+			and deal_time &lt;= #{dealEndTime}
+		</if>
+		and login_plat in 
+		 <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+		</foreach>
+	</select>
+	
+</mapper>

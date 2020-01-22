@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ContractPunishmentService">
+	<resultMap type="com.cofc.pojo.ContractPunishment" id="PunishmentMap">
+		<id column="punishment_id" property="punishmentId" jdbcType="INTEGER" />
+		<result column="punishment_content" property="punishmentContent"
+			jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser" jdbcType="INTEGER" />
+		<result column="used_count" property="usedCount" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		
+		<association property="user" javaType="com.cofc.pojo.UserCommon">
+	       <id column="user_id" property="userId" jdbcType="INTEGER" />
+	      <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+	     <result column="real_name" property="realName" jdbcType="VARCHAR" />
+      </association>
+	</resultMap>
+	<select id="getContractPunishmentById" resultMap="PunishmentMap">
+		select * from TB_CONTRACT_PUNISHMENT where punishment_id=#{punishmentId}
+	</select>
+	<select id="findContractPunishmentList" resultMap="PunishmentMap">
+		select * from TB_CONTRACT_PUNISHMENT where 1=1 order by punishment_id desc
+	</select>
+	<insert id="addContractPunishment" parameterType="com.cofc.pojo.ContractPunishment"
+		useGeneratedKeys="true" keyProperty="punishmentId">
+		insert into TB_CONTRACT_PUNISHMENT
+		(punishment_content,create_user,used_count,create_time)
+		values(#{punishmentContent},#{createUser},#{usedCount},#{createTime})
+	</insert>
+	<select id="getContractPunishmentList" resultMap="PunishmentMap">
+		select * from TB_CONTRACT_PUNISHMENT cp left join TB_USER_COMMON u on cp.create_user=u.user_id
+		where 1=1
+		<if test="punishment.createUser != null">
+			and cp.create_user=#{punishment.createUser}
+		</if>
+		<if
+			test="punishment.punishmentContent != null and punishment.punishmentContent !=''">
+			and cp.punishment_content like
+			CONCAT('%',#{punishment.punishmentContent},'%')
+		</if>
+		order by cp.create_time desc limit #{page},#{limit}
+	</select>
+	<select id="getContractPunishmentCount" resultType="int">
+		select count(*) from TB_CONTRACT_PUNISHMENT where 1=1
+		<if test="punishment.createUser != null">
+			and create_user=#{punishment.createUser}
+		</if>
+		<if
+			test="punishment.punishmentContent != null and punishment.punishmentContent !=''">
+			and punishment_content like
+			CONCAT('%',#{punishment.punishmentContent},'%')
+		</if>
+	</select>
+	<select id="getPunishmentTitle" resultMap="PunishmentMap">
+	select * from TB_CONTRACT_PUNISHMENT where punishment_content=#{title}
+	</select>
+	
+	<update id="updateContractPunishment" parameterType="com.cofc.pojo.ContractPunishment">
+	update TB_CONTRACT_PUNISHMENT set update_time=#{updateTime}
+	<if test="usedCount != null">
+		,used_count=#{usedCount}
+	</if>
+	<if test="punishmentContent != null and punishmentContent !=''">
+		,punishment_content=#{punishmentContent}
+	</if>
+	where punishment_id=#{punishmentId}
+</update>
+    <delete id="delSharePunish">
+      delete from TB_CONTRACT_PUNISHMENT where punishment_id = #{punishmentId}
+    </delete>
+</mapper>

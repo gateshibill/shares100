@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.GoodBrandService">
+	<resultMap type="com.cofc.pojo.vij.GoodBrand" id="BaseResultMap">
+		<id column="brand_id" property="brandId" jdbcType="INTEGER" />
+		<result column="cn_brand_name" property="cnBrandName" jdbcType="VARCHAR" />
+		<result column="en_brand_name" property="enBrandName" jdbcType="VARCHAR" />
+		<result column="brand_logo" property="brandLogo" jdbcType="VARCHAR" />
+		<result column="is_remove" property="isRemove" jdbcType="VARCHAR" />
+		<result column="brand_order" property="brandOrder" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addGoodBrand" parameterType="com.cofc.pojo.vij.GoodBrand"
+		useGeneratedKeys="true" keyProperty="brandId">
+		insert into
+		tv_good_brand(cn_brand_name,en_brand_name,brand_logo,is_remove,brand_order,create_time,login_plat)
+		values(#{cnBrandName},#{enBrandName},#{brandLogo},#{isRemove},#{brandOrder},#{createTime},#{loginPlat})
+	</insert>
+	<update id="updateGoodBrand" parameterType="com.cofc.pojo.vij.GoodBrand">
+		update tv_good_brand
+		<trim prefix="set" suffixOverrides=",">
+			<if test="cnBrandName!=null and cnBrandName!=''">cn_brand_name = #{cnBrandName},</if>
+			<if test="enBrandName!=null and enBrandName!=''">en_brand_name = #{enBrandName},</if>
+			<if test="brandLogo!=null and brandLogo!=''">brand_logo = #{brandLogo},</if>
+			<if test="isRemove!=null">is_remove = #{isRemove},</if>
+			<if test="brandOrder!=null">brand_order = #{brandOrder},</if>
+			<if test="loginPlat!=null">login_plat = #{loginPlat},</if>
+		</trim>
+		where brand_id = #{brandId}
+	</update>
+	<delete id="delGoodBrand" parameterType="com.cofc.pojo.vij.GoodBrand">
+		delete from tv_good_brand where brand_id = #{brandId}
+	</delete>
+	<select id="getInfoById" resultMap="BaseResultMap">
+		select * from tv_good_brand where brand_id = #{brandId}
+	</select>
+	
+	<select id="getGoodBrandCount" resultType="int">
+		select count(*) from tv_good_brand where 1=1
+		<if test="brand.isRemove != null">
+			and is_remove = #{brand.isRemove}
+		</if>
+		<if test="brand.LoginPlat != null">
+			and login_plat = #{brand.loginPlat}
+		</if>
+		<if test="brand.cnBrandName != null and brand.cnBrandName !=''">
+			and cn_brand_name like CONCAT('%',#{brand.cnBrandName},'%') 
+		</if>
+	</select>
+	<select id="getGoodBrandList" resultMap="BaseResultMap">
+		select * from tv_good_brand where 1=1
+		<if test="brand.isRemove != null">
+			and is_remove = #{brand.isRemove}
+		</if>
+		<if test="brand.loginPlat != null">
+			and login_plat = #{brand.loginPlat}
+		</if>
+		<if test="brand.cnBrandName != null and brand.cnBrandName !=''">
+			and cn_brand_name like CONCAT('%',#{brand.cnBrandName},'%') 
+		</if>
+		order by brand_order,create_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	<select id="checkIsAlready" resultType="int">
+		select count(*) from tv_good_brand where is_remove = 0
+		<if test="cnBrandName != null and cnBrandName != ''">
+			and cn_brand_name = #{cnBrandName}
+		</if>
+		<if test="brandId != null">
+			and brand_id &lt;&gt;#{brandId}
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.WantedTagsService">
+	<resultMap type="com.cofc.pojo.WantedTags" id="BaseResultMap">
+		<id column="childtag_id" property="childtagId" jdbcType="INTEGER" />
+		<result column="childtag_name" property="childtagName"
+			jdbcType="VARCHAR" />
+		<result column="childtag_order" property="childtagOrder"
+			jdbcType="INTEGER" />
+		<result column="childtag_create_user" property="childtagCreateUser" jdbcType="INTEGER"/>
+		<result column="childtag_create_time" property="childtagCreateTime" jdbcType="TIMESTAMP"/>
+		<result column="is_using" property="isUsing" jdbcType="INTEGER"/>	
+	</resultMap>
+ 	<select id="findSkillTagsByOrder" resultMap="BaseResultMap">
+	select * from TB_WANTED_TAGS where 1=1
+	<if test="orderId != null">
+		and childtag_order = #{orderId}
+	</if>
+	<if test="rowsId != null and pageSize != null">
+		limit #{rowsId},#{pageSize}
+	</if>
+</select>
+	<insert id="addNewWantedTags" parameterType="com.cofc.pojo.WantedTags">
+		insert into TB_WANTED_TAGS (childtag_name,childtag_order,childtag_create_user,childtag_create_time,is_using)
+		values(#{childtagName},#{childtagOrder},#{childtagCreateUser},#{childtagCreateTime},#{isUsing})
+	</insert>
+	<select id="getTagByName" resultMap="BaseResultMap">
+		select * from TB_WANTED_TAGS where childtag_name = #{tagName}
+	</select>
+	
+	<select id="findWantedTagsByIds" resultMap="BaseResultMap">
+		select * from TB_WANTED_TAGS where childtag_id in 
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+  			#{item}  
+ 		</foreach> 
+	</select>
+</mapper>

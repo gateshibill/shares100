@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.UserApplyGoodsService">
+	<resultMap type="com.cofc.pojo.UserApplyGoods" id="BaseResultMap">
+		<id column="apply_id" property="applyId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" />
+		<result column="need_deposit" property="needDeposit" jdbcType="INTEGER" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="contact_way" property="contactWay" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="deposit" property="deposit" jdbcType="DOUBLE" />
+		<result column="is_agreed" property="isAgreed" jdbcType="INTEGER" />
+		<result column="is_returned" property="isReturned" jdbcType="INTEGER" />
+		<result column="return_time" property="returnTime" />
+	</resultMap>
+</mapper>

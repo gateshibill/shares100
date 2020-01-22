@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ShareLeaveMessageService">
+ <resultMap type="com.cofc.pojo.ShareLeaveMessage" id="MessageMap">
+ <id column="message_id" property="messageId" jdbcType="INTEGER" />
+	<result column="message_desc" property="messageDesc" jdbcType="VARCHAR" />
+	<result column="user_id" property="userId" jdbcType="INTEGER" />
+	<result column="share_id" property="shareId" jdbcType="INTEGER" />
+	<result column="message_time" property="messageTime" />
+	
+	<association property="user" javaType="com.cofc.pojo.UserCommon">
+	<id column="user_id" property="userId" jdbcType="INTEGER" />
+	<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+	</association>
+ </resultMap>
+ 
+ <select id="getShareLeaveMessageList" resultMap="MessageMap">
+   select * from tb_share_leave_message m left join tb_user_common u on
+      m.user_id=u.user_id where m.share_id=#{shareId}
+      order by m.message_time desc limit #{pageNo},#{pageSize}
+ </select>
+ 
+ <insert id="addShareLeaveMessage" parameterType="com.cofc.pojo.ShareLeaveMessage">
+   insert into tb_share_leave_message(message_desc,user_id,share_id,message_time) 
+              values(#{messageDesc},#{userId},#{shareId},#{messageTime})
+ </insert>
+</mapper>

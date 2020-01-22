@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.SalesPersonService">
+	<resultMap type="com.cofc.pojo.aida.SalesPerson" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="role" property="role" jdbcType="INTEGER" />
+		<result column="b_position" property="position" jdbcType="VARCHAR" />
+		<result column="nick_name" property="userName" jdbcType="VARCHAR" />
+		<result column="b_head_image" property="headImage" jdbcType="VARCHAR" />
+		<result column="department_id" property="departmentId"
+			jdbcType="INTEGER" />
+
+		<result column="visited_count" property="visitedCount"
+			jdbcType="INTEGER" />
+		<result column="order_count" property="orderCount" jdbcType="INTEGER" />
+		<result column="customer_count" property="customerCount"
+			jdbcType="INTEGER" />
+		<result column="interact_count" property="interactCount"
+			jdbcType="INTEGER" />
+		<result column="deal_ratio" property="dealRatio" jdbcType="INTEGER" />
+		<result column="new_customer_count" property="newCustomerCount"
+			jdbcType="INTEGER" />
+
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="last_time" property="lastTime" jdbcType="TIMESTAMP" />
+		<result column="isdefault" property="isdefault" jdbcType="INTEGER" />
+		<result column="related_user_id" property="relatedUserId"
+			jdbcType="INTEGER" />
+
+		<!-- 存在字段冲突问题：冲突字段需要采用别名 -->
+		<association property="userCard" javaType="com.cofc.pojo.aida.UserCard">
+			<id column="card_id" property="cardId" jdbcType="INTEGER" />
+			<result column="c_app_id" property="appId" jdbcType="INTEGER" />
+			<result column="c_user_id" property="userId" jdbcType="INTEGER" />
+			<result column="c_real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="c_position" property="position" jdbcType="VARCHAR" />
+			<result column="c_email" property="email" jdbcType="VARCHAR" />
+			<result column="c_head_image" property="headImage" jdbcType="VARCHAR" />
+			<result column="c_phone" property="phone" jdbcType="VARCHAR" />
+			<result column="c_company" property="company" jdbcType="VARCHAR" />
+		</association>
+		<association property="salesAbility" javaType="com.cofc.pojo.aida.SalesAbility">
+			<result column="sales_person_id" property="salesPersonId"
+				jdbcType="INTEGER" />
+			<result column="getcustomer_bt" property="getCustomerBt"
+				jdbcType="INTEGER" />
+			<result column="charm_bt" property="charmBt" jdbcType="INTEGER" />
+			<result column="spread_product_bt" property="spreadProductBt"
+				jdbcType="INTEGER" />
+			<result column="spread_website_bt" property="spreadWebsiteBt"
+				jdbcType="INTEGER" />
+			<result column="customer_interact_bt" property="customerInteractBt"
+				jdbcType="INTEGER" />
+			<result column="sales_initiative_bt" property="salesInitiativeBt"
+				jdbcType="INTEGER" />
+		</association>
+
+	</resultMap>
+
+	<insert id="addSalesPerson" parameterType="com.cofc.pojo.aida.SalesPerson"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tf_sales_person(app_id,user_id,role,department_id,create_time,isdefault)
+		values(#{appId},#{userId},#{role},#{departmentId},#{createTime},#{isdefault})
+	</insert>
+	<update id="updateSalesPerson" parameterType="com.cofc.pojo.aida.SalesCustomer">
+		update tf_sales_person
+		<trim prefix="set" suffixOverrides=",">
+			<if test="role!=null ">role=#{role},</if>
+			<if test="departmentId!=null ">department_id=#{departmentId},</if>
+
+			<if test="visitedCount!=null ">visited_count=#{visitedCount},</if>
+			<if test="orderCount!=null ">order_count=#{orderCount},</if>
+			<if test="customerCount!=null ">customer_count=#{customerCount},</if>
+			<if test="interactCount!=null ">interact_count=#{interactCount},</if>
+			<if test="dealRatio!=null ">deal_ratio=#{dealRatio},</if>
+			<if test="newCustomerCount!=null ">new_customer_count=#{newCustomerCount},</if>
+
+			<if test="lastTime!=null and last_time!=''">last_time=#{lastTime},</if>
+			<if test="isdefault!=null and isdefault!=''">isdefault=#{isdefault},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="deleteSalesPerson">
+		delete from tf_sales_person where id =#{id}
+	</delete>
+
+	<select id="getSalesPersonById" resultMap="BaseResultMap">
+		select * from
+		tf_sales_person a left join tb_user_common b on a.user_id=b.user_id
+		where a.id= #{id}
+	</select>
+	<select id="getSalesPersonByUserId" resultMap="BaseResultMap">
+		select * from
+		tf_sales_person a left join tb_user_common b on a.user_id=b.user_id
+		where a.user_id= #{userId}
+	</select>
+	<select id="getSalesPersonCount" resultType="int">
+		select count(*) from
+		tf_sales_person where app_id =#{appId}
+	</select>
+
+	<select id="getSalesPersonListOrderByBt" resultMap="BaseResultMap">
+		select a.*,
+		b.head_image as b_head_image,
+		b.nick_name as nick_name,
+		b.user_position
+		as b_position,
+		sa.*
+		from
+		tf_sales_person a left join
+		tb_user_common b on
+		a.user_id=b.user_id
+		left join tf_sales_ability sa on
+		a.user_id=sa.sales_person_id
+		where a.app_id =#{appId} order
+		by
+		(sa.spread_product_bt+sa.spread_website_bt+sa.customer_interact_bt+sa.getcustomer_bt+sa.sales_initiative_bt+sa.charm_bt)
+		desc
+		limit
+		#{page},#{pageSize}
+	</select>
+	
+    <select id="getSalesPersonList" resultMap="BaseResultMap">
+		select a.*,
+		b.head_image as b_head_image,
+		b.nick_name as nick_name,
+		b.user_position as b_position
+		from
+		tf_sales_person a left join tb_user_common b on a.user_id=b.user_id
+		where a.app_id =#{appId}
+		order by a.visited_count desc
+		limit
+		#{page},#{pageSize}
+	</select>
+
+	<select id="getRankingSalesPersonList" resultMap="BaseResultMap">
+		select a.*,
+		b.nick_name as nick_name,
+		b.head_image as b_head_image,
+		b.user_position
+		as b_position
+		from
+		tf_sales_person a left join tb_user_common as b on
+		a.user_id=b.user_id
+		where a.app_id =#{appId}
+	</select>
+	<!-- 0为客户人数，1为订单数，2为成交率，3为互动次数；4为新增客户人数 -->
+	<select id="getSalesPersonRankingListByType" resultMap="BaseResultMap">
+		select
+		a.*,
+		b.nick_name as nick_name,
+		b.head_image b_head_image,
+		b.user_position b_position from
+		tf_sales_person a left join
+		tb_user_common as b on a.user_id=b.user_id
+		where a.app_id =#{appId}
+		order by a.customer_count desc
+		limit
+		#{page},#{pageSize}
+	</select>
+	<select id="getSalesPersonRankingListByType1" resultMap="BaseResultMap">
+		select
+		a.*,
+		b.nick_name as nick_name,
+		b.head_image b_head_image,
+		b.user_position b_position from
+		tf_sales_person a left join
+		tb_user_common as b on a.user_id=b.user_id
+		where a.app_id =#{appId}
+		order by a.order_count desc
+		limit
+		#{page},#{pageSize}
+	</select>
+	<select id="getSalesPersonRankingListByType2" resultMap="BaseResultMap">
+		select
+		a.*,
+		b.nick_name as nick_name,
+		b.head_image b_head_image,
+		b.user_position b_position from
+		tf_sales_person a left join
+		tb_user_common as b on a.user_id=b.user_id
+		where a.app_id =#{appId}
+		order by a.deal_ratio desc
+		limit
+		#{page},#{pageSize}
+	</select>
+	<select id="getSalesPersonRankingListByType3" resultMap="BaseResultMap">
+		select
+		a.*,
+		b.nick_name as nick_name,
+		b.head_image b_head_image,
+		b.user_position b_position from
+		tf_sales_person a left join
+		tb_user_common as b on a.user_id=b.user_id
+		where a.app_id =#{appId}
+		order by a.interact_count desc
+		limit
+		#{page},#{pageSize}
+	</select>
+	<select id="getSalesPersonRankingListByType4" resultMap="BaseResultMap">
+		select
+		a.*,
+		b.nick_name as nick_name,
+		b.head_image b_head_image,
+		b.user_position b_position from
+		tf_sales_person a left join
+		tb_user_common as b on a.user_id=b.user_id
+		where a.app_id =#{appId}
+		order by a.new_customer_count desc
+		limit
+		#{page},#{pageSize}
+	</select>
+
+	<!-- 默认销售 -->
+	<select id="getDefaultSalerList" resultMap="BaseResultMap">
+		select sp.*,c.app_id
+		c_app_id,c.user_id c_user_id,c.real_name c_real_name,
+		c.position
+		c_position,c.email c_email,c.head_image c_head_image,c.phone
+		c_phone,c.company c_company
+		from tf_sales_person as sp left join
+		tf_user_card as c on sp.user_id = c.user_id
+		where sp.isdefault =
+		#{isdefault} and sp.app_id = #{appId}
+	</select>
+	<!-- 后台根据应用获取销售 -->
+	<select id="getSalerCount" resultType="int">
+		select count(*) from tf_sales_person a left join tb_user_common as b on
+		a.user_id=b.user_id  where 1=1
+		<if test="sale.appId != null">
+			and a.app_id = #{sale.appId}
+		</if>
+		<if test="loginPlatList != null">
+			and a.app_id in 
+			<foreach item="item"  index="index" collection="loginPlatList" open="("
+						separator="," close=")">
+						#{item}
+		    </foreach>
+		</if>
+		
+	</select>
+	<select id="getSalerList" resultMap="BaseResultMap">
+		select * from tf_sales_person a left join tb_user_common as b on
+		a.user_id=b.user_id  where 1=1
+		<if test="sale.appId != 0">
+			and a.app_id = #{sale.appId}
+		</if>
+		<if test="loginPlatList != null">
+			and a.app_id in 
+			<foreach item="item"  index="index" collection="loginPlatList" open="("
+						separator="," close=")">
+						#{item}
+		    </foreach>
+		</if>
+		<if test="page != null and limit != ''">
+			limit #{page},#{limit}
+		</if>
+	</select>
+</mapper>

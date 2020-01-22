@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.activity.CutGoodsService">
+	<resultMap type="com.cofc.pojo.activity.CutGoods" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="price" property="price" jdbcType="DOUBLE" />
+		<result column="num" property="num" jdbcType="INTEGER" />
+		<result column="validate" property="validate" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addCutGoods" parameterType="com.cofc.pojo.activity.CutGoods"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tc_cut_goods(goods_id,price,num,validate,status)
+		values(#{goodsId},#{price},#{num},{validte},#{status})
+	</insert>
+
+	<select id="getCutGoods" parameterType="com.cofc.pojo.activity.CutGoods"
+		resultMap="BaseResultMap">
+		SELECT * from tc_cut_goods where app_id= #{appId} and id=#{id}
+	</select>
+	<select id="getCutGoodsList" parameterType="com.cofc.pojo.activity.CutGoods"
+		resultMap="BaseResultMap">
+		SELECT * from tc_cut_goods where app_id= #{appId}
+	</select>
+	<update id="updateCutGoods" parameterType="com.cofc.pojo.activity.CutGoods">
+		update tc_cut_goods
+		<trim prefix="set" suffixOverrides=",">
+			<if test="status!=null and status!=''">status=#{status},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="delCutGoods" parameterType="com.cofc.pojo.activity.CutGoods">
+		delete from
+		tc_cut_goods
+		where id = #{id} and app_id = #{appId}
+	</delete>
+	
+	<!-- 获取砍价数据 -商品编辑 -->
+	<select id="getCutByGoodsId" parameterType="Integer"
+		resultMap="BaseResultMap">
+		SELECT * from tc_cut_goods where goods_id=#{id}
+	</select>
+	
+	<!-- 修改砍价状态 0-->
+	<update id="updateCutByGoodsId" parameterType="Integer">
+		update tc_cut_goods set status=0 where goods_id = #{id}
+	</update>
+	
+	<!-- 修改砍价状态 -->
+	<update id="updateCutByCutGoods" parameterType="com.cofc.pojo.activity.CutGoods">
+		update tc_cut_goods set price=#{price},num=#{num},validate=#{validate},status=#{status} where id = #{id}
+	</update>
+	
+	<!-- 添加砍价商品-->
+	<insert id="addCutGoods_1" parameterType="com.cofc.pojo.activity.CutGoods">
+		insert into
+		tc_cut_goods(app_id,goods_id,price,num,validate,status)
+		values(#{appId},#{goodsId},#{price},#{num},#{validate},#{status})
+	</insert>
+	
+	<!-- 查询全部砍价商品-管理页-->
+	<select id="getAllCutGoodsList" resultMap="BaseResultMap">
+		SELECT * from tc_cut_goods order by id desc
+		limit #{page},#{limit};
+	</select>
+	
+	<!-- 查询全部砍价商品-总数-->
+	<select id="findAllCutGoodsCount" resultType="Integer">
+		SELECT count(*) from tc_cut_goods 
+	</select>
+	
+	<!-- 根据id删除砍价商品-->
+	<delete id="deleteCutGoodsById" parameterType="Integer">
+		delete from
+		tc_cut_goods
+		where id = #{id}
+	</delete>
+	
+	<!-- 根据id查询砍价商品 -->
+	<select id="getCutByCutGoodsId" parameterType="Integer"
+		resultMap="BaseResultMap">
+		SELECT * from tc_cut_goods where id=#{id}
+	</select>
+	
+
+</mapper>

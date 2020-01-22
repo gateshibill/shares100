@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ApplicationManageService">
+	<resultMap type="com.cofc.pojo.ApplicationManage" id="ManageMap">
+		<id column="manage_id" property="manageId" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="manage_user" property="manageUser" jdbcType="INTEGER" />
+		<result column="manage_status" property="manageStatus" jdbcType="INTEGER" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+       
+       <association property="user" javaType="com.cofc.pojo.UserCommon">
+       <id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		<result column="user_sex" property="userSex" jdbcType="INTEGER" />
+       </association>
+	</resultMap>
+	
+	<select id="getManageLoginPlatList" resultMap="ManageMap">
+	  select * from tb_application_manage a left join tb_user_common u on a.manage_user=u.user_id
+	    where a.login_plat=#{loginPlat} and a.manage_status &lt;&gt;2 
+	    order by a.create_time desc limit #{page},#{limit}
+	</select>
+	
+	<select id="getManageLoginPlatCount" resultType="int">
+	select count(*) from tb_application_manage where login_plat=#{loginPlat} and manage_status &lt;&gt;2 
+	
+	</select>
+	
+	<select id="getIsManageUser" resultMap="ManageMap">
+	select * from tb_application_manage 
+	  where manage_user=#{manageUser} and login_plat=#{loginPlat}
+	  <if test="status != null">
+	   and manage_status &lt;&gt;2
+	  </if>
+	</select>
+	
+	<update id="updateManageStatus" parameterType="com.cofc.pojo.ApplicationManage">
+	 update tb_application_manage set update_time=#{updateTime},manage_status=#{manageStatus} 
+	    where manage_user=#{manageUser} and login_plat=#{loginPlat}
+	</update>
+	
+	<select id="getManageById" resultMap="ManageMap">
+	select * from tb_application_manage where manage_id=#{manageId} 
+	</select>
+	
+	<update id="updateApplicationManage" parameterType="com.cofc.pojo.ApplicationManage">
+	 update tb_application_manage set update_time=#{updateTime},manage_status=#{manageStatus} 
+	    where manage_id=#{manageId} 
+	</update>
+	
+	<insert id="addApplicationManage" parameterType="com.cofc.pojo.ApplicationManage">
+	  insert into tb_application_manage (login_plat,manage_user,manage_status,create_time) 
+	           values(#{loginPlat},#{manageUser},#{manageStatus},#{createTime})
+	</insert>
+
+</mapper>

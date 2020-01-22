@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.TagCommonService">
+	<resultMap type="com.cofc.pojo.TagCommon" id="BaseResultMap">
+		<id column="tag_id" property="tagId" jdbcType="INTEGER" />
+		<result column="tag_name" property="tagName" jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="tag_type" property="tagType" jdbcType="INTEGER" />
+		<result column="tag_status" property="tagStatus" jdbcType="INTEGER" />
+		<association property="tagUser" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<select id="showTagsByqualification" parameterType="com.cofc.pojo.TagCommon"
+		resultMap="BaseResultMap">
+		select * from TB_TAG_COMMON where 1 = 1
+		<if test="tagType!=null">
+			and tag_type=#{tagType}
+		</if>
+		<if test="creater!=null">
+			and create_user=#{creater}
+		</if>
+		order by create_time
+		<if test="rowsId!=null and pageSize!=null">
+			limit #{rowsId},#{pageSize}
+		</if>
+	</select>
+	<select id="findTagIsExist" parameterType="com.cofc.pojo.TagCommon"
+		resultMap="BaseResultMap">
+		select * from TB_TAG_COMMON where tag_type = #{tagType} and
+		tag_name = #{tagName};
+	</select>
+	<insert id="addNewTag" parameterType="com.cofc.pojo.TagCommon">
+		insert into
+		TB_TAG_COMMON(tag_name,create_user,create_time,tag_type)values(#{tagName},#{createUser},#{createTime},#{tagType})
+	</insert>
+	<select id="getTagCount" resultType="int">
+		select count(*) from TB_TAG_COMMON t left join TB_USER_COMMON u on
+		t.create_user = u.user_id where 1=1
+		<if test="tag.tagName!=null and tag.tagName!=''">
+			and t.tag_name like CONCAT('%',#{tag.tagName},'%')
+		</if>
+		<if test="tag.tagId!=null">
+			and t.tag_id = #{tag.tagId}
+		</if>
+		<if test="tag.tagType!=null">
+			and t.tag_type = #{tag.tagType}
+		</if>
+		<if test="tagUser.userId!=null">
+			and u.user_id = #{tagUser.userId}
+		</if>
+		<if test="tagUser.nickName!=null and tagUser.nickName!=''">
+			and (u.nick_name like
+			CONCAT('%',#{tagUser.nickName},'%') or u.real_name like
+			CONCAT('%',#{tagUser.nickName},'%'))
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and tcreate_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and tcreate_time &lt;= #{endTime}
+		</if>
+	</select>
+	<select id="showAllTag" resultMap="BaseResultMap">
+		select * from TB_TAG_COMMON t left join TB_USER_COMMON u on
+		t.create_user = u.user_id where 1=1
+		<if test="tag.tagName!=null and tag.tagName!=''">
+			and t.tag_name like CONCAT('%',#{tag.tagName},'%')
+		</if>
+		<if test="tag.tagId!=null">
+			and t.tag_id = #{tag.tagId}
+		</if>
+		<if test="tag.tagType!=null">
+			and t.tag_type = #{tag.tagType}
+		</if>
+		<if test="tagUser.userId!=null">
+			and u.user_id = #{tagUser.userId}
+		</if>
+		<if test="tagUser.nickName!=null and tagUser.nickName!=''">
+			and (u.nick_name like
+			CONCAT('%',#{tagUser.nickName},'%') or u.real_name like
+			CONCAT('%',#{tagUser.nickName},'%'))
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and tcreate_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and tcreate_time &lt;= #{endTime}
+		</if>
+		order by t.create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	<update id="updateTagInfo" parameterType="com.cofc.pojo.TagCommon">
+		update TB_TAG_COMMON
+		<trim prefix="set" suffixOverrides=",">
+			<if test="tagName!=null and tagName!=''">tag_name=#{tagName},</if>
+			<if test="tagStatus!=null">tag_status=#{tagStatus},</if>
+		</trim>
+		where tag_id = #{tagId}
+	</update>
+	<select id="getCommonTagById" resultMap="BaseResultMap">
+		select * from
+		TB_TAG_COMMON where tag_id = #{tagId}
+	</select>
+	<insert id="addBatchTags" parameterType="java.util.List">
+		insert into
+		TB_TAG_COMMON(tag_name,create_user,create_time,tag_type,tag_status)values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.tagName},#{item.createUser},#{item.createTime},#{item.tagType},#{item.tagStatus})
+		</foreach>
+	</insert>
+	<!--循环拿到多个标签  -->
+	<select id="findTagCommonList" resultMap="BaseResultMap">
+		select * from TB_TAG_COMMON where tag_id in
+		<foreach item="item" index="index" collection="ids" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="getTagCommonName" resultMap="BaseResultMap">
+	   select * from TB_TAG_COMMON where tag_name=#{tagName} and tag_type=#{tagType}
+	</select>
+	
+	<delete id="deleteTag">
+	delete from TB_TAG_COMMON where tag_id=#{tagId}
+	</delete>
+</mapper>

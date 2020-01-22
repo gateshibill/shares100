@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.TaskPublishReasonService">
+	<resultMap type="com.cofc.pojo.TaskPublishReason" id="BaseResultMap">
+		<id column="reason_id" property="reasonId" jdbcType="INTEGER" />
+		<result column="reason_name" property="reasonName" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="findAllReason" resultMap="BaseResultMap">
+		select * from TB_TASK_PUBLISH_REASON
+	</select>
+	<select id="getTaskReasonCount" resultType="INT">
+	  select count(*) from TB_TASK_PUBLISH_REASON where 1=1
+	  <if test="reason.reasonName != null and reason.reasonName != ''">
+	  and reason_name like CONCAT('%',#{reason.reasonName},'%') 
+	  </if>
+	</select>
+	<select id="getAllReasonList" resultMap="BaseResultMap">
+	  select * from TB_TASK_PUBLISH_REASON where 1=1
+	  <if test="reason.reasonName != null and reason.reasonName != ''">
+	  and reason_name like CONCAT('%',#{reason.reasonName},'%') 
+	  </if>
+	  order by reason_id desc limit #{page},#{limit}
+	</select>
+	<select id="isAlreadyName" resultMap="BaseResultMap">
+	  select * from TB_TASK_PUBLISH_REASON where reason_name = #{reason}
+	</select>
+	<insert id="addTaskReason" parameterType="com.cofc.pojo.TaskPublishReason" 
+	useGeneratedKeys="true" keyProperty="reasonId"> 
+	  insert into TB_TASK_PUBLISH_REASON(reason_name) values(#{reasonName})
+	</insert>
+	<delete id="delReason">
+	 delete from TB_TASK_PUBLISH_REASON where reason_id = #{reasonId}
+	</delete>
+	<select id="getReasonDetail" resultMap="BaseResultMap">
+	 select * from TB_TASK_PUBLISH_REASON where reason_id = #{reasonId}
+	</select>
+	<update id="updataReason">
+	  update TB_TASK_PUBLISH_REASON
+	  <set>
+	     reason_name = #{reasonName}
+	  </set>
+	  where reason_id = #{reasonId}
+	</update>
+</mapper>

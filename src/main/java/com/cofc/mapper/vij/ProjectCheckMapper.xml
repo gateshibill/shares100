@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ProjectCheckService"> 
+	<resultMap type="com.cofc.pojo.vij.ProjectCheck" id="BaseResultMap">
+		<id column="check_id" property="checkId" jdbcType="INTEGER"/>
+		<result column="check_name" property="checkName" jdbcType="VARCHAR"/>
+		<result column="project_id" property="projectId" jdbcType="INTEGER"/>
+		<result column="check_time" property="checkTime" jdbcType="TIMESTAMP"/>
+		<result column="check_status" property="checkStatus" jdbcType="INTEGER"/>
+		<!-- <result column="is_deal" property="isDeal" jdbcType="INTEGER"/> -->
+		<result column="check_user_str" property="checkUserStr" jdbcType="VARCHAR"/>
+	<association property="project" javaType="com.cofc.pojo.vij.Project">
+			<result column="name" property="name" jdbcType="VARCHAR"/>
+			
+	</association>
+	</resultMap>
+	<!-- 添加方法 -->
+	<insert id="addProjectCheck" parameterType="com.cofc.pojo.vij.ProjectCheck"
+				useGeneratedKeys="true" keyProperty="projectId">
+		INSERT INTO tv_project_check(project_id,check_name,check_time,check_status,check_user_str)
+		VALUES(#{projectId},#{checkName},#{checkTime},#{checkStatus},#{checkUserStr})
+	</insert>
+	
+	<!-- 修改方法 -->
+	<update id="updateProjectCheck" parameterType="com.cofc.pojo.vij.ProjectCheck">
+		UPDATE tv_project_check 
+	<trim prefix="set" suffixOverrides=",">
+		<if test="checkName !=null and checkName!=''">
+			check_name = #{checkName},
+		</if>
+		<if test="checkStatus !=null">
+			check_status = #{checkStatus},
+		</if>
+		<if test="checkUserStr !=null and checkUserStr !=''" >
+			check_user_str = #{checkUserStr},
+		</if>
+		<if test="checkStatus != null"> 
+		 	check_status = #{checkStatus},
+		</if> 
+	 </trim>
+			WHERE check_id = #{checkId}
+	</update>
+	<!-- 删除方法 -->
+	<delete id="deleteProjectCheck" parameterType="com.cofc.pojo.vij.ProjectCheck">
+		DELETE FROM tv_project_check WHERE check_id= #{checkId}
+	</delete>
+	<!-- 详情 -->
+	<select id="getinfoByid" resultMap="BaseResultMap">
+	SELECT * from tv_project_check WHERE check_id =#{checkId}
+	</select>
+	
+	<select id="getProjectCheckByid" resultMap="BaseResultMap">
+		SELECT * from tv_project_check WHERE project_id =#{projectId}
+	</select>
+	<!-- 查询总数 -->
+	<select id="getProjectCheckCount" resultType="int">
+	SELECT COUNT(*) FROM tv_project_check where 1=1
+		<if test="pjCheck.projectId !=null">
+			and project_id = #{pjCheck.projectId}
+		</if>
+		<if test="pjCheck.checkStatus !=null">
+			and check_status = #{pjCheck.checkStatus}
+		</if>
+	</select>
+	
+	<!-- 查询 -->
+	<select id="queryProjectCheckList" resultMap="BaseResultMap">
+			SELECT w.check_id,w.check_name,w.project_id,w.check_time,w.check_status,w.check_user_str,u.id,u.name
+	 		FROM tv_project_check w
+			LEFT JOIN tv_project u
+			ON w.project_id = u.id where 1=1
+			<if test="pjCheck.projectId !=null">
+				and w.project_id = #{pjCheck.projectId}
+			</if>
+			<if test="pjCheck.checkStatus !=null">
+				and w.check_status = #{pjCheck.checkStatus}
+			</if>
+			<if test="pjCheck.checkName !=null and pjCheck.checkName!=''"> 
+				and w.check_name like CONCAT('%',#{pjCheck.checkName},'%')
+				</if>
+			<if test="page != null and limit != null">
+				limit #{page},#{limit}
+			</if>
+	</select>
+</mapper>

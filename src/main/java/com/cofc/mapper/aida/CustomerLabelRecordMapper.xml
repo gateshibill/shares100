@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.CustomerLabelRecordService">
+	<resultMap type="com.cofc.pojo.aida.CustomerLabelRecord" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="sales_person_id" property="salesPersonId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="label_id" property="labelId" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addCustomerLabelRecord" parameterType="com.cofc.pojo.aida.CustomerLabelRecord"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tf_customer_label_record(app_id,sales_person_id,user_id,label_id,create_time)
+		values(#{appId},#{salesPersonId},#{userId},#{labelId},#{createTime})
+	</insert>
+
+	<delete id="delCustomerLabelRecord" parameterType="com.cofc.pojo.aida.CustomerLabelRecord">
+		delete from
+		tf_customer_label_record where id = #{id} and app_id = #{appId}
+	</delete>
+	<select id="getCustomerLabelRecord" resultMap="BaseResultMap">
+		select * from
+		tf_customer_label_record where label_id = #{labelId} and app_id = #{appId} and user_id = #{userId}
+	</select>
+	<select id="getCustomerLabelRecordList" resultMap="BaseResultMap">
+		select * from
+		tf_customer_label_record where app_id = #{appId} and user_id = #{userId}
+	</select>
+	<select id="getCustomerLabelCount" resultMap="BaseResultMap">
+		select count(*) from
+		   tf_customer_label_record where  app_id = #{appId} 
+		   and label_id =#{labelId} 
+		   and sales_person_id =#{salesPersonId} 
+	</select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.UserVisitService">
+	<resultMap type="com.cofc.pojo.UserVisit" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="create_user" property="createUser" jdbcType="INTEGER" />
+		<result column="uuid" property="uuid" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<insert id="addVisit" parameterType="com.cofc.pojo.UserVisit"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		TB_USER_VISIT(user_id,login_plat,create_time,uuid,state)
+		values(#{userId},#{loginPlat},#{createTime},#{uuid},state)
+	</insert>
+	<select id="getVisit" resultMap="BaseResultMap">
+		select * from TB_USER_VISIT where TO_DAYS(create_time) = TO_DAYS(NOW()) and user_id = #{userId}
+		and login_plat = #{loginPlat}
+	</select>
+	<select id="getVisitByUuid" resultMap="BaseResultMap">
+		select * from TB_USER_VISIT where  uuid = #{uuid} 
+		<if test="state != null"> and state = #{state}</if>
+	</select>
+	<update id="updateState" parameterType="com.cofc.pojo.UserVisit">
+		update TB_USER_VISIT set state = #{state} where id = #{id}
+	</update>
+</mapper>

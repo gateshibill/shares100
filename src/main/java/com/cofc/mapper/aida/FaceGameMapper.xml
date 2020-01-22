@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.FaceGameService">
+	<resultMap type="com.cofc.pojo.aida.FaceGame" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="hostname" property="hostname" jdbcType="VARCHAR" />
+		<result column="encrypt" property="encrypt" jdbcType="VARCHAR" />
+		<result column="ip" property="ip" jdbcType="VARCHAR" />
+		<result column="gameversion" property="gameversion" jdbcType="VARCHAR" />
+		<result column="osversion" property="osversion" jdbcType="VARCHAR" />
+		<result column="osuser" property="osuser" jdbcType="VARCHAR" />
+		<result column="online" property="online" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="expire" property="expire" jdbcType="TIMESTAMP" />
+		<result column="last_time" property="lastTime" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="note" property="note" jdbcType="VARCHAR" />
+		<result column="notice" property="notice" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="addFaceGame" parameterType="com.cofc.pojo.aida.FaceGame"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		te_facegame(name,hostname,encrypt,ip,gameversion,osversion,osuser,online,status,expire,last_time,create_time,note,notice)
+		values(#{name},#{hostname},#{encrypt},#{ip},#{gameversion},#{osversion},#{osuser},#{online},#{status},#{expire},#{lastTime},#{createTime},#{note},#{notice})
+	</insert>
+	<update id="updateFaceGame" parameterType="com.cofc.pojo.aida.FaceGame">
+		update te_facegame
+		<trim prefix="set" suffixOverrides=",">
+		    <if test="hostname!=null">hostname=#{hostname},</if>
+		    <if test="ip!=null">ip=#{ip},</if>
+		    <if test="gameversion!=null">gameversion=#{gameversion},</if>
+		    <if test="osversion!=null">osversion=#{osversion},</if>
+		    <if test="osuser!=null">osuser=#{osuser},</if>
+			<if test="status!=null">status=#{status},</if>
+			<if test="lastTime!=null">last_time=#{lastTime},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<select id="getFaceGameByEncrypt" resultMap="BaseResultMap">
+		select *from te_facegame where encrypt = #{encrypt}
+	</select>
+	
+	<select id="getFaceGameList" resultMap="BaseResultMap">
+	  select * from te_facegame 
+	    where 1=1
+		order by create_time desc limit #{page},#{limit}
+	</select>
+	<select id="getFaceGameCount" resultType="int">
+	select count(*) from te_facegame 
+	    where 1=1
+	</select>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.GoodTypeBannerService">
+	<resultMap type="com.cofc.pojo.vij.GoodTypeBanner" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+		<result column="img_title" property="imgTitle" jdbcType="VARCHAR" />
+		<result column="is_status" property="isStatus" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="img_order" property="imgOrder" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="good_type_id" property="goodTypeId" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 添加功能 -->
+	<insert id="addGoodTypeBanner" parameterType="com.cofc.pojo.vij.GoodTypeBanner" useGeneratedKeys="true" keyProperty="id">
+	INSERT INTO tv_good_type_banner(img_url,img_title,is_status,create_time,img_order,app_id,good_type_id) 
+VALUES(#{imgUrl},#{imgTitle},#{isStatus},#{createTime},#{imgOrder},#{appId},#{goodTypeId})
+	</insert>
+	<!-- 查询所有的图片 -->
+	<select id="queryGoodTypeBanner" resultMap="BaseResultMap">
+	SELECT  * from tv_good_type_banner as b left join tb_goods_type as t on t.type_id = b.good_type_id where 1=1
+		<if test="banner.goodTypeId!=null">and b.good_type_id =#{banner.goodTypeId}</if>
+		<if test="banner.imgTitle!=null and banner.imgTitle!=''">
+		and b.img_title like CONCAT('%',#{banner.imgTitle},'%')
+		</if>
+		<if test="banner.isStatus!=null">
+		and b.is_status like CONCAT('%',#{banner.isStatus},'%')
+		</if>
+		order by b.img_order,b.create_time desc
+	<if test="page !=null and limit != null">
+		limit #{page},#{limit} 
+	</if>
+	</select>
+	
+	<!-- 查询总的数量 -->
+	<select id="getGoodTypeBannerCount" resultType="int">
+		SELECT COUNT(*) FROM tv_good_type_banner as b left join tb_goods_type as t on t.type_id = b.good_type_id where 1=1
+		<if test="banner.imgTitle!=null and banner.imgTitle!=''">and b.img_title =#{banner.imgTitle}</if>
+		<if test="banner.isStatus!=null">and b.is_status =#{banner.isStatus}</if>
+		<if test="banner.goodTypeId!=null">and b.good_type_id =#{banner.goodTypeId}</if>
+	</select>
+	
+	<select id="getinfoBanner" resultMap="BaseResultMap">
+		SELECT * FROM tv_good_type_banner where id=#{id}
+	</select>
+	
+	<update id="upGoodTypeBanner" parameterType="com.cofc.pojo.vij.GoodTypeBanner">
+		UPDATE tv_good_type_banner
+		<trim prefix="set" suffixOverrides=",">
+		<if test="imgUrl !=null and imgUrl!=''">img_url=#{imgUrl},</if>
+		<if test="imgTitle !=null and imgTitle!=''">img_title=#{imgTitle},</if>
+		<if test="isStatus !=null">is_status=#{isStatus},</if>
+		<if test="imgOrder !=null">img_order=#{imgOrder},</if>
+		<if test="goodTypeId !=null">good_type_id=#{goodTypeId},</if>
+		</trim>
+		where id = #{id}
+	</update>
+		<!-- 删除方法 -->
+	<delete id="delGoodTypeBanner" parameterType="int">
+		DELETE FROM tv_good_type_banner WHERE id =#{id}
+	</delete>
+	<select id="getTypeBannerByTypeId" resultMap="BaseResultMap">
+		select * from tv_good_type_banner where good_type_id = #{goodTypeId}
+		order by img_order,create_time desc
+	</select>
+</mapper>

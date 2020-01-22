@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.AliPayRefundResultService">
+	<resultMap type="com.cofc.pojo.AliPayRefundResult" id="BaseResultMap">
+		<id column="result_id" property="resultId" jdbcType="INTEGER" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="msg" property="msg" jdbcType="VARCHAR" />
+		<result column="sub_code" property="subCode" jdbcType="VARCHAR" />
+		<result column="sub_msg" property="subMsg" jdbcType="VARCHAR" />
+		<result column="sign" property="sign" jdbcType="VARCHAR" />
+		<result column="trade_no" property="tradeNo" jdbcType="VARCHAR" />
+		<result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR" />
+		<result column="buyer_logon_id" property="buyerLogonId" jdbcType="VARCHAR" />
+		<result column="fund_change" property="fundChange" jdbcType="VARCHAR" />
+		<result column="refund_fee" property="refundFee" jdbcType="VARCHAR" />
+		
+		<result column="refund_currency" property="refundCurrency" jdbcType="VARCHAR" />
+		<result column="gmt_refund_pay" property="gmtRefundPay" jdbcType="VARCHAR" />
+		<result column="refund_detail_item_list" property="refundDetailItemList" jdbcType="VARCHAR" />
+		<result column="store_name" property="storeName" jdbcType="VARCHAR" />
+		<result column="buyer_user_id" property="buyerUserId" jdbcType="VARCHAR" />
+		<result column="refund_preset_paytool_list" property="refundPresetPaytoolList" jdbcType="VARCHAR" />
+		<result column="refund_charge_amount" property="refundChargeAmount" jdbcType="VARCHAR" />
+		<result column="refund_settlement_id" property="refundSettlementId" jdbcType="VARCHAR" />
+		<result column="present_refund_buyer_amount" property="presentRefundBuyerAmount" jdbcType="VARCHAR" />
+		<result column="present_refund_discount_amount" property="presentRefundDiscountAmount" jdbcType="VARCHAR" />
+		
+		<result column="present_refund_mdiscount_amount" property="presentRefundMdiscountAmount" jdbcType="VARCHAR" />
+		
+	</resultMap>
+	<insert id="addAliPayRefundResult" parameterType="com.cofc.pojo.AliPayRefundResult">
+		insert into
+		tb_alipay_refund_result(code,msg,sub_code,sub_msg,sign,
+		trade_no,out_trade_no,buyer_logon_id,fund_change,refund_fee,refund_currency,
+		gmt_refund_pay,refund_detail_item_list,store_name,buyer_user_id,refund_preset_paytool_list,
+		refund_charge_amount,refund_settlement_id,
+		present_refund_buyer_amount,present_refund_discount_amount,present_refund_mdiscount_amount)
+		values(#{code},#{msg},#{subCode},#{subMsg},#{sign},
+		#{tradeNo},#{outTradeNo},#{buyerLogonId},#{fundChange},#{refundFee},#{refundCurrency},
+		#{gmtRefundPay},#{refundDetailItemList},#{storeName},#{buyerUserId},#{refundPresetPaytoolList},
+		#{refundChargeAmount},#{refundSettlementId},
+		#{presentRefundBuyerAmount},#{presentRefundDiscountAmount},#{presentRefundMdiscountAmount});
+	</insert>
+</mapper>

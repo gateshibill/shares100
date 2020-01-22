@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ShareContractService">
+	<resultMap type="com.cofc.pojo.ShareContract" id="ShareContractMap">
+		<id column="contract_id" property="contractId" jdbcType="INTEGER" />
+		<result column="reason_id" property="reasonId" jdbcType="INTEGER" />
+		<result column="contract_image" property="contractImage"
+			jdbcType="VARCHAR" />
+		<result column="shared_user_id" property="sharedUserId"
+			jdbcType="INTEGER" />
+		<result column="shared_deposit" property="sharedDeposit"
+			jdbcType="DOUBLE" />
+		<result column="total_deposit" property="totalDeposit"
+			jdbcType="DOUBLE" />
+		<result column="total_number" property="totalNumber" jdbcType="INTEGER" />
+		<result column="content_id" property="contentId" jdbcType="INTEGER" />
+		<result column="punishment_id" property="punishmentId"
+			jdbcType="INTEGER" />
+		<result column="is_close" property="isClose" jdbcType="INTEGER" />
+		<result column="is_public" property="isPublic" jdbcType="INTEGER" />
+		<result column="shared_time" property="sharedTime" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<association property="content" javaType="com.cofc.pojo.ContractContent">
+			<id column="content_id" property="contentId" jdbcType="INTEGER" />
+			<result column="content_title" property="contentTitle"
+				jdbcType="VARCHAR" />
+		</association>
+
+		<association property="reason" javaType="com.cofc.pojo.ContractReason">
+			<id column="reason_id" property="reasonId" jdbcType="INTEGER" />
+			<result column="contract_title" property="contractTitle"
+				jdbcType="VARCHAR" />
+		</association>
+
+		<association property="punishment" javaType="com.cofc.pojo.ContractPunishment">
+			<id column="punishment_id" property="punishmentId" jdbcType="INTEGER" />
+			<result column="punishment_content" property="punishmentContent"
+				jdbcType="VARCHAR" />
+		</association>
+		<association property="usercommon" javaType="com.cofc.pojo.UserCommon">
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+
+	<select id="getShareContractById" resultMap="ShareContractMap">
+		select * from
+		TB_SHARE_CONTRACT where contract_id=#{contractId}
+	</select>
+
+	<insert id="addShareContract" parameterType="com.cofc.pojo.ShareContract"
+		useGeneratedKeys="true" keyProperty="contractId">
+		insert into
+		TB_SHARE_CONTRACT(reason_id,shared_user_id,shared_deposit,content_id,punishment_id,is_close,is_public,
+		create_time,total_deposit,total_number,login_plat)
+		values(#{reasonId},#{sharedUserId},#{sharedDeposit},#{contentId},#{punishmentId},#{isClose},#{isPublic},
+		#{createTime},#{totalDeposit},#{totalNumber},#{loginPlat})
+	</insert>
+	<!-- 合约列表 -->
+	<select id="getShareContractList" resultMap="ShareContractMap">
+		select * from TB_SHARE_CONTRACT sh
+		left join TB_CONTRACT_CONTENT cc on
+		sh.content_id=cc.content_id
+		left join TB_CONTRACT_REASON cr on
+		sh.reason_id=cr.reason_id
+		left join TB_CONTRACT_PUNISHMENT cp on
+		sh.punishment_id=cp.punishment_id
+		left join TB_USER_COMMON u on
+		sh.shared_user_id = u.user_id
+		where 1=1
+		<if test="userId != null">
+			and sh.shared_user_id=#{userId}
+		</if>
+		order by sh.create_time desc limit #{pageNo},#{pageSize}
+	</select>
+	<!-- 所有合约列表 -->
+	<select id="getAllShareContract" resultMap="ShareContractMap">
+		select
+		s.*,c.content_title,p.punishment_content,r.contract_title,u.nick_name,u.real_name,u.head_image
+		from TB_SHARE_CONTRACT as s
+		left join TB_CONTRACT_CONTENT as c on
+		s.content_id=c.content_id
+		left join TB_CONTRACT_REASON as r on
+		s.reason_id=r.reason_id
+		left join TB_CONTRACT_PUNISHMENT as p on
+		s.punishment_id=p.punishment_id
+		left join TB_USER_COMMON as u on
+		s.shared_user_id = u.user_id
+		where 1 = 1
+		<if test="loginPlat !=null">
+			and s.login_plat = #{loginPlat}
+		</if>
+		order by s.create_time desc limit #{pageNo},#{pageSize}
+	</select>
+
+	<select id="getShareContractCount" resultType="int">
+		select count(*) from TB_SHARE_CONTRACT where 1=1
+		<if test="contract != null">
+			<if test="contract.sharedUserId != null">
+				and shared_user_id=#{contract.sharedUserId}
+			</if>
+			<if test="contract.contractId != null">
+				and contract_id=#{contract.contractId}
+			</if>
+		</if>
+	</select>
+	<update id="updateShareContract" parameterType="com.cofc.pojo.ShareContract">
+		update TB_SHARE_CONTRACT set update_time=#{updateTime}
+		<if test="totalDeposit != null">
+			,total_deposit=#{totalDeposit}
+		</if>
+		<if test="totalNumber != null">
+			,total_number=#{totalNumber}
+		</if>
+		where contract_id=#{contractId}
+	</update>
+	<delete id="deleteShareContract">
+	 delete from TB_SHARE_CONTRACT where contract_id=#{contractId} 
+	</delete>
+</mapper>

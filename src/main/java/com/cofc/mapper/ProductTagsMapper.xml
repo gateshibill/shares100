@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ProductTagsService">
+	<resultMap type="com.cofc.pojo.ProductTags" id="BaseResultMap">
+		<id column="childtag_id" property="childtagId" jdbcType="INTEGER" />
+		<result column="childtag_name" property="childtagName"
+			jdbcType="VARCHAR" />
+		<result column="childtag_order" property="childtagOrder"
+			jdbcType="INTEGER" />
+		<result column="childtag_create_user" property="childtagCreateUser" jdbcType="INTEGER"/>
+		<result column="childtag_create_time" property="childtagCreateTime" jdbcType="TIMESTAMP"/>
+		<result column="is_using" property="isUsing" jdbcType="INTEGER"/>	
+	</resultMap>
+ 	<select id="findProductTagsByOrder" resultMap="BaseResultMap">
+		select * from TB_PRODUCT_TAGS where 1=1
+		<if test="orderId != null">
+			and childtag_order = #{orderId}
+		</if>
+		<if test="rowsId != null and pageSize != null">
+		limit #{rowsId},#{pageSize}
+		</if>
+	</select>
+	<insert id="addNewProductTag" parameterType="com.cofc.pojo.ProductTags">
+		insert into TB_PRODUCT_TAGS (childtag_name,childtag_order,childtag_create_user,childtag_create_time,is_using)
+		values(#{childtagName},#{childtagOrder},#{childtagCreateUser},#{childtagCreateTime},#{isUsing})
+	</insert>
+	<select id="getTagByName" resultMap="BaseResultMap">
+		select * from TB_PRODUCT_TAGS where childtag_name = #{tagName}
+	</select>
+	<select id="getTagById" resultMap="BaseResultMap">
+		select * from TB_PRODUCT_TAGS where childtag_id = #{tagId}
+	</select>
+</mapper>

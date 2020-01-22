@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.video.UserBeanMapper">
+  <resultMap id="BaseResultMap" type="com.cofc.pojo.video.UserBean">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="group_id" jdbcType="SMALLINT" property="groupId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+    <result column="user_nick_name" jdbcType="VARCHAR" property="userNickName" />
+    <result column="user_qq" jdbcType="VARCHAR" property="userQq" />
+    <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
+    <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="user_status" jdbcType="BIT" property="userStatus" />
+    <result column="user_portrait" jdbcType="VARCHAR" property="userPortrait" />
+    <result column="user_portrait_thumb" jdbcType="VARCHAR" property="userPortraitThumb" />
+    <result column="user_openid_qq" jdbcType="VARCHAR" property="userOpenidQq" />
+    <result column="user_openid_weixin" jdbcType="VARCHAR" property="userOpenidWeixin" />
+    <result column="user_question" jdbcType="VARCHAR" property="userQuestion" />
+    <result column="user_answer" jdbcType="VARCHAR" property="userAnswer" />
+    <result column="user_points" jdbcType="INTEGER" property="userPoints" />
+    <result column="user_points_froze" jdbcType="INTEGER" property="userPointsFroze" />
+    <result column="user_reg_time" jdbcType="INTEGER" property="userRegTime" />
+    <result column="user_reg_ip" jdbcType="INTEGER" property="userRegIp" />
+    <result column="user_login_time" jdbcType="INTEGER" property="userLoginTime" />
+    <result column="user_login_ip" jdbcType="INTEGER" property="userLoginIp" />
+    <result column="user_last_login_time" jdbcType="INTEGER" property="userLastLoginTime" />
+    <result column="user_last_login_ip" jdbcType="INTEGER" property="userLastLoginIp" />
+    <result column="user_login_num" jdbcType="SMALLINT" property="userLoginNum" />
+    <result column="user_extend" jdbcType="SMALLINT" property="userExtend" />
+    <result column="user_random" jdbcType="VARCHAR" property="userRandom" />
+    <result column="user_end_time" jdbcType="INTEGER" property="userEndTime" />
+    <result column="user_pid" jdbcType="INTEGER" property="userPid" />
+    <result column="user_pid_2" jdbcType="INTEGER" property="userPid2" />
+    <result column="user_pid_3" jdbcType="INTEGER" property="userPid3" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, group_id, user_name, user_pwd, user_nick_name, user_qq, user_email, user_phone, 
+    user_status, user_portrait, user_portrait_thumb, user_openid_qq, user_openid_weixin, 
+    user_question, user_answer, user_points, user_points_froze, user_reg_time, user_reg_ip, 
+    user_login_time, user_login_ip, user_last_login_time, user_last_login_ip, user_login_num, 
+    user_extend, user_random, user_end_time, user_pid, user_pid_2, user_pid_3
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mac_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mac_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cofc.pojo.video.UserBean">
+    insert into mac_user (user_id, group_id, user_name, 
+      user_pwd, user_nick_name, user_qq, 
+      user_email, user_phone, user_status, 
+      user_portrait, user_portrait_thumb, user_openid_qq, 
+      user_openid_weixin, user_question, user_answer, 
+      user_points, user_points_froze, user_reg_time, 
+      user_reg_ip, user_login_time, user_login_ip, 
+      user_last_login_time, user_last_login_ip, user_login_num, 
+      user_extend, user_random, user_end_time, 
+      user_pid, user_pid_2, user_pid_3
+      )
+    values (#{userId,jdbcType=INTEGER}, #{groupId,jdbcType=SMALLINT}, #{userName,jdbcType=VARCHAR}, 
+      #{userPwd,jdbcType=VARCHAR}, #{userNickName,jdbcType=VARCHAR}, #{userQq,jdbcType=VARCHAR}, 
+      #{userEmail,jdbcType=VARCHAR}, #{userPhone,jdbcType=VARCHAR}, #{userStatus,jdbcType=BIT}, 
+      #{userPortrait,jdbcType=VARCHAR}, #{userPortraitThumb,jdbcType=VARCHAR}, #{userOpenidQq,jdbcType=VARCHAR}, 
+      #{userOpenidWeixin,jdbcType=VARCHAR}, #{userQuestion,jdbcType=VARCHAR}, #{userAnswer,jdbcType=VARCHAR}, 
+      #{userPoints,jdbcType=INTEGER}, #{userPointsFroze,jdbcType=INTEGER}, #{userRegTime,jdbcType=INTEGER}, 
+      #{userRegIp,jdbcType=INTEGER}, #{userLoginTime,jdbcType=INTEGER}, #{userLoginIp,jdbcType=INTEGER}, 
+      #{userLastLoginTime,jdbcType=INTEGER}, #{userLastLoginIp,jdbcType=INTEGER}, #{userLoginNum,jdbcType=SMALLINT}, 
+      #{userExtend,jdbcType=SMALLINT}, #{userRandom,jdbcType=VARCHAR}, #{userEndTime,jdbcType=INTEGER}, 
+      #{userPid,jdbcType=INTEGER}, #{userPid2,jdbcType=INTEGER}, #{userPid3,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cofc.pojo.video.UserBean">
+    insert into mac_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="userPwd != null">
+        user_pwd,
+      </if>
+      <if test="userNickName != null">
+        user_nick_name,
+      </if>
+      <if test="userQq != null">
+        user_qq,
+      </if>
+      <if test="userEmail != null">
+        user_email,
+      </if>
+      <if test="userPhone != null">
+        user_phone,
+      </if>
+      <if test="userStatus != null">
+        user_status,
+      </if>
+      <if test="userPortrait != null">
+        user_portrait,
+      </if>
+      <if test="userPortraitThumb != null">
+        user_portrait_thumb,
+      </if>
+      <if test="userOpenidQq != null">
+        user_openid_qq,
+      </if>
+      <if test="userOpenidWeixin != null">
+        user_openid_weixin,
+      </if>
+      <if test="userQuestion != null">
+        user_question,
+      </if>
+      <if test="userAnswer != null">
+        user_answer,
+      </if>
+      <if test="userPoints != null">
+        user_points,
+      </if>
+      <if test="userPointsFroze != null">
+        user_points_froze,
+      </if>
+      <if test="userRegTime != null">
+        user_reg_time,
+      </if>
+      <if test="userRegIp != null">
+        user_reg_ip,
+      </if>
+      <if test="userLoginTime != null">
+        user_login_time,
+      </if>
+      <if test="userLoginIp != null">
+        user_login_ip,
+      </if>
+      <if test="userLastLoginTime != null">
+        user_last_login_time,
+      </if>
+      <if test="userLastLoginIp != null">
+        user_last_login_ip,
+      </if>
+      <if test="userLoginNum != null">
+        user_login_num,
+      </if>
+      <if test="userExtend != null">
+        user_extend,
+      </if>
+      <if test="userRandom != null">
+        user_random,
+      </if>
+      <if test="userEndTime != null">
+        user_end_time,
+      </if>
+      <if test="userPid != null">
+        user_pid,
+      </if>
+      <if test="userPid2 != null">
+        user_pid_2,
+      </if>
+      <if test="userPid3 != null">
+        user_pid_3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=SMALLINT},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null">
+        #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userNickName != null">
+        #{userNickName,jdbcType=VARCHAR},
+      </if>
+      <if test="userQq != null">
+        #{userQq,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null">
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null">
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null">
+        #{userStatus,jdbcType=BIT},
+      </if>
+      <if test="userPortrait != null">
+        #{userPortrait,jdbcType=VARCHAR},
+      </if>
+      <if test="userPortraitThumb != null">
+        #{userPortraitThumb,jdbcType=VARCHAR},
+      </if>
+      <if test="userOpenidQq != null">
+        #{userOpenidQq,jdbcType=VARCHAR},
+      </if>
+      <if test="userOpenidWeixin != null">
+        #{userOpenidWeixin,jdbcType=VARCHAR},
+      </if>
+      <if test="userQuestion != null">
+        #{userQuestion,jdbcType=VARCHAR},
+      </if>
+      <if test="userAnswer != null">
+        #{userAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="userPoints != null">
+        #{userPoints,jdbcType=INTEGER},
+      </if>
+      <if test="userPointsFroze != null">
+        #{userPointsFroze,jdbcType=INTEGER},
+      </if>
+      <if test="userRegTime != null">
+        #{userRegTime,jdbcType=INTEGER},
+      </if>
+      <if test="userRegIp != null">
+        #{userRegIp,jdbcType=INTEGER},
+      </if>
+      <if test="userLoginTime != null">
+        #{userLoginTime,jdbcType=INTEGER},
+      </if>
+      <if test="userLoginIp != null">
+        #{userLoginIp,jdbcType=INTEGER},
+      </if>
+      <if test="userLastLoginTime != null">
+        #{userLastLoginTime,jdbcType=INTEGER},
+      </if>
+      <if test="userLastLoginIp != null">
+        #{userLastLoginIp,jdbcType=INTEGER},
+      </if>
+      <if test="userLoginNum != null">
+        #{userLoginNum,jdbcType=SMALLINT},
+      </if>
+      <if test="userExtend != null">
+        #{userExtend,jdbcType=SMALLINT},
+      </if>
+      <if test="userRandom != null">
+        #{userRandom,jdbcType=VARCHAR},
+      </if>
+      <if test="userEndTime != null">
+        #{userEndTime,jdbcType=INTEGER},
+      </if>
+      <if test="userPid != null">
+        #{userPid,jdbcType=INTEGER},
+      </if>
+      <if test="userPid2 != null">
+        #{userPid2,jdbcType=INTEGER},
+      </if>
+      <if test="userPid3 != null">
+        #{userPid3,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cofc.pojo.video.UserBean">
+    update mac_user
+    <set>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=SMALLINT},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null">
+        user_pwd = #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userNickName != null">
+        user_nick_name = #{userNickName,jdbcType=VARCHAR},
+      </if>
+      <if test="userQq != null">
+        user_qq = #{userQq,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null">
+        user_email = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null">
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null">
+        user_status = #{userStatus,jdbcType=BIT},
+      </if>
+      <if test="userPortrait != null">
+        user_portrait = #{userPortrait,jdbcType=VARCHAR},
+      </if>
+      <if test="userPortraitThumb != null">
+        user_portrait_thumb = #{userPortraitThumb,jdbcType=VARCHAR},
+      </if>
+      <if test="userOpenidQq != null">
+        user_openid_qq = #{userOpenidQq,jdbcType=VARCHAR},
+      </if>
+      <if test="userOpenidWeixin != null">
+        user_openid_weixin = #{userOpenidWeixin,jdbcType=VARCHAR},
+      </if>
+      <if test="userQuestion != null">
+        user_question = #{userQuestion,jdbcType=VARCHAR},
+      </if>
+      <if test="userAnswer != null">
+        user_answer = #{userAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="userPoints != null">
+        user_points = #{userPoints,jdbcType=INTEGER},
+      </if>
+      <if test="userPointsFroze != null">
+        user_points_froze = #{userPointsFroze,jdbcType=INTEGER},
+      </if>
+      <if test="userRegTime != null">
+        user_reg_time = #{userRegTime,jdbcType=INTEGER},
+      </if>
+      <if test="userRegIp != null">
+        user_reg_ip = #{userRegIp,jdbcType=INTEGER},
+      </if>
+      <if test="userLoginTime != null">
+        user_login_time = #{userLoginTime,jdbcType=INTEGER},
+      </if>
+      <if test="userLoginIp != null">
+        user_login_ip = #{userLoginIp,jdbcType=INTEGER},
+      </if>
+      <if test="userLastLoginTime != null">
+        user_last_login_time = #{userLastLoginTime,jdbcType=INTEGER},
+      </if>
+      <if test="userLastLoginIp != null">
+        user_last_login_ip = #{userLastLoginIp,jdbcType=INTEGER},
+      </if>
+      <if test="userLoginNum != null">
+        user_login_num = #{userLoginNum,jdbcType=SMALLINT},
+      </if>
+      <if test="userExtend != null">
+        user_extend = #{userExtend,jdbcType=SMALLINT},
+      </if>
+      <if test="userRandom != null">
+        user_random = #{userRandom,jdbcType=VARCHAR},
+      </if>
+      <if test="userEndTime != null">
+        user_end_time = #{userEndTime,jdbcType=INTEGER},
+      </if>
+      <if test="userPid != null">
+        user_pid = #{userPid,jdbcType=INTEGER},
+      </if>
+      <if test="userPid2 != null">
+        user_pid_2 = #{userPid2,jdbcType=INTEGER},
+      </if>
+      <if test="userPid3 != null">
+        user_pid_3 = #{userPid3,jdbcType=INTEGER},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cofc.pojo.video.UserBean">
+    update mac_user
+    set group_id = #{groupId,jdbcType=SMALLINT},
+      user_name = #{userName,jdbcType=VARCHAR},
+      user_pwd = #{userPwd,jdbcType=VARCHAR},
+      user_nick_name = #{userNickName,jdbcType=VARCHAR},
+      user_qq = #{userQq,jdbcType=VARCHAR},
+      user_email = #{userEmail,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
+      user_status = #{userStatus,jdbcType=BIT},
+      user_portrait = #{userPortrait,jdbcType=VARCHAR},
+      user_portrait_thumb = #{userPortraitThumb,jdbcType=VARCHAR},
+      user_openid_qq = #{userOpenidQq,jdbcType=VARCHAR},
+      user_openid_weixin = #{userOpenidWeixin,jdbcType=VARCHAR},
+      user_question = #{userQuestion,jdbcType=VARCHAR},
+      user_answer = #{userAnswer,jdbcType=VARCHAR},
+      user_points = #{userPoints,jdbcType=INTEGER},
+      user_points_froze = #{userPointsFroze,jdbcType=INTEGER},
+      user_reg_time = #{userRegTime,jdbcType=INTEGER},
+      user_reg_ip = #{userRegIp,jdbcType=INTEGER},
+      user_login_time = #{userLoginTime,jdbcType=INTEGER},
+      user_login_ip = #{userLoginIp,jdbcType=INTEGER},
+      user_last_login_time = #{userLastLoginTime,jdbcType=INTEGER},
+      user_last_login_ip = #{userLastLoginIp,jdbcType=INTEGER},
+      user_login_num = #{userLoginNum,jdbcType=SMALLINT},
+      user_extend = #{userExtend,jdbcType=SMALLINT},
+      user_random = #{userRandom,jdbcType=VARCHAR},
+      user_end_time = #{userEndTime,jdbcType=INTEGER},
+      user_pid = #{userPid,jdbcType=INTEGER},
+      user_pid_2 = #{userPid2,jdbcType=INTEGER},
+      user_pid_3 = #{userPid3,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

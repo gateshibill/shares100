@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.RechargeRecordService">
+	<resultMap type="com.cofc.pojo.RechargeRecord" id="BaseResultMap">
+		<id column="pay_id" property="payId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="total_fee" property="totalFee" jdbcType="DOUBLE" />
+		<result column="real_fee" property="realFee" jdbcType="DOUBLE" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="out_trade_number" property="outTradeNumber"
+			jdbcType="VARCHAR" />
+		<result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="userWantToRecharge" parameterType="com.cofc.pojo.RechargeRecord"
+		useGeneratedKeys="true" keyProperty="payId">
+		insert into
+		TB_RECHARGE_RECORD(user_id,total_fee,real_fee,login_plat,out_trade_number,pay_status,create_time,update_time)
+		values(#{userId},#{totalFee},#{realFee},#{loginPlat},#{outTradeNumber},#{payStatus},#{createTime},#{updateTime})
+	</insert>
+	<update id="updatePayRecordInfo" parameterType="com.cofc.pojo.RechargeRecord">
+		update TB_RECHARGE_RECORD
+		<trim prefix="set" suffixOverrides=",">
+			<if test="realFee!=null">real_fee=#{realFee},</if>
+			<if test="updateTime!=null">update_time=#{updateTime},</if>
+			<if test="payStatus!=null">pay_status=#{payStatus},</if>
+			<if test="outTradeNumber!=null">out_trade_number=#{outTradeNumber},</if>
+		</trim>
+		where pay_id = #{payId}
+	</update>
+	<select id="getPayRecordByPayId" resultMap="BaseResultMap">
+		select * from
+		TB_RECHARGE_RECORD where pay_id =#{payId}
+	</select>
+</mapper>

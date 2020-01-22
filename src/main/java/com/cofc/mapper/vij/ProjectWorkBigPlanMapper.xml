@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ProjectWorkBigPlanService">
+	<resultMap type="com.cofc.pojo.vij.ProjectWorkBigPlan" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="big_plan_name" property="bigPlanName" jdbcType="VARCHAR" />
+		<result column="big_plan_start_time" property="bigPlanStartTime" jdbcType="INTEGER" />
+		<result column="big_plan_end_time" property="bigPlanEndTime" jdbcType="INTEGER" />
+		<result column="project_id" property="projectId" jdbcType="INTEGER" />
+		<result column="is_finish" property="isFinish" jdbcType="INTEGER" />
+		<result column="big_real_end_time" property="bigRealEndTime" jdbcType="INTEGER" />
+		<result column="big_real_start_time" property="bigRealStartTime" jdbcType="INTEGER" />
+		<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+		<result column="check_status" property="checkStatus" jdbcType="INTEGER" />
+		<result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
+		<result column="deco_type" property="decoType" jdbcType="INTEGER" />
+		<result column="join_people" property="joinPeople" jdbcType="VARCHAR" />
+	    <result column="is_check" property="isCheck" jdbcType="INTEGER" />
+	    <result column="is_remove" property="isRemove" jdbcType="INTEGER"/>
+	</resultMap>
+	<insert id="addBigPlan" parameterType="com.cofc.pojo.vij.ProjectWorkBigPlan"
+		useGeneratedKeys="true" keyProperty="id">
+		 INSERT INTO tv_project_work_big_plan(big_plan_name,big_plan_start_time,big_plan_end_time,
+		 project_id,is_finish,big_real_end_time,big_real_start_time,order_status,check_status,check_time,deco_type,join_people,is_check,is_remove) 
+ 		 	VALUES(#{bigPlanName},#{bigPlanStartTime},#{bigPlanEndTime},#{projectId},#{isFinish},
+ 		 	#{bigRealEndTime},#{bigRealStartTime},#{orderStatus},#{checkStatus},#{checkTime},#{decoType},#{joinPeople},#{isCheck},#{isRemove})
+	</insert>
+	<update id="updateBigPlan" parameterType="com.cofc.pojo.vij.ProjectWorkBigPlan">
+		update tv_project_work_big_plan
+		<trim prefix="set" suffixOverrides=",">
+			<if test="bigPlanName!=null and bigPlanName!=''">big_plan_name = #{bigPlanName},</if>
+			<if test="bigPlanStartTime!=null">big_plan_start_time = #{bigPlanStartTime},</if>
+			<if test="bigPlanEndTime!=null">big_plan_end_time = #{bigPlanEndTime},</if>
+			<if test="isFinish!=null">is_finish = #{isFinish},</if>
+			<if test="bigRealEndTime!=null">big_real_end_time = #{bigRealEndTime},</if>
+			<if test="bigRealStartTime!=null">big_real_start_time = #{bigRealStartTime},</if>
+			<if test="orderStatus!=null">order_status = #{orderStatus},</if>
+			<if test="checkStatus!=null">check_status = #{checkStatus},</if>
+			<if test="checkTime!=null">check_time = #{checkTime},</if>
+			<if test="decoType!=null">deco_type = #{decoType},</if>
+			<if test="joinPeople!=null and joinPeople!=''">join_people = #{joinPeople},</if>
+			<if test="isCheck!=null">is_check = #{isCheck},</if>
+			<if test="isRemove != null">is_remove = #{isRemove},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="delBigPlan" parameterType="com.cofc.pojo.vij.ProjectWorkBigPlan">
+		delete from tv_project_work_big_plan where id = #{id}
+	</delete>
+	<select id="getInfoById" resultMap="BaseResultMap">
+		select * from tv_project_work_big_plan where id = #{id}
+	</select>
+	
+	<select id="getBigPlanCount" resultType="int">
+		select count(*) from tv_project_work_big_plan where 1=1
+		<if test="big.projectId != null">
+			and project_id = #{big.projectId}
+		</if>
+		<if test="big.isFinish != null">
+			and is_finish = #{big.isFinish}
+		</if>
+		<if test="big.isCheck != null">
+			and is_check = #{big.isCheck}
+		</if>
+	</select>
+	<select id="getBigPlanList" resultMap="BaseResultMap">
+		select * from tv_project_work_big_plan where 1=1
+		<if test="big.projectId != null">
+			and project_id = #{big.projectId}
+		</if>
+		<if test="big.isFinish != null">
+			and is_finish = #{big.isFinish}
+		</if>
+		<if test="big.isCheck != null">
+			and is_check = #{big.isCheck}
+		</if>
+		order by is_finish desc,order_status
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	<select id="getProjectWorkBigPlayCount" resultType="int">
+		select count(*) from tv_project_work_big_plan where 1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="isFinish != null">
+			and is_finish = #{isFinish}
+		</if>
+	</select>
+</mapper>

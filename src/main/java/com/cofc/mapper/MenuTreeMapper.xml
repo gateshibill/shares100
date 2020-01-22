@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.MenuTreeService">
+	<resultMap type="com.cofc.pojo.MenuTree" id="BaseResultMap">
+		<id column="menu_id" property="menuId" jdbcType="INTEGER" />
+		<result column="menu_name" property="title" jdbcType="VARCHAR" />
+		<result column="menu_url" property="href" jdbcType="VARCHAR" />
+		<result column="menu_logo" property="icon" jdbcType="VARCHAR" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="menu_level" property="menuLevel" jdbcType="INTEGER" />
+		<result column="order_id" property="orderId" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="getParentMenu" resultMap="BaseResultMap">
+		select * from TB_MENU_TREE where menu_id in
+				<foreach item="item"  index="index" collection="ids" open="("
+					separator="," close=")">
+					#{item}
+				</foreach>
+				order by order_id;
+	</select>
+</mapper>

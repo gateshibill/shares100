@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ModelRoomService">
+	<resultMap type="com.cofc.pojo.vij.ModelRoom" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+		<result column="key_word" property="keyWord" jdbcType="VARCHAR" />
+		<result column="model_desc" property="modelDesc" jdbcType="VARCHAR" />
+		<result column="soft_images" property="softImages" jdbcType="VARCHAR" />
+		<result column="hard_images" property="hardImages" jdbcType="VARCHAR" />
+		<result column="home_images" property="homeImages" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+		<result column="model_title" property="modelTitle" jdbcType="VARCHAR" />
+	</resultMap>
+	<insert id="addModelRoom" parameterType="com.cofc.pojo.vij.ModelRoom"
+		useGeneratedKeys="true" keyProperty="id">
+		 INSERT INTO tv_model_room(type_name,key_word,model_desc,soft_images,hard_images,home_images,order_status,
+		 is_effect,create_time,model_title) 
+ 		 	VALUES(#{typeName},#{keyWord},#{modelDesc},#{softImages},#{hardImages},#{homeImages},#{orderStatus},
+ 		 	#{isEffect},#{createTime},#{modelTitle})
+	</insert>
+	<update id="updateModelRoom" parameterType="com.cofc.pojo.vij.ModelRoom">
+		update tv_model_room
+		<trim prefix="set" suffixOverrides=",">
+			<if test="typeName!=null and typeName!=''">type_name = #{typeName},</if>
+			<if test="keyWord!=null and keyWord!=''">key_word = #{keyWord},</if>
+			<if test="modelDesc!=null and modelDesc!=''">model_desc = #{modelDesc},</if>
+			<if test="softImages!=null and softImages!=''">soft_images = #{softImages},</if>
+			<if test="hardImages!=null and hardImages!=''">hard_images = #{hardImages},</if>
+			<if test="homeImages!=null and homeImages!=''">home_images = #{homeImages},</if>
+			<if test="orderStatus!=null">order_status = #{orderStatus},</if>
+			<if test="isEffect!=null">is_effect = #{isEffect},</if>
+			<if test="modelTitle!=null and modelTitle!=''">model_title = #{modelTitle},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="delModelRoom" parameterType="com.cofc.pojo.vij.ModelRoom">
+		delete from tv_model_room where id = #{id}
+	</delete>
+	<select id="getInfoById" resultMap="BaseResultMap">
+		select * from tv_model_room where id = #{id}
+	</select>
+	
+	<select id="getModelRoomCount" resultType="int">
+		select count(*) from tv_model_room where 1=1
+		<if test="room.isEffect != null">
+			and is_effect = #{room.isEffect}
+		</if>
+		<if test="room.typeName != null and room.typeName != ''">
+			and type_name = #{room.typeName}
+		</if>
+	</select>
+	<select id="getModelRoomList" resultMap="BaseResultMap">
+		select * from tv_model_room where 1=1
+		<if test="room.isEffect != null">
+			and is_effect = #{room.isEffect}
+		</if>
+		<if test="room.typeName != null and room.typeName != ''">
+			and type_name = #{room.typeName}
+		</if>
+		order by order_status,create_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+
+</mapper>

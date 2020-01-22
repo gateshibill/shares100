@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.tx.AgentService">
+	<resultMap type="com.cofc.pojo.tx.Agent" id="BaseResultMap">
+		<id column="agent_id" property="agentId" jdbcType="INTEGER" />
+		<result column="agent_name" property="agentName" jdbcType="VARCHAR" />
+		<result column="agent_code" property="agentCode" jdbcType="VARCHAR" />
+		<result column="auth_code" property="authCode" jdbcType="VARCHAR" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="agent_notify_url" property="agentNotifyUrl" jdbcType="VARCHAR" />
+		<result column="agent_ip" property="agentIP" jdbcType="VARCHAR" />
+		<result column="agent_domain" property="agentDomain" jdbcType="VARCHAR" />
+		<result column="max_quantity" property="maxQuantity" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addAgent" parameterType="com.cofc.pojo.tx.Agent"
+		useGeneratedKeys="true" keyProperty="agentId">
+		insert into
+		tx_agent(agent_name,agent_code,auth_code,is_effect,create_time,agent_notify_url,agent_ip,agent_domain,
+		max_quantity)
+		values(#{agentName},#{agentCode},#{authCode},#{isEffect},#{createTime},#{agentNotifyUrl},
+		#{agentIP},#{agentDomain},#{maxQuantity})
+	</insert>
+	<update id="updateAgent" parameterType="com.cofc.pojo.tx.Agent">
+		update tx_agent
+		<trim prefix="set" suffixOverrides=",">
+			<if test="agentName!=null and agentName!=''">agent_name = #{agentName},</if>
+			<if test="agentCode!=null and agentCode!=''">agent_code = #{agentCode},</if>
+			<if test="authCode!=null and authCode!=''">auth_code = #{authCode},</if>
+			<if test="agentNotifyUrl != null and agentNotifyUrl != ''">agent_notify_url = #{agentNotifyUrl},</if>
+			<if test="agentIP!=null and agentIP != ''">agent_ip = #{agentIP},</if>
+			<if test="isEffect!=null">is_effect = #{isEffect},</if>
+			<if test="maxQuantity!=null">max_quantity = #{maxQuantity},</if>
+			<if test="agentDomain != null and agentDomain != ''">agent_domain = #{agentDomain},</if>
+		</trim>
+		where agent_id = #{agentId}
+	</update>
+	<delete id="delAgent" parameterType="com.cofc.pojo.tx.Agent">
+		delete from tx_agent where agent_id = #{agentId}
+	</delete>
+	<select id="getAgentInfo" resultMap="BaseResultMap">
+		select * from tx_agent where 1=1
+		<if test="agentId != null">
+			and agent_id = #{agentId}
+		</if>
+		<if test="agentCode != null and agentCode != ''">
+			and agent_code = #{agentCode}
+		</if>
+		<if test="isEffect != null">
+			and is_effect = #{isEffect}
+		</if>
+		<if test="agentCode != null and agentCode != ''">
+			and agent_code = #{agentCode}
+		</if>
+	</select>
+
+	<select id="getAgentCount" resultType="int">
+		select count(*) from tx_agent where 1=1
+		<if test="agent.isEffect != null">
+			and is_effect = #{agent.isEffect}
+		</if>
+	</select>
+	<select id="getAgentList" resultMap="BaseResultMap">
+		select * from tx_agent where 1=1
+		<if test="agent.isEffect != null">
+			and is_effect = #{agent.isEffect}
+		</if>
+		order by create_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+</mapper>

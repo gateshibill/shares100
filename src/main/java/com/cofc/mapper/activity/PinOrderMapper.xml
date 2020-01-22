@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.activity.PinOrderService">
+	<resultMap type="com.cofc.pojo.activity.PinOrder" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="role" property="role" jdbcType="INTEGER" />
+		<result column="price" property="price" jdbcType="DOUBLE" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addPinOrder" parameterType="com.cofc.pojo.activity.PinOrder"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tc_pin_order(app_id,user_id,goods_id,role,price,status,create_time,end_time)
+		values(#{appId},#{userId},#{goodsId},{role},{price},#{status},#{create_time},#{end_time})
+	</insert>
+	<update id="updatePinOrder" parameterType="com.cofc.pojo.activity.PinOrder">
+		update tc_pin_order
+		<trim prefix="set" suffixOverrides=",">
+			<if test="status!=null and status!=''">status=#{status},</if>
+			<if test="endTime!=null and endTime!=''">end_time=#{endTime},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="delPinOrder" parameterType="com.cofc.pojo.activity.PinOrder">
+		delete from
+		tc_pin_order
+		where id = #{id} and app_id = #{appId}
+	</delete>
+	<select id="getPinOrderList" parameterType="com.cofc.pojo.activity.PinOrder"
+		resultMap="BaseResultMap">
+		SELECT * FROM tc_pin_order where app_id = #{appId} and (goods_id=#{goodsId} or #{goodsId}=0)
+		order by  create_time
+	</select>
+	<select id="getPinOrder" parameterType="com.cofc.pojo.activity.PinOrder"
+		resultMap="BaseResultMap">
+		SELECT * FROM tc_pin_order 
+		where 
+		id = #{id} and app_id = #{appId}
+	</select>
+
+</mapper>

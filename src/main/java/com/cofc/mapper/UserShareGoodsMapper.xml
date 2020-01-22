@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.UserShareGoodsService">
+	<resultMap type="com.cofc.pojo.UserShareGoods" id="BaseResultMap">
+		<id column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="shared_user_id" property="sharedUserId"
+			jdbcType="INTEGER" />
+		<result column="need_deposit" property="needDeposit" jdbcType="INTEGER" />
+		<result column="deposit" property="deposit" jdbcType="DOUBLE" />
+		<result column="shared_address" property="sharedAddress"
+			jdbcType="VARCHAR" />
+		<result column="shared_time" property="sharedTime" />
+		<result column="goods_name" property="goodsName" jdbcType="INTEGER" />
+		<result column="goods_pictures" property="goodsPictures" jdbcType="VARCHAR"/>
+		<result column="goods_type" property="goodsType" jdbcType="INTEGER"/>
+		<association property="sharedUser" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="phone" property="phone" jdbcType="VARCHAR" />
+			<result column="e_mail" property="email" jdbcType="VARCHAR" />
+			<result column="user_sex" property="userSex" jdbcType="INTEGER" />
+		</association>
+	</resultMap>
+	<select id="findAllsharedGoods" resultMap="BaseResultMap">
+		select * from TB_USER_SHARE_GOODS g left join TB_USER u on
+		g.shared_user_id = u.user_id where 1=1
+		<if test="userType!=null">
+			and u.user_type = #{userType}
+		</if>
+		<if test="userId!=null">
+			and g.shared_user_id = #{userId}
+		</if>
+		<if test="goodsName!=null and goodsName!=''">
+			and g.goods_name like CONCAT('%',#{goodsName},'%')
+		</if>
+		order by g.shared_time desc limit #{rowsId},#{pageSize}
+	</select>
+
+	<insert id="addNewShare" parameterType="com.cofc.pojo.UserShareGoods">
+		insert into
+		TB_USER_SHARE_GOODS(shared_user_id,goods_name,need_deposit,deposit,shared_address,shared_time)
+		values
+		(#{sharedUserId},#{goodsName},#{needDeposit},#{deposit},#{sharedAddress},#{sharedTime})
+	</insert>
+</mapper>

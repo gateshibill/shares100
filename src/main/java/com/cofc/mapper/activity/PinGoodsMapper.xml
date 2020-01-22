@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.activity.PinGoodsService">
+	<resultMap type="com.cofc.pojo.activity.PinGoods" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="price" property="price" jdbcType="DOUBLE" />
+		<result column="validate" property="validate" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addPinGoods" parameterType="com.cofc.pojo.activity.PinGoods"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tc_pin_goods(app_id,goods_id,price,validate,price,status)
+		values(#{appId},#{goodsId},#{price},#{validate},#{status})
+	</insert>
+	<select id="getPinGoodsList" parameterType="com.cofc.pojo.activity.PinGoods"
+		resultMap="BaseResultMap">
+		SELECT * from tc_pin_goods where app_id= #{appId}
+	</select>
+	<select id="getPinGoods" parameterType="com.cofc.pojo.activity.PinGoods"
+		resultMap="BaseResultMap">
+		SELECT * from tc_pin_goods 
+		where id = #{id} and app_id = #{appId}
+	</select>
+
+	<update id="updatePinGoods" parameterType="com.cofc.pojo.activity.PinGoods">
+		update tc_pin_goods
+		<trim prefix="set" suffixOverrides=",">
+			<if test="price!=null">price=#{price},</if>
+			<if test="status!=null">status=#{status},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="delPinGoods" parameterType="com.cofc.pojo.activity.PinGoods">
+		delete from
+		tc_pin_goods
+		where id = #{id} and app_id = #{appId}
+	</delete>
+	
+	<!-- 获取拼团商品 -->
+	<select id="getPinByGoodsId" parameterType="Integer"
+		resultMap="BaseResultMap">
+		SELECT * from tc_pin_goods where goods_id= #{id}
+	</select>
+	
+	<!-- 修改拼团状态 0-->
+	<update id="updatePinByGoodsId" parameterType="Integer">
+		update tc_pin_goods set status=0 where goods_id = #{id}
+	</update>
+	
+	<!-- 修改拼团状态 -->
+	<update id="updatePinByPinGoods" parameterType="com.cofc.pojo.activity.PinGoods">
+		update tc_pin_goods set price=#{price},validate=#{validate},status=#{status} where id = #{id}
+	</update>
+	
+	<!-- 添加拼团商品-->
+	<insert id="addPinGoods_1" parameterType="com.cofc.pojo.activity.PinGoods">
+		insert into
+		tc_pin_goods(app_id,goods_id,price,validate,status)
+		values(#{appId},#{goodsId},#{price},#{validate},#{status})
+	</insert>
+	
+	<!-- 查询全部拼团商品-管理页-->
+	<select id="getAllPinGoodsList" resultMap="BaseResultMap">
+		SELECT * from tc_pin_goods order by id desc
+		limit #{page},#{limit};
+	</select>
+	
+	<!-- 查询全部拼团商品-总数-->
+	<select id="findAllPinGoodsCount" resultType="Integer">
+		SELECT count(*) from tc_pin_goods 
+	</select>
+	
+	<!-- 根据id删除拼团商品-->
+	<delete id="deletePinGoodsById" parameterType="Integer">
+		delete from
+		tc_pin_goods
+		where id = #{id}
+	</delete>
+	
+	<!-- 根据id查询拼团商品 -->
+	<select id="getPinByPinGoodsId" parameterType="Integer"
+		resultMap="BaseResultMap">
+		SELECT * from tc_pin_goods where id=#{id}
+	</select>
+	
+	
+</mapper>

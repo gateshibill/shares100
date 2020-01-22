@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.UserWalletDiaryService">
+	<resultMap type="com.cofc.pojo.UserWalletDiary" id="BaseResultMap">
+		<id column="diary_id" property="diaryId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" />
+		<result column="diary_title" property="diaryTitle" jdbcType="VARCHAR" />
+		<result column="diary_details" property="diaryDetails"
+			jdbcType="VARCHAR" />
+		<result column="total_fee" property="totalFee" jdbcType="DOUBLE" />
+		<result column="income_expend" property="incomeExpend"
+			jdbcType="INTEGER" />
+			<result column="login_plat" property="loginPlat"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<select id="findMyWalletDiary" resultMap="BaseResultMap">
+		select * from
+		TB_USER_WALLET_DIARY where user_id =#{userId} order by create_time
+		desc limit #{pageNo},#{pageSize}
+	</select>
+	<insert id="addNewDiary" parameterType="com.cofc.pojo.UserWalletDiary">
+		insert into
+		TB_USER_WALLET_DIARY
+		(goods_id,user_id,create_time,diary_title,diary_details,total_fee,income_expend,login_plat)
+		values(#{goodsId},#{userId},#{createTime},#{diaryTitle},#{diaryDetails},#{totalFee},#{incomeExpend},#{loginPlat})
+	</insert>
+</mapper>

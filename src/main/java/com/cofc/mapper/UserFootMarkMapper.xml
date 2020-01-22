@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.UserFootMarkService">
+	<resultMap type="com.cofc.pojo.UserFootMark" id="BaseResultMap">
+		<id column="footmark_id" property="footmarkId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="marked_user_id" property="markedUserId"
+			jdbcType="INTEGER" />
+		<result column="marked_goods_id" property="markedGoodsId"
+			jdbcType="INTEGER" />
+		<result column="marked_time" property="markedTime" />
+		<association property="markedUser" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		</association>
+		<association property="markedGoods" javaType="com.cofc.pojo.UserShareGoods">
+			<id column="goods_id" property="goodsId" jdbcType="INTEGER" />
+			<result column="goods_name" property="goodsName" jdbcType="INTEGER" />
+			<result column="goods_pictures" property="goodsPictures" jdbcType="VARCHAR"/>
+			<result column="goods_type" property="goodsType" jdbcType="INTEGER"/>
+		</association>
+	</resultMap>
+	<select id="findMyfootMark" resultMap="BaseResultMap">
+		select * from TB_USER_FOOT_MARK m left join TB_USER u on m.marked_user_id = u.user_id 
+		left join TB_USER_SHARE_GOODS g on m.marked_goods_id = g.goods_id where 1=1
+		<if test="userId!=null">
+			and m.user_id =#{userId}
+		</if>
+		order by m.marked_time desc limit #{rowsId},#{pageSize}
+	</select>
+	<insert id="addNewFootMark" parameterType="com.cofc.pojo.UserFootMark">
+		insert into
+		TB_USER_FOOT_MARK (user_id,marked_user_id,marked_goods_id,marked_time)
+		values(#{userId},#{markedUserId},#{markedGoodsId},#{markedTime})
+	</insert>
+	<update id="reMarkMyfoot" parameterType="com.cofc.pojo.UserFootMark">
+		update TB_USER_FOOT_MARK set marked_time =#{markedTime} where footmark_id =#{footmarkId}
+	</update>
+	<select id="getMyMakedRecored" resultMap="BaseResultMap">
+		select * from TB_USER_FOOT_MARK where 1 = 1 
+		<if test="userId!=null">
+			and user_id = #{userId}
+		</if>
+		<if test="markedUserId!=null">
+			and marked_user_id = #{markedUserId}
+		</if>
+		<if test="markedGoodsId!=null">
+			and marked_goods_id = #{markedGoodsId}
+		</if>
+	</select>
+</mapper>

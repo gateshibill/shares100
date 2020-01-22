@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.DesignerService">
+	<resultMap type="com.cofc.pojo.vij.Adviser" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+		<result column="position" property="position" jdbcType="VARCHAR" />
+		<result column="introduce" property="introduce" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="qq" property="qq" jdbcType="VARCHAR" />
+		<result column="images" property="images" jdbcType="VARCHAR" />
+		<result column="wechat" property="wechat" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="is_recommend" property="isRecommend" jdbcType="INTEGER" />
+		<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="is_free" property="isFree" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="adv_type" property="advType" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<!-- 添加设计师 -->
+	<insert id="addDesigner" parameterType="com.cofc.pojo.vij.Adviser" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO tv_adviser(real_name,nick_name,position,introduce,phone,email,qq,images,wechat,is_recommend,order_status,city,is_free,user_id,adv_type)
+			VALUES(#{realName},#{nickName},#{position},#{introduce},#{phone},#{email},#{qq},#{images},#{wechat},#{isRecommend},#{orderStatus},#{city},#{isFree},#{userId},#{advType})
+	</insert>
+	<!-- 查询总的设计师人数-->
+	<select id="getCountDesigner" resultType="int">
+		SELECT count(*) FROM tv_adviser where 1=1
+		<if test="adviser.realName!=null and adviser.realName !=''">and real_name = #{adviser.realName}</if>
+		<if test="adviser.nickName!=null and adviser.nickName!=''">and nick_name = #{adviser.nickName}</if>
+		<if test="adviser.position!=null and adviser.position!=''">and position = #{adviser.position}</if>
+		<if test="adviser.introduce!=null and adviser.introduce!=''">and introduce = #{adviser.introduce}</if>
+		<if test="adviser.phone!=null and adviser.phone!=''">and phone = #{adviser.phone}</if>
+		<if test="adviser.email!=null and adviser.email!=''">and email = #{adviser.email}</if>
+		<if test="adviser.qq!=null and adviser.qq!=''">and qq=#{adviser.qq}</if>
+		<if test="adviser.images!=null and adviser.images!=''">and images=#{adviser.images}</if>
+		<if test="adviser.wechat!=null and adviser.wechat!=''">and wechat=#{adviser.wechat}</if> 
+		<if test="adviser.city!=null and adviser.city!=''">and city=#{adviser.city}</if>
+		<if test="adviser.isRecommend!=null">and is_recommend=#{adviser.isRecommend}</if>
+		<if test="adviser.orderStatus!=null">and order_status=#{adviser.orderStatus}</if>
+		<if test="adviser.isFree!=null">and is_free=#{adviser.isFree}</if>
+	</select>
+	<!-- 查询所有设计师方法 -->
+	<select id="queryCountDesigner" resultMap="BaseResultMap">
+		SELECT * FROM tv_adviser where 1=1
+		<if test="adviser.realName!=null and adviser.realName !=''">and real_name = #{adviser.realName}</if>
+		<if test="adviser.nickName!=null and adviser.nickName!=''">and nick_name = #{adviser.nickName}</if>
+		<if test="adviser.position!=null and adviser.position!=''">and position = #{adviser.position}</if>
+		<if test="adviser.introduce!=null and adviser.introduce!=''">and introduce = #{adviser.introduce}</if>
+		<if test="adviser.phone!=null and adviser.phone!=''">and phone = #{adviser.phone}</if>
+		<if test="adviser.email!=null and adviser.email!=''">and email = #{adviser.email}</if>
+		<if test="adviser.qq!=null and adviser.qq!=''">and qq=#{adviser.qq}</if>
+		<if test="adviser.images!=null and adviser.images!=''">and images=#{adviser.images}</if>
+		<if test="adviser.wechat!=null and adviser.wechat!=''">and wechat=#{adviser.wechat}</if> 
+		<if test="adviser.city!=null and adviser.city!=''">and city=#{adviser.city}</if>
+		<if test="adviser.isRecommend!=null">and is_recommend=#{adviser.isRecommend}</if>
+		<if test="adviser.orderStatus!=null">and order_status=#{adviser.orderStatus}</if>
+		<if test="adviser.isFree!=null">and is_free=#{adviser.isFree}</if>
+			order by create_time desc 
+		<if test="page !=null and limit != null">
+		limit #{page},#{limit} 
+		</if>
+	</select>
+	<!-- 获取设计师详情 -->
+	<select id="getSingleDesigner" resultMap="BaseResultMap">
+		SELECT * FROM tv_adviser where id=#{id}
+	</select>
+	<!-- 修改设计师方法 -->
+	<update id="updateDesigner" parameterType="com.cofc.pojo.vij.Adviser">
+		UPDATE tv_adviser  
+			<trim prefix="set" suffixOverrides=",">
+				<if test="realName!=null and realName !=''">real_name = #{realName},</if>
+				<if test="nickName!=null and nickName!=''">and nick_name = #{nickName},</if>
+				<if test="position!=null and position!=''">and position = #{position},</if>
+				<if test="introduce!=null and introduce!=''">and introduce = #{introduce},</if>
+				<if test="phone!=null and phone!=''">and phone = #{phone},</if>
+				<if test="email!=null and email!=''">and email = #{email},</if>
+				<if test="qq!=null and qq!=''">and qq=#{qq},</if>
+				<if test="images!=null and images!=''">and images=#{images},</if>
+				<if test="wechat!=null and wechat!=''">and wechat=#{wechat},</if> 
+				<if test="city!=null and city!=''">and city=#{city},</if>
+				<if test="isRecommend!=null">and is_recommend=#{isRecommend},</if>
+				<if test="orderStatus!=null">and order_status=#{orderStatus},</if>
+				<if test="isFree!=null">and is_free=#{isFree}</if>
+			</trim>
+			WHERE id=#{id}
+	</update>
+	<!-- 删除设计师方法 -->
+	<delete id="delectDesigner" parameterType="int">
+	DELETE FROM tv_adviser WHERE id=#{id}
+	</delete>
+	</mapper>

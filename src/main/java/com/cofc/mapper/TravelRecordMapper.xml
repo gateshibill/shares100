@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.TravelRecordService">
+	<resultMap type="com.cofc.pojo.TravelRecord" id="BaseResultMap">
+		<id column="record_id" property="recordId" jdbcType="INTEGER" />
+	    <result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="travel_id" property="travelId" jdbcType="INTEGER" />
+		<result column="view_id" property="viewId" jdbcType="VARCHAR" />
+	 	<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	 	<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+	 	<association property="user" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		</association>
+		<association property="travel" javaType="com.cofc.pojo.TravelCommon">
+			<id column="travel_id" property="travelId" jdbcType="INTEGER" />
+			<result column="travel_title" property="travelTitle" jdbcType="VARCHAR" />
+			<result column="travel_image_list" property="travelImageList" jdbcType="VARCHAR"/>
+			<result column="money_count" property="moneyCount" jdbcType="INTEGER" />
+		</association>
+		<association property="view" javaType="com.cofc.pojo.TravelView">
+			<id column="view_id" property="viewId" jdbcType="INTEGER" />
+			<result column="qqmap_view_id" property="qqmapViewId" jdbcType="VARCHAR" />
+			<result column="location" property="location" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	
+	<insert id="addTravelRecordInfo" parameterType="com.cofc.pojo.TravelRecord"
+		useGeneratedKeys="true" keyProperty="recordId">
+	   insert into TB_TRAVEL_Record(user_id,travel_id,view_id,create_time,is_effect)values(#{userId},#{travelId},#{viewId},
+	  #{createTime},#{isEffect})
+	</insert>
+    <select id="getisAlready" resultMap="BaseResultMap">
+      select * from TB_TRAVEL_RECORD where user_id = #{userId} and travel_id = #{travelId}
+       and view_id = #{viewId}
+    </select>
+	<select id="getRedbagCountByUserId" resultType="int">
+	  select count(*) from TB_TRAVEL_RECORD where is_effect = 1 and type = 1 and travel_id=#{travelId} and user_id=#{userId}
+	</select>
+	<select id="getRobRecordListByUserId" resultMap="BaseResultMap">
+	  select * from TB_TRAVEL_RECORD as r left join TB_TRAVEL_COMMON as t on t.travel_id = r.travel_id
+	  left join TB_USER_COMMON as u on u.user_id = r.user_id left join TB_TRAVEL_VIEW as v on v.view_id = r.view_id where r.user_id = #{userId} and t.login_plat = #{loginPlat} and r.is_effect = 1
+	  order by r.create_time desc limit #{pageNo},#{pageSize}
+	</select>
+</mapper>

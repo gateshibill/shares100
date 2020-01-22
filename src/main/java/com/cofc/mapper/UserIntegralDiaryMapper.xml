@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.UserIntegralDiaryService">
+	<resultMap type="com.cofc.pojo.UserIntegralDiary" id="BaseResultMap">
+		<id column="integral_id" property="integralId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="integral" property="integral" jdbcType="INTEGER" />
+		<result column="integral_text" property="integralText" jdbcType="VARCHAR" />
+		<result column="integral_time" property="integralTime"/>
+	</resultMap>
+</mapper>

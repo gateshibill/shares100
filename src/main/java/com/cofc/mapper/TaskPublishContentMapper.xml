@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.TaskPublishContentService">
+	<resultMap type="com.cofc.pojo.TaskPublishContent" id="BaseResultMap">
+		<id column="content_id" property="contentId" jdbcType="INTEGER" />
+		<result column="content_text" property="contentText" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="findAllContent" resultMap="BaseResultMap">
+		select * from TB_TASK_PUBLISH_CONTENT
+	</select>
+	<select id="getTaskContentCount" resultType="INT">
+	  select count(*) from TB_TASK_PUBLISH_CONTENT where 1=1 
+	  <if test="content.contentText != null and content.contentText != ''">
+	    and content_text like CONCAT('%',#{content.contenttext},'%')
+	  </if>	  
+	</select>
+	 <select id="getAllContent" resultMap="BaseResultMap">
+	   select * from TB_TASK_PUBLISH_CONTENT where 1=1 
+	   <if test="content.contentText != null and content.contentText != ''">
+	     and content_text like CONCAT('%',#{content.contenttext},'%')
+	   </if>
+	   	 order by content_id desc limit #{page},#{limit}
+	 </select>
+	 <select id="isAlreadyName" resultMap="BaseResultMap">
+	     select * from TB_TASK_PUBLISH_CONTENT  where content_text = #{content}
+	 </select>
+	 <insert id="addTaskContent" parameterType="com.cofc.pojo.TaskPublishContent" 
+	 useGeneratedKeys="true" keyProperty="contentId">
+	    insert into TB_TASK_PUBLISH_CONTENT(content_text) values(#{contentText}); 
+	 </insert>
+	 <delete id="delContent">
+	   delete from TB_TASK_PUBLISH_CONTENT where content_id = #{contentId}
+	 </delete>
+	 <select id="getContentDetail" resultMap="BaseResultMap">
+	   select * from TB_TASK_PUBLISH_CONTENT where content_id = #{contentId}
+	 </select>
+	 <update id="updateContent">
+	    update TB_TASK_PUBLISH_CONTENT 
+	    <set>
+	      content_text = #{contentName}
+	    </set>
+	    where content_id = #{contentId}
+	 </update>
+</mapper>

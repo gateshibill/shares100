@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.ActionUserService">
+	<resultMap type="com.cofc.pojo.aida.ActionUser" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		<result column="nick_name" property="userName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 从销售客户表查找 -->
+	<select id="getActionUserList" resultMap="BaseResultMap">
+		select *
+		from
+		tf_sales_customer a left join tb_user_common b on a.user_id=b.user_id
+		where a.app_id =#{appId} and
+		a.sales_person_id=#{salesPersonId}
+		and a.isblock=0
+		order by a.last_time
+		desc limit
+		#{page},#{pageSize}
+	</select>
+</mapper>

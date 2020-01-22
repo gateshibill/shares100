@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.UserActivityService">
+	<resultMap type="com.cofc.pojo.UserActivity" id="BaseResultMap">
+		<id column="recored_id" property="recoredId" jdbcType="INTEGER" />
+		<result column="recored_user" property="recoredUser" jdbcType="INTEGER" />
+		<result column="activity_id" property="activityId" jdbcType="INTEGER" />
+		<result column="activity_count" property="activityCount"
+			jdbcType="INTEGER" />
+		<result column="left_count" property="leftCount" jdbcType="INTEGER" />
+		<result column="join_time" property="joinTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="activity_status" property="activityStatus"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="UserJoinActivity" parameterType="com.cofc.pojo.UserActivity">
+		insert into
+		TB_USER_ACTIVITY(recored_user,activity_id,activity_count,left_count,join_time,update_time)
+		values(#{recoredUser},#{activityId},#{activityCount},#{leftCount},#{joinTime},#{updateTime})
+	</insert>
+	<select id="confirmLeftCountAndacstatus" resultMap="BaseResultMap">
+		select ua.*,ac.status as activity_status from TB_USER_ACTIVITY ua left join TB_ACTIVITY_COMMON ac on ua.activity_id = ac.activity_id
+		where ua.recored_user = #{userId} and ua.activity_id = #{activityId} 
+	</select>
+	<update id="updateUserActivityInfo" parameterType="com.cofc.pojo.UserActivity">
+		update TB_USER_ACTIVITY
+		<trim prefix="set" suffixOverrides=",">
+			<if test="updateTime!=null">update_time = #{updateTime},</if>
+			<if test="leftCount!=null">left_count=#{leftCount},</if>
+		</trim>
+		where recored_id = #{recoredId}
+	</update>
+</mapper>

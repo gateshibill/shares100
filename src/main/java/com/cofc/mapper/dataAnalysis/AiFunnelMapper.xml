@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.dataAnalysis.AiFunnelService">
+	<resultMap type="com.cofc.pojo.dataAnalysis.AiFunnel" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="days" property="days" jdbcType="INTEGER" />
+		<result column="percent20" property="percent20" jdbcType="INTEGER" />
+		<result column="change20" property="change20" jdbcType="INTEGER" />
+		<result column="percent50" property="percent50" jdbcType="INTEGER" />
+		<result column="change50" property="change50" jdbcType="INTEGER" />
+		<result column="percent80" property="percent80" jdbcType="INTEGER" />
+		<result column="change80" property="change80" jdbcType="INTEGER" />
+		<result column="order_count" property="orderCount" jdbcType="INTEGER" />
+		<result column="order_change" property="order_change" jdbcType="INTEGER" />
+		<result column="last_time" property="lastTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addAiFunnel" parameterType="com.cofc.pojo.dataAnalysis.AiFunnel"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		td_funnel(app_id,user_id,days,percent20,change20,percent50,change50,percent80,change80,order_count,change_count,last_time)
+		values(#{appId},#{userId},#{days},#{percent20},#{change20},#{percent50},#{change50},#{percent80},#{change80},#{order_count},#{order_change},#{lastTime})
+	</insert>
+	<update id="updateAiFunnel" parameterType="com.cofc.pojo.dataAnalysis.AiFunnel">
+		update td_funnel
+		<trim prefix="set" suffixOverrides=",">
+			<if test="percent20!=null ">percent20=#{percent20},</if>
+			<if test="change20!=null">change20=#{change20},</if>
+			<if test="percent50!=null ">percent50=#{percent50},</if>
+			<if test="change50!=null">change50=#{change50},</if>
+			<if test="percent80!=null ">percent80=#{percent80},</if>
+			<if test="change80!=null">change80=#{change80},</if>
+			<if test="orderCount!=null ">order_count=#{orderCount},</if>
+			<if test="orderChange!=null">order_change=#{orderChange},</if>
+			<if test="lastTime!=null">last_time=#{lastTime},</if>
+		</trim>
+		where id = #{id}
+	</update>
+
+	<delete id="deleteAiFunnel">
+		delete from td_Funnel where id =#{id}
+	</delete>
+
+	<select id="getAiFunnel" resultMap="BaseResultMap">
+		select * from td_Funnel where
+		app_id=#{appId} and
+		user_id =#{userId} and
+		days=#{days}
+	</select>
+</mapper>

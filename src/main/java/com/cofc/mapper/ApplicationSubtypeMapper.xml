@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ApplicationSubtypeService">
+
+<resultMap type="com.cofc.pojo.ApplicationSubtype" id="typeMap">
+
+       <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="order_no" property="orderNo" jdbcType="INTEGER" />
+		<result column="is_using" property="isUsing" jdbcType="INTEGER" />
+		<result column="app_subtype" property="appSubtype" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="default_picture" property="defaultPicture" jdbcType="VARCHAR" />
+</resultMap>
+
+<select id="findApplicationSubtypeByPlat" resultMap="typeMap">
+  select * from tb_application_subtype where login_plat=#{loginPlat} and is_using=1
+  <if test="subType != null">
+    and app_subtype=#{subType}
+  </if>
+     order by order_no limit #{pageNo},#{pageSize}
+</select>
+</mapper>
