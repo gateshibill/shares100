@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.goods.GoodsMyselfService">
+	<resultMap type="com.cofc.pojo.goods.GoodsMyself" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+		<result column="goods_image" property="goodsImage" jdbcType="VARCHAR" />
+		<result column="sell_price" property="sellPrice" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addGoodsMyself" parameterType="com.cofc.pojo.goods.GoodsMyself"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tg_goods_myself(app_id,user_id,goods_id,status,create_time)
+		values(#{appId},#{userId},#{goodsId},#{status},#{createTime})
+	</insert>
+	<update id="updateGoodsMyself" parameterType="com.cofc.pojo.goods.GoodsMyself">
+		update 
+		tg_goods_myself a left join TB_GOODS_COMMON b on a.goods_id=b.goods_id
+		<trim prefix="set" suffixOverrides=",">
+			<if test="status!=null ">status=#{status},</if>
+		</trim>
+		where a.id = #{id}
+	</update>
+
+	<delete id="delGoodsMyself" parameterType="com.cofc.pojo.goods.GoodsMyself">
+		delete from tg_goods_myself where id =#{id}
+	</delete>
+	
+	<select id="getGoodsMyself" resultMap="BaseResultMap">
+		select * from
+		tg_goods_myself a left join TB_GOODS_COMMON b on a.goods_id=b.goods_id
+		where a.app_id=#{appId} and
+		a.id =#{id}
+	</select>
+	<select id="getGoodsMyselfByUserIdAndGoodId" resultMap="BaseResultMap">
+		select * from
+		tg_goods_myself 
+		where app_id=#{appId} and
+		user_id =#{userId} and
+		goods_id=#{goodsId}
+	</select>
+	<select id="getGoodsMyselfList" resultMap="BaseResultMap">
+		select * from
+		tg_goods_myself a left join TB_GOODS_COMMON b on a.goods_id=b.goods_id
+		where a.app_id=#{appId} and
+		a.user_id =#{userId}
+		order by a.create_time desc
+	</select>
+</mapper>

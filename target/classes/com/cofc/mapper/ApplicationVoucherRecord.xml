@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ApplicationVoucherRecordService">
+
+<resultMap type="com.cofc.pojo.ApplicationVoucherRecord" id="RecordMap">
+       <id column="record_id" property="recordId" jdbcType="INTEGER" />
+		<result column="record_desc" property="recordDesc" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		
+		<association property="user" javaType="com.cofc.pojo.UserCommon">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		<result column="user_sex" property="userSex" jdbcType="INTEGER" />
+		<result column="head_card" property="headCard" jdbcType="VARCHAR" />
+		<result column="card_image" property="cardImage" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		</association>
+		
+		<association property="group" javaType="com.cofc.pojo.GroupUsers">
+		<id column="tb_id" property="tbId" jdbcType="INTEGER" />
+		<result column="group_id" property="groupId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="is_creater" property="isCreater" jdbcType="INTEGER" />
+		<result column="join_time" property="joinTime" jdbcType="TIMESTAMP" />
+		<result column="is_examined" property="isExamined" jdbcType="INTEGER" />
+		<result column="give_voucher" property="giveVoucher" jdbcType="INTEGER" />
+		</association>
+		
+</resultMap>
+
+<select id="findUserAppRecordList" resultMap="RecordMap">
+  select * from tb_application_voucher_record where user_id=#{record.userId} and login_plat=#{record.loginPlat}
+  order by create_time desc limit #{pageNo},#{pageSize}
+</select>
+
+<insert id="addApplicationVoucher" parameterType="com.cofc.pojo.ApplicationVoucherRecord">
+ insert into tb_application_voucher_record (user_id,login_plat,record_desc,create_time)
+                 values(#{userId},#{loginPlat},#{recordDesc},#{createTime})
+</insert>
+</mapper>

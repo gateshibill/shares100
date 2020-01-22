@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ProjectOfferDetailService">
+	<resultMap type="com.cofc.pojo.vij.ProjectOfferDetail" id="BaseResultMap">
+		<id column="offer_id" property="offerId" jdbcType="INTEGER" />
+		<result column="poffer_id" property="pofferId" jdbcType="INTEGER" />
+		<result column="offer_name" property="offerName" jdbcType="VARCHAR" />
+		<result column="offer_image" property="offerImage" jdbcType="VARCHAR" />
+		<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<insert id="addOfferDetail" parameterType="com.cofc.pojo.vij.ProjectOfferDetail" useGeneratedKeys="true" keyProperty="offerId">
+		insert into tv_project_offer_detail(poffer_id,offer_name,offer_image,order_status)
+	VALUES(#{pofferId},#{offerName},#{offerImage},#{orderStatus})
+	</insert>
+	<update id="updateOfferDetail" parameterType="com.cofc.pojo.vij.ProjectOfferDetail">
+		UPDATE tv_project_offer_detail
+		<trim prefix="set" suffixOverrides=",">
+		<if test="pofferId != null">
+			poffer_id = #{pofferId},
+		</if>
+		<if test="offerName != null and offerName !=''">
+			offer_name = #{offerName},
+		</if>
+		<if test="offerImage !=null and offerImage !=''">
+			offer_image = #{offerImage},
+		</if>
+		<if test="orderStatus != null">
+			order_status = #{orderStatus}
+		</if>
+		</trim>
+		where offer_id = #{offerId}
+	</update>
+	<delete id="delOfferDetail" parameterType="com.cofc.pojo.vij.ProjectOfferDetail">
+		delete from tv_project_offer_detail where offer_id = #{offerId}
+	</delete>
+	<select id="getOfferDetailById" resultMap="BaseResultMap">
+		select * from tv_project_offer_detail where poffer_id = #{pofferId}
+	</select>
+	<select id="getOfferDetailByOfferId" resultMap="BaseResultMap">
+		select * from tv_project_offer_detail where offer_id = #{offerId}
+	</select>
+	
+	
+	</mapper>

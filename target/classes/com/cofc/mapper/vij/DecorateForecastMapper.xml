@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.DecorateForecastService">
+	<resultMap type="com.cofc.pojo.vij.DecorateForecast" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+		<result column="city_areas" property="cityAreas" jdbcType="VARCHAR"/> 
+		<result column="building_area" property="buildingArea" jdbcType="INTEGER"/> 
+		<result column="housing_types" property="housingTypes" jdbcType="VARCHAR"/> 
+		<result column="house_door_model" property="houseDoorModel" jdbcType="VARCHAR"/> 
+		<result column="mobile_phone_no" property="mobilePhoneNo" jdbcType="VARCHAR"/> 
+		<result column="gross_price" property="grossPrice" jdbcType="INTEGER"/> 
+		<result column="housing_situation" property="housingSituation" jdbcType="VARCHAR"/> 
+		<result column="decorate_time" property="decorateTime" jdbcType="TIMESTAMP"/> 
+		<result column="village_name" property="villageName" jdbcType="VARCHAR"/>
+		<result column="project_id" property="projectId" jdbcType="INTEGER"/> 
+		<result column="is_deal" property="isDeal" jdbcType="INTEGER"/> 
+		<result column="source" property="source" jdbcType="INTEGER"/>   
+		<result column="lf_user_name" property="lfUserName" jdbcType="VARCHAR"/>   
+		<result column="home_number" property="homeNumber" jdbcType="VARCHAR"/> 
+		<result column="home_images" property="homeImages" jdbcType="VARCHAR"/>    
+	</resultMap>
+	<insert id="addVijbudget" parameterType="com.cofc.pojo.vij.DecorateForecast" useGeneratedKeys="true" keyProperty="id">
+insert into
+	tv_decorate_forecast(city_code,city_areas,building_area,housing_types,house_door_model,mobile_phone_no,gross_price,housing_situation,decorate_time,
+	village_name,project_id,is_deal,source,lf_user_name,home_number,home_images)
+VALUES(#{cityCode},#{cityAreas},#{buildingArea},#{housingTypes},#{houseDoorModel},#{mobilePhoneNo},#{grossPrice},
+#{housingSituation},#{decorateTime},#{villageName},#{projectId},#{isDeal},#{source},#{lfUserName},#{homeNumber},#{homeImages})
+	</insert>
+	<select id="getRoomByProjectId" resultMap="BaseResultMap">
+		select * from tv_decorate_forecast where project_id = #{projectId}
+	</select>
+	<update id="updateDecorateForecast" parameterType="com.cofc.pojo.vij.DecorateForecast">
+		update	tv_decorate_forecast 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="buildingArea != null">
+				building_area = #{buildingArea},
+			</if>
+			<if test="housingTypes != null and housingTypes !=''">
+				housing_types = #{housingTypes},
+			</if>
+			<if test="houseDoorModel != null and houseDoorModel !=''">
+				house_door_model = #{houseDoorModel},
+			</if>
+			<if test="mobilePhoneNo != null and mobilePhoneNo !=''">
+				mobile_phone_no = #{mobilePhoneNo},
+			</if>
+			<if test="grossPrice != null">
+				gross_price = #{grossPrice},
+			</if>
+			<if test="isDeal != null">
+				is_deal = #{isDeal},
+			</if>
+			<if test="housingSituation != null and housingSituation !=''">
+				housing_situation = #{housingSituation},
+			</if>
+			<if test="decorateTime != null and decorateTime !=''">
+				decorate_time = #{decoratetTime},
+			</if>
+			<if test="lfUserName != null and lfUserName != ''">
+				lf_user_name = #{lfUserName},
+			</if>
+			<if test="homeNumber !=null and homeNumber !=''">
+				home_number = #{homeNumber},
+			</if>
+			<if test="homeImages !=null and homeImages !=''">
+				home_images = #{homeImages},
+			</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<select id="getDecorateForecastById" resultMap="BaseResultMap">
+		select * from tv_decorate_forecast where id = #{id}
+	</select>
+	<select id="getDecorateForecastList" resultMap="BaseResultMap">
+		select * from tv_decorate_forecast where 
+		<if test="homeImages !=null and homeImages !=''">
+			and home_images = #{dForecast.homeImages}
+			</if>
+	
+	</select>
+	</mapper>

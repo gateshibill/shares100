@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.RechargeAmountService">
+	<resultMap id="BaseResultMap" type="com.cofc.pojo.RechargeAmount">
+		<id column="discount_id" property="discountId" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="recharge_amount" property="rechargeAmount" jdbcType="DOUBLE" />
+		<result column="send_amount" property="sendAmount" jdbcType="DOUBLE" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<insert id="addRechargeInfo" parameterType="com.cofc.pojo.RechargeAmount">
+		insert into tb_recharge_amount(`login_plat`, `recharge_amount`, `send_amount`, `is_effect`,`create_time`)
+		values(#{loginPlat}, #{rechargeAmount}, #{sendAmount}, #{isEffect},#{createTime})
+	</insert>
+	
+	<update id="updateRechargeInfo" parameterType="com.cofc.pojo.RechargeAmount">
+		update tb_recharge_amount
+		<trim prefix="set" suffixOverrides=",">
+			<if test="rechargeAmount!=null">recharge_amount=#{rechargeAmount},</if>
+			<if test="sendAmount!=null">send_amount=#{sendAmount},</if>
+			<if test="isEffect!=null">is_effect=#{isEffect},</if>
+		</trim>
+		where discount_id = #{discountId} 
+	</update>
+	<delete id="deleteRecharInfo">
+	  delete from tb_recharge_amount where discount_id = #{discountId}
+	</delete>
+	<select id="getRechargeInfo" resultMap="BaseResultMap">
+		select * from tb_recharge_amount where 1 = 1
+		<if test="recharge.loginPlat != null">and login_plat = #{recharge.loginPlat}</if>
+		order by create_time desc limit #{page},#{limit}
+	</select>
+	<select id="getRechargeCount" resultType="int">
+		select count(*) from tb_recharge_amount where 1 = 1
+		<if test="recharge.loginPlat != null">and login_plat = #{recharge.loginPlat}</if>
+	</select>
+	<select id="getRechargeInfoByLoginPlat" resultMap="BaseResultMap">
+		select * from tb_recharge_amount where 1 = 1
+		and login_plat in
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach>
+		order by create_time desc limit #{page},#{limit}
+	</select>
+	<select id="getRechargeCountByLoginPlat" resultType="int">
+		select count(*) from tb_recharge_amount where 1 = 1
+        and login_plat in
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach>
+	</select>
+	<select id="getDetailInfo" resultMap="BaseResultMap">
+	 select * from tb_recharge_amount where discount_id = #{discountId}
+	</select>
+	<select id="getWxlist" resultMap="BaseResultMap">
+	  select * from tb_recharge_amount where login_plat = #{loginPlat} and is_effect = 1
+	</select>
+</mapper>

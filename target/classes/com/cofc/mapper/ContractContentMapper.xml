@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ContractContentService">
+  <resultMap type="com.cofc.pojo.ContractContent" id="ContractContentMap">
+      <id column="content_id" property="contentId" jdbcType="INTEGER" />
+		<result column="content_title" property="contentTitle" jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser" jdbcType="INTEGER" />
+		<result column="used_count" property="usedCount" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		
+		<association property="user" javaType="com.cofc.pojo.UserCommon">
+	       <id column="user_id" property="userId" jdbcType="INTEGER" />
+	      <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+	     <result column="real_name" property="realName" jdbcType="VARCHAR" />
+      </association>
+  </resultMap>
+  <select id="getContractContentList" resultMap="ContractContentMap">
+	select * from TB_CONTRACT_CONTENT cc left join TB_USER_COMMON u on cc.create_user=u.user_id 
+	   where 1=1
+	<if test="content.contentId != null">
+		and cc.content_id=#{content.contentId}
+	</if>
+	<if test="content.contentTitle != null and content.contentTitle !=''">
+		and cc.content_title like CONCAT('%',#{content.contentTitle},'%')
+	</if>
+     order by cc.create_time DESC limit #{page},#{limit}
+  </select>
+	<select id="getContractContentCount" resultType="int">
+		select count(*) from TB_CONTRACT_CONTENT where 1=1
+		<if test="content.contentId != null">
+			and content_id=#{content.contentId}
+		</if>
+		<if test="content.contentTitle != null and content.contentTitle !=''">
+			and content_title like CONCAT('%',#{content.contentTitle},'%')
+		</if>
+	</select>
+	<select id="findContractContentList" resultMap="ContractContentMap">
+	   select * from TB_CONTRACT_CONTENT where 1=1 order by content_id desc
+	</select>
+	<insert id="addContractContent" parameterType="com.cofc.pojo.ContractContent"
+	 useGeneratedKeys="true" keyProperty="contentId">
+	insert into TB_CONTRACT_CONTENT (content_title,create_user,create_time,used_count) 
+	           values(#{contentTitle},#{createUser},#{createTime},#{usedCount})
+	</insert>
+	<select id="getContractContentById" resultMap="ContractContentMap">
+	select * from TB_CONTRACT_CONTENT where content_id=#{contentId}
+	</select>
+	<select id="getContentTitle" resultMap="ContractContentMap">
+	select * from TB_CONTRACT_CONTENT where content_title=#{title}
+	</select>
+	<update id="updateContractContent" parameterType="com.cofc.pojo.ContractContent">
+	   update TB_CONTRACT_CONTENT set update_time=#{updateTime}
+	   <if test="usedCount != null">
+	   ,used_count=#{usedCount}
+	   </if>
+	    <if test="contentTitle != null and contentTitle !=''">
+	   ,content_title=#{contentTitle}
+	   </if>
+	   where content_id=#{contentId}
+	</update>
+	<delete id="delShareContent">
+	  delete from  TB_CONTRACT_CONTENT where content_id = #{contentId}
+	</delete>
+</mapper>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.PublisherShareService">
+   <resultMap type="com.cofc.pojo.PublisherShare" id="ShareMap">
+    <id column="share_id" property="shareId" jdbcType="INTEGER" />
+		<result column="share_title" property="shareTitle" jdbcType="VARCHAR" />
+		<result column="share_content" property="shareContent" jdbcType="VARCHAR" />
+		<result column="share_image" property="shareImage" jdbcType="VARCHAR" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="share_userId" property="shareUserId" jdbcType="INTEGER" />
+		<result column="praise_count" property="praiseCount" jdbcType="INTEGER" />
+		<result column="collection_count" property="collectionCount" jdbcType="INTEGER" />
+		<result column="read_count" property="readCount" jdbcType="INTEGER" />
+		<result column="share_time" property="shareTime" />
+		<result column="update_time" property="updateTime" />
+		
+		<!--  -->
+		<association property="user" javaType="com.cofc.pojo.UserCommon">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		<result column="user_sex" property="userSex" jdbcType="INTEGER" />
+		</association>
+		<!--  -->
+		<association property="app" javaType="com.cofc.pojo.ApplicationCommon">
+		<id column="application_id" property="applicationId" jdbcType="INTEGER" />
+		<result column="application_name" property="applicationName" jdbcType="VARCHAR" />
+		</association>
+   </resultMap>
+   
+   <!-- 我的共享列表 -->
+   <select id="getMyPublisherShareList" resultMap="ShareMap">
+     select * from tb_publisher_share p left join tb_user_common u on p.share_userId=u.user_id
+      where 1=1
+      <if test="loginPlat != null">
+       and p.login_plat=#{loginPlat}
+      </if>
+       order by p.share_time desc limit #{pageNo},#{pageSize}
+   </select>
+   <insert id="addPublisherShare" parameterType="com.cofc.pojo.PublisherShare">
+   insert into tb_publisher_share (share_title,share_content,share_image,login_plat,share_userId,share_time) 
+                    values(#{shareTitle},#{shareContent},#{shareImage},#{loginPlat},#{shareUserId},#{shareTime})
+   </insert>
+   <update id="updatePublisherShare" parameterType="com.cofc.pojo.PublisherShare">
+    update tb_publisher_share 
+     <trim prefix="set" suffixOverrides=",">
+		     	update_time=#{updateTime},
+			<if test="shareTitle !=null and shareTitle !=''">share_title=#{shareTitle},</if>
+			<if test="shareContent !=null and shareContent !=''">share_content=#{shareContent},</if>
+			<if test="shareImage !=null and shareImage !=''">share_image=#{shareImage},</if>
+			<if test="praiseCount !=null">praise_count=#{praiseCount},</if>
+			<if test="readCount !=null">read_count=#{readCount},</if>
+			<if test="collectionCount !=null">collection_count=#{collectionCount}</if>
+		</trim>
+		where share_id=#{shareId}
+   </update>
+   
+   <select id="findPublisherShareList" resultMap="ShareMap">
+    select * from tb_publisher_share p 
+    left join tb_user_common u on p.share_userId=u.user_id
+     left join tb_application_common a on p.login_plat=a.application_id
+      where 1=1  
+      <if test="shareUserId != null">
+      and p.share_userId=#{shareUserId}
+      </if>
+      order by p.share_time desc limit #{page},#{limit}
+   </select>
+   <select id="getPublisherShareCount" resultType="int">
+    select count(*) from tb_publisher_share where 1=1
+     <if test="shareUserId != null">
+      and share_userId=#{shareUserId}
+      </if>
+   </select>
+   <delete id="deletePublisherShare">
+     delete from tb_publisher_share where share_id=#{shareId}
+   </delete>
+   <select id="getShareById" resultMap="ShareMap">
+    select * from tb_publisher_share where share_id=#{shareId}
+   </select>
+   <select id="getPublisherShareLoginPlatById" resultMap="ShareMap">
+    select * from tb_publisher_share where login_plat=#{loginPlat} and share_id=#{shareId} 
+   </select>
+</mapper>

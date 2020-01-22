@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.video.AssetService">
+	<resultMap type="com.cofc.pojo.video.Asset" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="poster_url" property="posterUrl" jdbcType="VARCHAR" />
+		<result column="desc" property="desc" jdbcType="VARCHAR" />
+		<result column="play_url" property="playUrl" jdbcType="VARCHAR" />
+		<result column="lyric" property="lyric" jdbcType="VARCHAR" />
+		<result column="director" property="director" jdbcType="VARCHAR" />
+		<result column="actor" property="actor" jdbcType="VARCHAR" />
+		<result column="sitcom" property="sitcom" jdbcType="INTEGER" />
+		<result column="duration" property="duration" jdbcType="INTEGER" />
+		<result column="lable_ids" property="lableIds" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="views" property="views" jdbcType="INTEGER" />
+		<result column="score" property="score" jdbcType="DOUBLE" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="source" property="source" jdbcType="VARCHAR" />
+		<result column="language" property="language" jdbcType="VARCHAR" />
+		<result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addAsset" parameterType="com.cofc.pojo.video.Asset"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tt_asset(app_id,name,poster_url,desc,play_url,lyric,director,actor,sitcom,duration,lable_ids,type,views,score,area,source,language,publish_time,create_time)
+		values(#{appId},#{name},#{posterUrl},#{desc},#{playUrl},#{lyric}#{director},#{actor},#{sitcom},#{duration},#{lableIds},#{type},#{views},#{score},#{area},#{source},#{language},#{publishTime},#{createTime})
+	</insert>
+	<update id="updateAsset" parameterType="com.cofc.pojo.video.Asset">
+		update tt_asset
+		<trim prefix="set" suffixOverrides=",">
+			<if test="agentName!=null and agentName!=''">agent_name = #{agentName},</if>
+			<if test="agentCode!=null and agentCode!=''">agent_code = #{agentCode},</if>
+			<if test="authCode!=null and authCode!=''">auth_code = #{authCode},</if>
+			<if test="agentNotifyUrl != null and agentNotifyUrl != ''">agent_notify_url = #{agentNotifyUrl},</if>
+			<if test="agentIP!=null and agentIP != ''">agent_ip = #{agentIP},</if>
+			<if test="isEffect!=null">is_effect = #{isEffect},</if>
+			<if test="maxQuantity!=null">max_quantity = #{maxQuantity},</if>
+			<if test="agentDomain != null and agentDomain != ''">agent_domain = #{agentDomain},</if>
+		</trim>
+		where agent_id = #{agentId}
+	</update>
+	<delete id="delAsset" parameterType="com.cofc.pojo.video.Asset">
+		delete from tt_asset where agent_id = #{agentId}
+	</delete>
+
+	<select id="getAssetCount" resultType="int">
+		select count(*) from tt_asset where 1=1
+		<if test="asset.appId != null">
+			and app_id = #{asset.appId}
+		</if>
+		<if test="asset.type != null">
+			and type = #{asset.type}
+		</if>
+	</select>
+	
+	<select id="getAssetList" resultMap="BaseResultMap">
+		select * from tt_asset where 1=1
+		<if test="asset.appId != null">
+			and app_id = #{asset.appId}
+		</if>
+		<if test="asset.type != null">
+			and type = #{asset.type}
+		</if>
+		order by create_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	
+	<select id="getAssetListByColumnId" resultMap="BaseResultMap">
+	select *
+		from
+		tt_Asset a left join tt_moive b on a.id=b.asset_id
+		where b.column_id =#{columnId}
+		order by create_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+</mapper>

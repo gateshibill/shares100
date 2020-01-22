@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.AdviserService">
+	<resultMap type="com.cofc.pojo.vij.Adviser" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+		<result column="position" property="position" jdbcType="VARCHAR" />
+		<result column="introduce" property="introduce" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="qq" property="qq" jdbcType="VARCHAR" />
+		<result column="images" property="images" jdbcType="VARCHAR" />
+		<result column="wechat" property="wechat" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="is_recommend" property="isRecommend" jdbcType="INTEGER" />
+		<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="is_free" property="isFree" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="adv_type" property="advType" jdbcType="INTEGER" />
+		<result column="adv_say" property="advSay" jdbcType="VARCHAR" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="app_image_url" property="appImageUrl" jdbcType="VARCHAR"/>
+		<result column="adv_images" property="advImages" jdbcType="VARCHAR"/>
+	</resultMap>
+	<insert id="addAdviser" parameterType="com.cofc.pojo.vij.Adviser"
+		useGeneratedKeys="true" keyProperty="id">
+		 INSERT INTO tv_adviser(real_name,nick_name,position,introduce,phone,images,is_recommend,create_time,order_status,city,is_free,adv_type,adv_say,app_image_url,adv_images) 
+ 		 	VALUES(#{realName},#{nickName},#{position},#{introduce},#{phone},#{images},#{isRecommend},#{createTime},#{orderStatus},#{city},#{isFree},#{advType},#{advSay},#{appImageUrl},#{advImages})
+	</insert>
+	<update id="updateAdviser" parameterType="com.cofc.pojo.vij.Adviser">
+		update tv_adviser
+		<trim prefix="set" suffixOverrides=",">
+			<if test="realName!=null and realName!=''">real_name = #{realName},</if>
+			<if test="nickName!=null and nickName!=''">nick_name = #{nickName},</if>
+			<if test="position!=null and position!=''">position = #{position},</if>
+			<if test="introduce!=null and introduce!=''">introduce = #{introduce},</if>
+			<if test="phone!=null and phone!=''">phone = #{phone},</if>
+			<if test="email!=null and email!=''">email = #{email},</if>
+			<if test="qq!=null and qq!=''">qq = #{qq},</if>
+			<if test="images!=null and images!=''">images = #{images},</if>
+			<if test="wechat!=null and wechat!=''">wechat = #{wechat},</if>
+			<if test="orderStatus!=null">order_status = #{orderStatus},</if>
+			<if test="isRecommend!=null">is_recommend = #{isRecommend},</if>
+			<if test="city!=null">city = #{city},</if>
+			<if test="isFree!=null">is_free = #{isFree},</if>
+			<if test="advType!=null">adv_type = #{advType},</if>
+			<if test="advSay!=null and advSay!=''">adv_say = #{adv_say},</if>
+			<if test="appImageUrl !=null and appImageUrl !=''">app_image_url = #{appImageUrl},</if>
+			<if test="advImages !=null and advImages !=''">adv_mages = #{advImages},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="delAdviser" parameterType="com.cofc.pojo.vij.Adviser">
+		delete from tv_adviser where id = #{id}
+	</delete>
+	<select id="getInfoById" resultMap="BaseResultMap">
+		select * from tv_adviser where id = #{id}
+	</select>
+	
+	<select id="getAdviserCount" resultType="int">
+		select count(*) from tv_adviser where 1=1
+		<if test="adviser.isRecommend != null">
+			and is_recommend = #{adviser.isRecommend}
+		</if>
+		<if test="adviser.advType != null">
+			and adv_type = #{adviser.advType}
+		</if>
+		<if test="adviser.loginPlat != null">
+			and login_plat = #{adviser.loginPlat}
+		</if>
+	</select>
+	<select id="getAdviserList" resultMap="BaseResultMap">
+		select * from tv_adviser where 1=1
+		<if test="adviser.isRecommend != null">
+			and is_recommend = #{adviser.isRecommend}
+		</if>
+		<if test="adviser.advType != null">
+			and adv_type = #{adviser.advType}
+		</if>
+		<if test="adviser.loginPlat != null">
+			and login_plat = #{adviser.loginPlat}
+		</if>
+		order by order_status,create_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+
+</mapper>

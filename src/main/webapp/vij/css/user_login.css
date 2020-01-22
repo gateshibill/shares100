@@ -1,0 +1,461 @@
+/*鏍峰紡鍒濆鍖�*/
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+ul,
+ol,
+li {
+    list-style: none;
+}
+
+body {
+    font-family: "寰蒋闆呴粦";
+    font-size: 16px;
+    letter-spacing: 0.2px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.page {
+    width: 100%;
+}
+
+/*navigation begin */
+.navigation {
+    width: 100%;
+    height: 6rem;
+}
+
+.navigation-center {
+    width: 70rem;
+    height: 6rem;
+    margin: 0 auto;
+}
+
+.navigation-center-le {
+    float: left;
+    width: 26rem;
+    height: 6rem;
+}
+
+.navigation-center-logo {
+    width: 26rem;
+    height: 3.7rem;
+    margin-top: 1.2rem;
+}
+
+.navigation-center-logo img {
+    width: 26rem;
+    height: 3.7rem;
+}
+
+/*navigation end */
+
+/*denglu begin*/
+.denglu {
+    position: relative;
+    width: 100%;
+    height: 30rem;
+    background-color: #F1F1EF;
+}
+
+.denglu_image {
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
+    width: 100%;
+    height: 30rem;
+    background-color: #F1F1EF;
+}
+
+.denglu_image img {
+    width: 100%;
+    height: 30rem;
+}
+
+.denglu_cen {
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
+    width: 100%;
+    height: 30rem;
+}
+
+.denglu_center {
+    position: relative;
+    width: 70rem;
+    height: 30rem;
+    margin: 0 auto;
+}
+
+.denglu_center_beijing {
+    /*background-color: #999;*/
+    position: absolute;
+    width: 70rem;
+    height: 30rem;
+}
+
+.denglu_center_content {
+    position: absolute;
+    width: 70rem;
+    height: 100%;
+}
+
+.denglu_center_content_deng {
+    float: right;
+    width: 24rem;
+    height: 25rem;
+    margin-top: 3rem;
+    border: 0.05rem solid #BFBFBF;
+    background-color: #FFF;
+}
+
+.center_content_deng_biao {
+    position: relative;
+    width: 18.5rem;
+    height: 1.3rem;
+    margin: 0 auto;
+    margin-top: 2rem;
+}
+
+.content_deng_biao_p {
+    font-size: 1.4rem;
+    line-height: 1.2;
+    display: block;
+    float: left;
+    width: 8rem;
+    width: 50%;
+    cursor: pointer;
+    text-align: center;
+    color: #6A6A6A;
+}
+
+.content_deng_biao_p.active {
+    color: #1E8E66;
+}
+
+.center_content_deng_span {
+    width: 18.5rem;
+    height: 0.05rem;
+    margin: 0 auto;
+    margin-top: 1.5rem;
+    background-color: #BFBFBF;
+}
+
+.center_content_deng_span span {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 0.2rem;
+    margin-top: -0.1rem;
+    background: #FFF;
+}
+
+.center_content_deng_span .active {
+    background: #1E8E66;
+}
+
+.denglu_center_content_deng ul {
+    position: relative;
+    width: 18.5rem;
+    height: 17rem;
+    margin: 0 auto;
+    margin-top: 2rem;
+}
+
+.center_content_deng_weixin {
+    position: absolute;
+    width: 18.5rem;
+    height: 17rem;
+}
+
+.content_deng_weixin_erweima {
+    width: 11.25rem;
+    height: 11.25rem;
+    margin: 0 auto;
+    background-color: #FFF;
+}
+
+.content_deng_weixin_erweima img {
+    width: 11rem;
+    height: 11rem;
+    margin-top: 0.05rem;
+}
+
+.center_content_deng_weixin p {
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+    width: 18.5rem;
+    height: 1.4rem;
+    margin: 0 auto;
+    margin-top: 2.25rem;
+    color: #6A6A6A;
+}
+
+.center_content_deng_zhanghao {
+    position: absolute;
+    display: block;
+    width: 18.5rem;
+    height: 17rem;
+}
+
+.content_deng_zhanghao_biaodan {
+    width: 18.5rem;
+    height: 14rem;
+}
+
+.content_deng_zhanghao_biaodan_name {
+    width: 18.5rem;
+    height: 2.75rem;
+    border: 0.05rem solid #E4E4E4;
+}
+
+/*.content_deng_zhanghao_biaodan_name div {
+	display: block;
+	float: left;
+	width: 2.7rem;
+	height: 2.6rem;
+	margin-top: 0.05rem;
+	background-color: #F2F2F2;
+}*/
+
+.el-form-item__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.el-input {
+    height: 2.6rem;
+    float: left;
+    width: auto;
+    flex-grow: 1;
+    font-size: 18px;
+}
+
+.el-input__inner {
+    height: 2.6rem;
+    border-radius: 0;
+}
+
+.deng_zhanghao_biaodan_name_ima {
+    display: block;
+    width: 2.6rem;
+    height: 2.6rem;
+    padding: 0.7rem;
+    background-color: #F2F2F2;
+    /*float: left;*/
+}
+
+.content_deng_zhanghao_biaodan_name input {
+    font-size: 1.2rem;
+    float: left;
+    width: 14.7rem;
+    height: 2.5rem;
+    margin-top: 0.05rem;
+    padding-left: 1rem;
+    color: #333;
+    border-left: 0.05rem solid #E4E4E4;
+    background-color: #FFF;
+}
+
+::-webkit-input-placeholder {
+    font-size: 1.1rem;
+}
+
+.deng_zhanghao_biaodan_name_msg {
+    font-size: 1rem;
+    display: block;
+    width: 18.5rem;
+    height: 1.75rem;
+    color: red;
+}
+
+.content_deng_zhanghao_biaodan_password {
+    width: 18.5rem;
+    height: 2.75rem;
+    border: 0.05rem solid #E4E4E4;
+}
+
+.content_deng_zhanghao_biaodan_password div {
+    display: block;
+    float: left;
+    width: 2.7rem;
+    height: 2.6rem;
+    margin-top: 0.05rem;
+    background-color: #F2F2F2;
+}
+
+.content_deng_zhanghao_biaodan_password input {
+    font-size: 1.4rem;
+    float: left;
+    width: 14.7rem;
+    height: 2.5rem;
+    margin-top: 0.05rem;
+    padding-left: 1rem;
+    color: #333;
+    border-left: 0.05rem solid #E4E4E4;
+    background-color: #FFF;
+}
+
+.content_deng_zhanghao_biaodan_password div img {
+    display: block;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.7rem;
+    margin-left: 0.7rem;
+}
+
+.deng_zhanghao_biaodan_password_msg {
+    font-size: 1rem;
+    display: block;
+    width: 18.5rem;
+    height: auto;
+    color: red;
+}
+
+.content_deng_zhanghao_biaodan_zidong {
+    width: 18.5rem;
+    height: 1.25rem;
+}
+
+.deng_zhanghao_biaodan_zidong_left {
+    font-size: 0.9rem;
+    line-height: 0.8rem;
+    float: left;
+    width: 9rem;
+    height: 1rem;
+    margin-top: 0.1rem;
+    color: #6A6A6A;
+}
+
+.deng_zhanghao_biaodan_zidong_left input {
+    float: left;
+    width: 1rem;
+    height: 1rem;
+
+    -webkit-appearance: checkbox;
+}
+
+.deng_zhanghao_biaodan_zidong_left .el-checkbox__input.is-checked+.el-checkbox__label{
+	color: #666;
+}
+
+.deng_zhanghao_biaodan_zidong_right {
+    float: right;
+    width: 5rem;
+    height: 1rem;
+    margin-top: 0.1rem;
+}
+
+.deng_zhanghao_biaodan_zidong_right p {
+    font-size: 14px;
+    line-height: 19px;
+    width: 5rem;
+    color: #6A6A6A;
+}
+
+.deng_zhanghao_biaodan_zidong_right p a {
+    cursor: pointer;
+    color: #6A6A6A;
+}
+
+.content_deng_zhanghao_biaodan_deng {
+    font-size: 1.2rem;
+    width: 18.5rem;
+    height: 2.5rem;
+    margin-top: 1.25rem;
+    cursor: pointer;
+    letter-spacing: 0.1rem;
+    color: #FFF;
+    background-color: #1E8E66;
+}
+
+.content_deng_zhanghao_lianjie {
+    width: 18.5rem;
+    height: 2rem;
+    margin-top: 1rem;
+}
+
+.content_deng_zhanghao_lianjie ul {
+    width: 20rem;
+    height: 2rem;
+    margin-top: 0rem;
+    margin-left: -1.25rem;
+}
+
+.content_deng_zhanghao_lianjie ul li {
+    float: left;
+    width: 5.3rem;
+    height: 2rem;
+    margin-left: 1.25rem;
+}
+
+.content_deng_zhanghao_lianjie ul .content_deng_zhanghao_qq img {
+    float: left;
+    width: 1.7rem;
+    height: 1.7rem;
+}
+
+.content_deng_zhanghao_lianjie ul .content_deng_zhanghao_qq p {
+    font-size: 0.8rem;
+    float: left;
+    width: 3.5rem;
+    height: 1rem;
+    margin-top: 0.5rem;
+    margin-left: 0.1rem;
+    color: #666;
+}
+
+.content_deng_zhanghao_lianjie ul .content_deng_zhanghao_qq p a {
+    color: #666;
+}
+
+.content_deng_zhanghao_lianjie ul .content_deng_zhanghao_weibo img {
+    float: left;
+    width: 1.7rem;
+    height: 1.7rem;
+}
+
+.content_deng_zhanghao_lianjie ul .content_deng_zhanghao_weibo p {
+    font-size: 0.8rem;
+    float: left;
+    width: 3.5rem;
+    height: 1rem;
+    margin-top: 0.5rem;
+    margin-left: 0.1rem;
+    color: #666;
+}
+
+.content_deng_zhanghao_lianjie ul .content_deng_zhanghao_weibo p a {
+    color: #666;
+}
+
+.content_deng_zhanghao_lianjie ul .content_deng_zhanghao_zhuce p {
+    font-size: 0.8rem;
+    float: left;
+    width: 5.3rem;
+    height: 1rem;
+    margin-top: 0.5rem;
+    color: #666;
+}
+
+.content_deng_zhanghao_lianjie ul .content_deng_zhanghao_zhuce p a {
+    color: #666;
+}
+
+/*denglu end*/
+
+/*denglu_bottom begin*/
+.denglu_bottom {
+    width: 100%;
+    height: 39rem;
+    background-color: #E2E2E2;
+}
+
+/*denglu_bottom end*/

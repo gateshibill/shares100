@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.AdvService">
+	<resultMap type="com.cofc.pojo.vij.Adv" id="BaseResultMap">
+		<id column="adv_id" property="advId" jdbcType="INTEGER" />
+		<result column="adv_name" property="advName" jdbcType="VARCHAR" />
+		<result column="adv_url" property="advUrl" jdbcType="VARCHAR" />
+		<result column="adv_jump_url" property="advJumpUrl" jdbcType="VARCHAR" />
+		<result column="adv_location" property="advLocation" jdbcType="INTEGER" />
+		<result column="source" property="source" jdbcType="INTEGER" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+		<result column="adv_order" property="advOrder" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addAdv" parameterType="com.cofc.pojo.vij.Adv"
+		useGeneratedKeys="true" keyProperty="advId">
+		insert into
+		tv_adv(adv_name,adv_url,adv_jump_url,adv_location,is_effect,adv_order,create_time,source,app_id)
+		values(#{advName},#{advUrl},#{advJumpUrl},#{advLocation},#{isEffect},#{advOrder},#{createTime},#{source},#{appId})
+	</insert>
+	<update id="updateAdv" parameterType="com.cofc.pojo.vij.Adv">
+		update tv_adv
+		<trim prefix="set" suffixOverrides=",">
+			<if test="advName!=null and advName!=''">adv_name = #{advName},</if>
+			<if test="advUrl!=null and advUrl!=''">adv_url = #{advUrl},</if>
+			<if test="advJumpUrl!=null and advJumpUrl!=''">adv_jump_url = #{advJumpUrl},</if>
+			<if test="advLocation != null">adv_location = #{advLocation},</if>
+			<if test="advOrder!=null">adv_order = #{advOrder},</if>
+			<if test="isEffect!=null">is_effect = #{isEffect},</if>
+			<if test="source != null">source = #{source},</if>
+			<if test="appId != null">app_id = #{appId},</if>
+		</trim>
+		where adv_id = #{advId}
+	</update>
+	<delete id="delAdv" parameterType="com.cofc.pojo.vij.Adv">
+		delete from tv_adv where adv_id = #{advId}
+	</delete>
+	<select id="getInfoById" resultMap="BaseResultMap">
+		select * from tv_adv where adv_id = #{advId}
+	</select>
+	<select id="getlistByLocation" resultMap="BaseResultMap">
+		select * from tv_adv where 1=1
+		<if test="advLocation != null">and adv_location = #{advLocation}</if>
+		<if test="isEffect != null">and is_effect = #{isEffect}</if>
+		<if test="source != null">and source = #{source}</if>
+		<if test="appId != null">and app_id = #{appId}</if>
+	</select>
+	<select id="getAdvCount" resultType="int">
+		select count(*) from tv_adv where 1=1
+		<if test="adv.advLocation != null">
+			and adv_location = #{adv.advLocation}
+		</if>
+		<if test="adv.appId != null">
+			and app_id = #{adv.appId}
+		</if>
+		<if test="adv.isEffect != null">
+			and is_effect = #{adv.isEffect}
+		</if>
+		<if test="adv.source !=null">
+			and source = #{adv.source} 
+		</if>
+	</select>
+	<select id="getAdvList" resultMap="BaseResultMap">
+		select * from tv_adv where 1=1
+		<if test="adv.advLocation != null">
+			and adv_location = #{adv.advLocation}
+		</if>
+		<if test="adv.isEffect != null">
+			and is_effect = #{adv.isEffect}
+		</if>
+		<if test="adv.appId != null">
+			and app_id = #{adv.appId}
+		</if>
+		<if test="adv.source !=null">
+			and source = #{adv.source} 
+		</if>
+		order by create_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,241 @@
+/*鏍峰紡鍒濆鍖�*/
+*{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+ul,ol,li{
+	list-style: none;
+}
+body{
+	font-size: 0.8rem;
+	font-family: '寰蒋闆呴粦';
+	letter-spacing: 0.01rem;
+}
+a{
+	text-decoration: none;
+}
+.page{
+	width: 100%;
+}
+
+/*mulu begin*/
+.mulu{
+	width: 100%;
+	height: 2.5rem;
+	background-color: #eaeaea;
+}
+.mulu-center{
+	width: 70rem;
+	height: 2.5rem;
+	margin: 0 auto;
+	position: relative;
+}
+.mulu-center-p{
+	width: 30rem;
+	height: 1rem;
+	margin: 0 auto;
+	position: absolute;
+	top: 0.75rem;
+	left: 0rem;
+	color: #7c7c7c;
+	font-size: 1rem;
+	line-height: 1rem;
+}
+.mulu-center-p a{
+	color: #7c7c7c;
+}
+/*mulu end*/
+
+/*guwen-fengcai bejin*/
+.guwen-fengcai{
+	width: 100%;
+	height: auto;
+	background-color: #fff;
+}
+.guwen-fengcai-center{
+	width: 70rem;
+	height: auto;
+	margin: 0 auto;
+}
+.guwen-fengcai-image{
+	width: 70rem;
+	height: auto;
+}
+.guwen-fengcai-image li{
+	width: 70rem;
+	height: 26.25rem;
+	background-color: #999;
+}
+.guwen-fengcai-image-image{
+	width: 35rem;
+	height: 26.25rem;
+}
+.guwen-fengcai-image-image img{
+	width: 35rem;
+	height: 26.25rem;
+}
+.guwen-fengcai-image-text{
+	width: 35rem;
+	height: 26.25rem;
+	position: relative;
+}
+.fengcai-image-text-image{
+	width: 35rem;
+	height: 26.25rem;
+	position: absolute;
+}
+.fengcai-image-text-image img{
+	width: 35rem;
+	height: 26.25rem;
+}
+.fengcai-image-text-text{
+	width: 35rem;
+	height: 26.25rem;
+	position: absolute;
+}
+.fengcai-image-text-name{
+	width: 35rem;
+	height: 3.25rem;
+	margin-top: 7.75rem;
+}
+.image-text-name-center{
+	width: fit-content;
+	width:-moz-fit-content;
+	height: 3.25rem;
+	margin: 0 auto;
+	position: relative;
+}
+.image-text-name-center img{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0rem;
+	left: 0rem;
+}
+
+.image-text-name-name{
+	width: auto;
+	height: 3.25rem;
+	background-color: ;
+	padding-right: 0.5rem;
+}
+.image-text-name-name .image-text-name-name-p1{
+	line-height: 3.25rem;
+	float: left;
+	margin-left: 0.5rem;
+	color: #2b292a;
+	font-size: 1.5rem;
+}
+.image-text-name-name .image-text-name-name-p2{
+	line-height: 3.25rem;
+	float: left;
+	margin-left: 0.7rem;
+	padding-left: 0.4rem;
+	border-left: 0.15rem solid #2b292a;
+	color: #2b292a;
+	font-size: 2rem;
+}
+.fengcai-image-text-zhiwei{
+	width: 35rem;
+	height: 1rem;
+	margin-top: 1rem;
+}
+.fengcai-image-text-zhiwei p{
+	width: 35rem; 
+	height: 1rem;
+	color: #494b4a;
+	font-size: 1rem;
+
+}
+.fengcai-image-text-content{
+	width: 25rem;
+	height: 9rem;
+	margin-top: 1rem;
+	margin-left: 5rem;
+}
+.fengcai-image-text-content p{
+	width: 25rem;
+	height: 9rem;
+	color: #494b4a;
+	font-size: 1rem;
+}
+.guwen-fengcai-image-li1 .guwen-fengcai-image-image{
+	float: left;
+}
+.guwen-fengcai-image-li1 .guwen-fengcai-image-text{
+	float: right;
+}
+.guwen-fengcai-image-li2 .guwen-fengcai-image-image{
+	float: right;
+}
+.guwen-fengcai-image-li2 .guwen-fengcai-image-text{
+	float: left;
+}
+
+/*guwen_banner begin*/
+.guwen-fengcai-image .guwen-fengcai-image-li0{
+	width: 70rem;
+	height: 18rem;
+}
+.guwen-fengcai-image .guwen-fengcai-image-li0 img{
+	width: 70rem;
+	height: 18rem;
+}
+.guwen-fengcai-image .guwen-fengcai-image-li3{
+	width: 70rem;
+	height: 19rem;
+	position: relative;
+}
+.guwen-fengcai-image-li3 .fengcai-image-li3-image{
+	width: 70rem;
+	height: 19rem;
+	position: absolute;
+	top: 0rem;
+	left: 0rem;
+}
+.guwen-fengcai-image .guwen-fengcai-image-li3 img{
+	width: 70rem;
+	height: 19rem;
+}
+.guwen-fengcai-image-li3 .fengcai-image-li3-text{
+	width: 70rem;
+	height: 19rem;
+	position: absolute;
+	top: 0rem;
+	left: 0rem;
+}
+.fengcai-image-li3-text .fengcai-li3-text-text{
+	width: 39.5rem;
+	height: 4.75rem;
+	margin-top: 6rem;
+	margin-left: 16rem;
+}
+.fengcai-image-li3-text .fengcai-li3-text-text{
+	width: 39.5rem;
+	height: 4.75rem;
+	margin-top: 6rem;
+	margin-left: 16rem;
+	padding-top: 0.5rem;
+}
+.fengcai-li3-text-p1{
+	width: 39.5rem;
+	height: 1.3rem;
+	color: #fff;
+	font-size: 1.3rem;
+}
+.fengcai-li3-text-p1 a{
+	color: #fff;
+}
+.fengcai-li3-text-p2{
+	width: 39.5rem;
+	height: 1rem;
+	margin-top: 1rem;
+	color: #fff;
+	font-size: 1rem;
+}
+.fengcai-li3-text-p2 a{
+	color: #fff;
+}
+/*guwen_banner end*/
+/*guwen-fengcai end*/

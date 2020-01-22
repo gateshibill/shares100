@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ProjectService">
+	<resultMap type="com.cofc.pojo.vij.Project" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="owner_id" property="ownerId" jdbcType="INTEGER" />
+		<result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+		<result column="waiter_id" property="waiterId" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="detail" property="detail" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="last_time" property="lastTime" jdbcType="TIMESTAMP" />
+		<result column="designer_id" property="designerId" jdbcType="INTEGER" />
+		<result column="is_pay" property="isPay" jdbcType="INTEGER" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="deposit_money" property="depositMoney" jdbcType="DOUBLE"/>	
+		<result column="lf_user_name" property="lfUserName" jdbcType="VARCHAR" />
+		<result column="deposit_money" property="depositMoney" jdbcType="DOUBLE"/>		
+		<result column="project_no" property="projectNo" jdbcType="VARCHAR" />
+		<result column="mobile_phone_no" property="mobilePhoneNo" jdbcType="VARCHAR"/> 
+	</resultMap>
+	<!-- 添加主方法 -->
+	<insert id="addProject" parameterType="com.cofc.pojo.vij.Project" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+		tv_project(id,app_id,name,owner_id,create_user_id,waiter_id,status,detail,create_time,project_no,designer_id,is_pay,deposit_money)
+		VALUES(#{id},#{appId},#{name},#{ownerId},#{createUserId},#{waiterId},#{status},#{detail},#{createTime},#{projectNo},
+		#{designerId},#{isPay},#{depositMoney})
+	</insert>
+	<!-- 获取总数 -->
+	<select id="getProjectCount" resultType="int">
+		SELECT count(*) FROM tv_project as p left join tb_user_common as u ON p.owner_id = u.user_id  
+		left join tv_decorate_forecast as f on p.id=f.project_id
+		where 1=1
+		<if test="vProject.appId !=null"> and p.app_id = #{vProject.appId}</if>
+		<if test="vProject.ownerId !=null">and p.owner_id = #{vProject.ownerId}</if>
+		<if test="vProject.createUserId != null">and p.create_user_id=#{vProject.createUserId}</if>
+		<if test="vProject.waiterId != null">and p.waiter_id = #{vProject.waiterId}</if>
+		<if test="vProject.status != null">and p.status=#{vProject.status}</if>
+		<if test="vProject.name != null and vProject.name !=''">
+			and p.name like CONCAT('%',#{vProject.name},'%') 
+		</if>
+	</select>
+	<!-- 查询主方法 -->
+	<select id="queryProject" resultMap="BaseResultMap">	
+		SELECT * FROM tv_project p
+		LEFT JOIN tb_user_common u
+		ON p.owner_id = u.user_id left join tv_decorate_forecast as f on p.id=f.project_id WHERE 1=1 
+		<if test="vProject.ownerId !=null">and p.owner_id = #{vProject.ownerId}</if>
+		<if test="vProject.createUserId != null">and p.create_user_id=#{vProject.createUserUd}</if>
+		<if test="vProject.waiterId != null">and p.waiter_id = #{vProject.waiterId}</if> 
+		<if test="vProject.name != null and vProject.name !=''">
+			and p.name like CONCAT('%',#{vProject.name},'%') 
+		</if>
+		<if test="vProject.projectNo != null and vProject.projectNo !=''">
+			and p.projectNo like CONCAT('%',#{vProject.projectNo},'%') 
+		</if>
+		order by p.create_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	<!-- 修改方法 -->
+	<update id="updateProject" parameterType="com.cofc.pojo.vij.Project">
+		UPDATE tv_project 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="appId != null">app_id =#{appId},</if>
+			<if test="name != null and name !=''">name=#{name},</if>
+			<if test="ownerId != null">owner_id=#{ownerId},</if>
+			<if test="createUserId != null">create_user_id=#{createUserId},</if>
+			<if test="waiterId != null">waiter_id=#{waiterId},</if>
+			<if test="status != null">status=#{status},</if>
+			<if test="detail != null and detail != ''">detail=#{detail},</if>
+			<if test="createTime !=null">create_time=#{createTime},</if> 
+			<if test="lastTime != null">last_time=#{lastTime},</if>
+			<if test="projectNo !=null and projectNo!=''">project_no=#{projectNo},</if>
+			<if test="designerId != null">designer_id=#{designerId},</if>
+			<if test="isPay != null">is_pay=#{isPay},</if>
+			<if test="depositMoney !=null">
+				deposit_money = #{depositMoney},
+			</if>
+		</trim>
+		WHERE id = #{id}
+	</update>
+	<!-- 刪除主方法，如果裏邊關聯的字段沒有空就不能刪除 -->
+	<delete id="delectproject" parameterType="int">
+	DELETE FROM tv_project WHERE id = #{id}
+	</delete>
+	<!-- 获取详情 -->
+	<select id="getInfoById" resultMap="BaseResultMap">
+		SELECT * FROM  tv_project WHERE id = #{id}
+	</select>
+	
+	<select id="checkIsAlready" resultType="int">
+		select count(*) from tv_project WHERE 1=1
+		<if test="name != null and name != ''">
+			and name = #{name}
+		</if>
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		<if test="id != id">
+			and id &lt;&gt;#{id}
+		</if>
+	</select>
+	<select id="getProjectByUserId" resultMap="BaseResultMap">
+		select * from tv_project where 1=1
+		<if test="userId != null">
+			and owner_id = #{userId}
+		</if>
+		<if test="appId != null">
+			and app_id = #{appId}
+		</if>
+		<if test="status != null">
+			and status &lt;&gt; #{status}
+		</if>
+	</select>
+</mapper>

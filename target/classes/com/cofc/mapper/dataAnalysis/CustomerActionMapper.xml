@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.dataAnalysis.CustomerActionService">
+	<resultMap type="com.cofc.pojo.dataAnalysis.CustomerAction" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="app_name" property="appName" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="class_name" property="className" jdbcType="VARCHAR" />
+		<result column="method_name" property="methodName" jdbcType="VARCHAR" />
+		<result column="params" property="params" jdbcType="VARCHAR" />
+		<result column="action_time" property="actionTime" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addCustomerAction" parameterType="com.cofc.pojo.dataAnalysis.CustomerAction"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		td_customer_action(app_id,user_id,class_name,method_name,params,action_time,create_time)
+		values(#{appId},#{userId},#{className},#{methodName},#{params},#{actionTime},#{createTime})
+	</insert>
+
+	<delete id="deleteCustomerAction">
+		delete from td_customer_action where id =#{id}
+	</delete>
+
+	<select id="getCustomerAction" resultMap="BaseResultMap">
+		select * from td_customer_action where
+		app_id=#{appId} and
+		user_id =#{userId} 
+	</select>
+	<select id="getCustomerActionList" resultMap="BaseResultMap">
+		select * from td_customer_action where
+		app_id=#{appId} and
+		user_id =#{userId} and
+		order by action_time desc
+		limit #{page},#{limit}
+	</select>
+</mapper>

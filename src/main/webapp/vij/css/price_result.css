@@ -1,0 +1,212 @@
+/*鏍峰紡鍒濆鍖�*/
+*{
+	margin: 0;
+	padding: 0;
+	border: 0; 
+}
+ul,ol,li{
+	list-style: none;
+}
+body{
+	font-size: 0.8rem;
+	font-family: '寰蒋闆呴粦';
+	letter-spacing: 0.01rem;
+}
+a{
+	text-decoration: none;
+}
+.page{
+	width: 100%;
+}
+
+/*top begin */
+.top{
+	width: 100%;
+	height: 8.5rem;
+	background-color: #434343;
+}
+
+/*price bejin*/
+.price{
+	width: 100%;
+	height: 34.5rem;
+	position: relative;
+}
+.price-image{
+	width: 100%;
+	height: 34.5rem;
+	position: absolute;
+	top: 0rem;
+	left: 0rem;
+}
+.price-image img{
+	width: 100%;
+	height: 34.5rem;
+}
+.price-content{
+	width: 100%;
+	height: 34.5rem;
+	position: absolute;
+	top: 0rem;
+	left: 0rem;
+}
+.price-center{
+	width: 70rem;
+	height: 34.5rem;
+	margin: 0 auto;
+	padding-top: 9rem;
+}
+.center-cen{
+	width: 70rem;
+	height: 21.5rem;
+}
+.center-content{
+	width: 53rem;
+	height: 21.5rem;
+	background-color: #fff;
+	margin: 0 auto;
+	border-bottom:0.15rem solid #8e9baf;
+}
+/*content-counter begin*/
+.center-content .content-counter{
+	width: 24.5rem;
+	height: 21.35rem;
+	float: left;
+	margin-left: 2rem;
+	border-right:0.05rem solid #eee;
+}
+.counter-title{
+	width: 90%;
+	height: 2rem;
+	margin-top: 2rem;
+	color: #666;
+	font-size: 1.25rem; 
+}
+.counter-mintitle{
+	width: 90%;
+	height: 2.25rem;
+	color: #666;
+	font-size: 0.8rem; 
+}
+.counter-content{
+	width: 90%;
+	height: 11rem;
+	border:0.05rem solid #1e8e66;
+	margin-top: 1rem;
+	margin-left: 2.5%;
+}
+.content-div{
+	width: 45%;
+	height: 11rem;
+	float: left;
+	margin-left: 5%;
+}
+.div-image{
+	width: 55%;
+	height: 5.5rem;
+	margin-top: 1rem;
+	margin-left: 22%;	
+}
+.erweima{
+	border:0.05rem solid #ccc;
+}
+.div-image img{
+	width: 100%;
+	height: 100%;
+}
+.content-div p{
+	width: 100%;
+	height: 3rem;
+	margin-top: 1rem;
+	color: #666;
+	font-size: 1rem;
+	line-height: 1rem;
+	word-break:break-all;
+}
+.counter-xiatitle{
+	width: 95%;
+	height: 1.5rem;
+	background-color:#1e8e66; 
+	color: #fff;
+	font-size: 1rem; 
+	line-height: 1.2rem;
+}
+
+/*content-count begin*/
+.center-content .content-result{
+	width: 18.5rem;
+	height: 21.35rem;
+	float: left;
+	margin-left: 5rem;
+}
+.result-re{
+	width: 18.5rem;
+	height: 3rem;
+	margin-top: 2rem;
+	color: #666;
+	font-size: 1.25rem; 
+}
+.result-re span{
+	color: red;
+	font-size: 1.25rem; 
+}
+.center-content .result-type{
+	width: 18.5rem;
+	height: 13.5rem;
+	border:0 none;
+}
+.center-content .result-type p{
+	width: 16.5rem;
+	height: 1rem;
+	margin-top: 1.25rem;
+	color: #666;
+	font-size: 1rem;
+	line-height: 1rem;
+	margin-left: 0rem;
+}
+.center-content .result-type-ty{
+	width: 16.5rem;
+	height: 1.5rem;
+	margin-top: 1.25rem;
+	color: #666;
+	font-size: 0.8rem;
+	margin-left: 0rem;
+}
+.result-type-ty .input{
+	display: inline-block;
+	width: 1.3rem;
+	height: 1.3rem;
+	float: left;
+	margin-left: 0.5rem;
+	color: #666;
+	font-size: 1rem;
+	-webkit-appearance: radio;
+}
+.input-button{
+	display: inline-block;
+	width: 3.2rem;
+	height: 1.7rem;
+	background-color: #1e8e66;
+	margin-top: 1rem;
+	margin-left: 11rem;
+	float: left;
+	color: #fff;
+	font-size: 1rem;
+	cursor: pointer;
+}
+.result-type-ty span{
+	display: inline-block;
+	width: auto;
+	height: 0.9rem;
+	margin-top: 0.2rem;
+	float: left;
+	font-size: 0.8rem;
+	line-height: 0.8rem;
+}
+
+/*price end*/
+.copyright{
+	width: 100%;
+	height: 21rem;
+	background-color: #ccc;
+}

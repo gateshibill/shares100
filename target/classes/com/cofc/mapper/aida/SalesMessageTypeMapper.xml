@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.SalesMessageTypeService">
+	<resultMap type="com.cofc.pojo.aida.SalesMessageType" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="order_id" property="orderId" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="note" property="note" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="addSalesMessageType" parameterType="com.cofc.pojo.aida.SalesMessageType"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tf_sales_message_type(app_id,user_id,type,title,order_id,create_time,note)
+		values(#{appId},#{userId},#{"type"},#{title},#{orderId},#{createTime},#{note})
+	</insert>
+
+	<update id="updateSalesCustomer" parameterType="com.cofc.pojo.aida.SalesMessageType">
+		update tf_sales_message_type
+		<trim prefix="set" suffixOverrides=",">
+			<if test="title!=null and title!=''">title=#{title},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<select id="getSalesMessageTypeList" resultMap="BaseResultMap">
+		select * from
+		tf_sales_message_type 
+		order by order_id 
+		desc 
+	</select>
+</mapper>

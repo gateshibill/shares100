@@ -1,0 +1,55 @@
+/*搜素栏的样式*/
+.search-area {
+	height:auto;
+	line-height: 30px;
+}
+
+.search-input {
+	height: 30px;
+	width:135px;
+	line-height: 30px;
+	border: 1px solid #e6e6e6;
+	background-color: #fff;
+	border-radius: 3px;
+}
+.search-select {
+	height: 30px;
+	width:100px;
+	line-height: 30px;
+	border: 1px solid #e6e6e6;
+	background-color: #fff;
+	border-radius: 3px;
+}
+.search-area label{
+	 float: left;
+	 margin-left: 10px;
+}
+.search-area div{
+	 float: left;
+}
+.search-area ul li{
+	float:left;
+	margin:0px 0px 10px 0px;
+}
+/*详情页样式*/
+/*字数太多,没有沾满一行就会换行修正*/
+.detail-form-label{
+	font-weight:400;
+	padding: 9px 15px;
+	float: left;
+    display: block;
+}
+/*label和input样式没有对齐修正*/
+.detail-label-value{
+	line-height:38px;
+}
+/*弹出框的样式*/
+.out-form-label{
+	float:left;
+	display:block;
+	padding:9px 5px;
+	width: 70px;
+	font-weight:400;
+	line-height:20px;
+	position:relative;
+}

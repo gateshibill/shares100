@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.AffichePariseService">
+	<resultMap type="com.cofc.pojo.AfficheParise" id="BaseResultMap">
+		<id column="parise_id" property="pariseId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="affiche_id" property="afficheId" jdbcType="INTEGER" />
+		<result column="parise_time" property="pariseTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	<select id="findMyPariseList" resultMap="BaseResultMap">
+		select * from TB_AFFICHE_PARISE where user_id = #{ap.userId} limit #{rowsId},#{pageSize}
+	</select>
+	<insert id="addParisedActive" parameterType="com.cofc.pojo.AfficheParise">
+		insert into TB_AFFICHE_PARISE(user_id,affiche_id,parise_time)values(#{userId},#{afficheId},#{pariseTime})
+	</insert>
+</mapper>

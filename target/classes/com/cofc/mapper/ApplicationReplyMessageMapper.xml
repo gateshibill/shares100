@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ApplicationReplyMessageService">
+	<resultMap type="com.cofc.pojo.ApplicationReplyMessage" id="BaseResultMap">
+		<id column="reply_id" property="replyId" jdbcType="INTEGER" />
+		<result column="reply_user_id" property="replyUserId" jdbcType="INTEGER" />
+		<result column="message_id" property="messageId"
+			jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="reply_nick_name" property="replyNickName" jdbcType="VARCHAR"/>
+	</resultMap>
+	<insert id="addReplyInfo" parameterType="com.cofc.pojo.ApplicationReplyMessage">
+		insert into
+		TB_APPLICATION_REPLY_MESSAGE(reply_user_id,message_id,content,login_plat,create_time,reply_nick_name)
+		values(#{replyUserId},#{messageId},#{content},#{loginPlat},#{createTime},#{replyNickName})
+	</insert>
+	<select id="isAlreadyReply" resultMap="BaseResultMap">
+	  select * from TB_APPLICATION_REPLY_MESSAGE where login_plat = #{loginPlat} and message_id = #{messageId}
+	</select>
+</mapper>

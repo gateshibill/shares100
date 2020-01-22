@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.PushMessageService">
+	<resultMap type="com.cofc.pojo.PushMessage" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="template_id" property="templateId"
+			jdbcType="VARCHAR" />
+		<result column="login_plat" property="loginPlat"
+			jdbcType="INTEGER" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+		<result column="is_remove" property="isRemove" jdbcType="INTEGER" />
+		<result column="temp_type" property="tempType" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<select id="getTemplateInfo" resultMap="BaseResultMap">
+		select * from tb_push_message where is_remove = 0 and login_plat = #{loginPlat} and temp_type = #{tempType}
+	</select>
+	<select id="isAreadyTemplateCount" resultType="int">
+		select count(*) from tb_push_message where is_remove = 0 and login_plat = #{loginPlat} and temp_type = #{tempType}
+	    and id &lt;&gt;#{id} 
+	</select>
+	<select id="getTemplateDetail" resultMap="BaseResultMap">
+		select * from tb_push_message where id = #{id}
+	</select>
+	<insert id="addTemplateInfo" parameterType="com.cofc.pojo.PushMessage"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tb_push_message(template_id,login_plat,is_effect,temp_type,create_time)
+		values(#{templateId},#{loginPlat},#{isEffect},#{tempType},#{createTime})
+	</insert>
+	<update id="updateTemplateInfo" parameterType="com.cofc.pojo.PushMessage">
+		update tb_push_message
+		<trim prefix="set" suffixOverrides=",">
+			<if test="templateId!=null and templateId!=''">template_id=#{templateId},</if>
+			<if test="isEffect!=null">is_effect=#{isEffect},</if>
+			<if test="tempType!=null">temp_type=#{tempType},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<update id="delTemplateInfo" parameterType="com.cofc.pojo.PushMessage">
+	  update tb_push_message set is_remove = 1 where id = #{id}
+	</update>
+	<select id="getTemplateCount" resultType="int">
+      select count(*) from tb_push_message where is_remove = 0 
+      <if test="push.loginPlat!=null">and login_plat=${push.loginPlat}</if>
+      <if test="push.tempType!=null">and temp_type=${push.tempType}</if>
+      <if test="push.isEffect!=null">and is_effect=#{push.isEffect}</if>
+     </select>
+	<select id="getTemplateList" resultMap="BaseResultMap">
+	  select * from tb_push_message where is_remove = 0 
+      <if test="push.loginPlat!=null">and login_plat=${push.loginPlat}</if>
+      <if test="push.tempType!=null">and temp_type=${push.tempType}</if>
+      <if test="push.isEffect!=null">and is_effect=#{push.isEffect}</if>
+      order by create_time desc limit #{page},#{limit}
+	</select>
+	
+	<select id="getTemplateCountByLoginPlat" resultType="int">
+      select count(*) from tb_push_message where is_remove = 0 
+      <if test="push.tempType!=null">and temp_type=${push.tempType}</if>
+      <if test="push.isEffect!=null">and is_effect=#{push.isEffect}</if>
+       and login_plat in
+       <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+		</foreach>
+     </select>
+	<select id="getTemplateListByLoginPlat" resultMap="BaseResultMap">
+	  select * from tb_push_message where is_remove = 0 
+      <if test="push.tempType!=null">and temp_type=${push.tempType}</if>
+      <if test="push.isEffect!=null">and is_effect=#{push.isEffect}</if>
+       and login_plat in
+       <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+		</foreach>
+      order by create_time desc limit #{page},#{limit}
+	</select>
+</mapper>

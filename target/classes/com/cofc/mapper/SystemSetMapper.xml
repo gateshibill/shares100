@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.SystemSetService">
+	<resultMap type="com.cofc.pojo.SystemSet" id="BaseResultMap">
+		<id column="set_id" property="setId" jdbcType="INTEGER" />
+		<result column="is_need_apply" property="isNeedApply" jdbcType="INTEGER" />
+		<result column="is_auto_withdraw" property="isAutoWithdraw" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="findSystemSet" resultMap="BaseResultMap">
+		select * from TB_SYSTEM_SET where set_id = 1
+	</select>
+	<update id="updateSystemSet" parameterType="com.cofc.pojo.SystemSet">
+		update TB_SYSTEM_SET
+		<trim prefix="set" suffixOverrides=",">
+			<if test="isNeedApply!=null">is_need_apply=#{isNeedApply},</if>
+			<if test="isAutoWithdraw!=null">is_auto_withdraw=#{isAutoWithdraw},</if>
+		</trim>
+	</update>
+</mapper>

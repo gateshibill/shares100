@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.AfficheJoinService">
+	<resultMap type="com.cofc.pojo.AfficheJoin" id="BaseResultMap">
+		<id column="join_id" property="joinId" jdbcType="INTEGER" />
+		<result column="affiche_id" property="afficheId" jdbcType="INTEGER" />
+		<result column="joiner_id" property="joinerId" jdbcType="INTEGER" />
+		<result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+		<result column="join_time" property="joinTime" jdbcType="TIMESTAMP" />
+		<result column="is_join" property="isJoin" jdbcType="INTEGER" />
+	</resultMap>
+</mapper>

@@ -1,0 +1,503 @@
+.product-box {
+    position: relative;
+    z-index: 4;
+    padding: 1.6rem 12.5rem;
+    border-top: 1px solid #E0E0E0;
+    border-bottom: 1px solid #E0E0E0;
+    background: #FFF;
+    -webkit-box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.07);
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.07);
+}
+
+.box-product-name, .product-link {
+    font-size: 1.2rem;
+    font-weight: 400;
+    float: left;
+    color: #212121;
+}
+
+.product-link {
+    float: right;
+}
+
+.product-link-item {
+    float: left;
+    margin-left: 1.8rem;
+    color: #616161;
+}
+
+.product-detail {
+    padding: 2.2rem 12.5rem;
+}
+
+.product-show-image {
+    float: left;
+}
+
+.product-image-hull {
+    overflow: hidden;
+    width: 31.25rem;
+    height: 31.25rem;
+    background: #EEE;
+}
+
+.product-image {
+    width: 100%;
+}
+
+.product-thumb {
+    position: relative;
+    width: 100%;
+    padding: 1rem 3rem;
+}
+
+.thumb-list {
+    display: -webkit-flex;
+    display: flex;
+    margin: 0 auto;
+
+    justify-content: space-around;
+}
+
+.thumb-item-hull {
+    overflow: hidden;
+    width: 4rem;
+    height: 4rem;
+    cursor: pointer;
+    border: 1px solid #666;
+}
+
+.thumb-item-hull.high-light {
+    border: 2px solid #FF0040;
+}
+
+.thumb-item {
+    height: 100%;
+}
+
+.product-info {
+    float: right;
+    width: 35rem;
+}
+
+.product-name {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    color: #252525;
+}
+
+.product-slogan {
+    font-size: 0.7rem;
+    margin-top: 0.6rem;
+    color: #7B7B7B;
+}
+
+.product-seckill {
+    display: flex;
+    padding: 0.5rem 0;
+
+    justify-content: space-between;
+}
+
+.seckill-price {
+    font-size: 1.2rem;
+    line-height: 1;
+    color: #F81C1C;
+}
+
+.seckill-prime {
+    font-size: 1rem;
+    line-height: 1;
+    margin-left: 1.25rem;
+    text-decoration: line-through;
+    color: #999;
+}
+
+.seckill-time {
+    font-size: 1rem;
+    line-height: 1;
+    margin-top: 1rem;
+    color: #F81C1C;
+}
+
+.seckill-right {
+    position: relative;
+    width: 10rem;
+    height: auto;
+    padding: 0.5rem 0;
+}
+
+.seckill-background {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.seckill-countdown {
+    font-size: 0.7rem;
+    line-height: 1;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #FFF;
+}
+
+.seckill-status {
+    font-size: 1.2rem;
+    line-height: 1;
+    position: relative;
+    z-index: 2;
+    margin-top: 0.5rem;
+    text-align: center;
+    color: #FFF;
+}
+
+.product-price {
+    font-size: 0.9rem;
+    margin-top: 1.25rem;
+    padding-bottom: 1.3rem;
+    color: #F62217;
+    border-bottom: 1px solid #ECECEC;
+}
+
+.shipping-address {
+    font-size: 1rem;
+    margin-top: 1.25rem;
+    padding: 2rem;
+    color: #5D5D5D;
+    border: 1px solid #CCC;
+    background: #EEE;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+}
+
+.shipping-address img {
+    width: 0.8rem;
+    height: auto; 
+}
+
+.shipping-address p {
+    margin-left: 1.5rem;
+    line-height: 1.2;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    word-wrap:break-word;
+    word-break:break-all;
+}
+
+.shipping-address span{
+    margin-left: 0.9rem;
+}
+
+.shipping-address a{
+    margin-left: 0.9rem;
+}
+
+.product-spec {
+    margin-top: 1rem;
+}
+
+.spec-title {
+    font-size: 1rem;
+    line-height: 3.2rem;
+    float: left;
+    width: 5.35rem;
+    color: #8F8F8F;
+}
+
+.spec-list {
+    float: left;
+}
+
+.spec-item-hull {
+    position: relative;
+    float: left;
+    overflow: hidden;
+    width: 6.4rem;
+    height: 2.4rem;
+    margin-right: 0.6rem;
+    cursor: pointer;
+    border: 1px solid #EEE;
+}
+
+.spec-item-hull.high-light {
+    border: 2px solid #FF0040;
+}
+
+.spec-item-hull .choose-pandant {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: none;
+    width: 1rem;
+}
+
+.spec-item-hull.high-light .choose-pandant {
+    display: block;
+}
+
+.spec-item {
+    line-height: 2.4rem;
+    text-align: center;
+}
+
+
+.product-counts {
+    margin-top: 1rem;
+}
+
+.counts-title, .product-stock {
+    font-size: 1rem;
+    line-height: 40px;
+    float: left;
+    width: 5.35rem;
+    color: #8F8F8F;
+}
+
+.product-stock {
+    width: auto;
+    margin-left: 1.8rem;
+}
+
+.counts-input {
+    float: left;
+    overflow: hidden;
+}
+
+.counts-input i {
+    line-height: 19px;
+}
+
+.counts-input .el-input-number {
+    width: 5rem;
+    border-color: #FFF;
+}
+
+.el-input-number.is-controls-right .el-input-number__increase, .el-input-number.is-controls-right .el-input-number__decrease {
+    width: 1.2rem;
+}
+
+.counts-input .el-input-number.is-controls-right .el-input__inner {
+    padding-right: 0;
+    text-align: left;
+    border-radius: 0;
+}
+
+.product-serve, .product-installment, .product-shopping {
+    margin-top: 1rem;
+}
+
+.serve-title, .installment-title {
+    font-size: 1rem;
+    float: left;
+    width: 5.35rem;
+    color: #8F8F8F;
+}
+
+.installment-title {
+    line-height: 3rem;
+}
+
+.serve-list, .installment-list {
+    float: left;
+}
+
+.serve-item {
+    font-size: 0.7rem;
+    line-height: 1.4rem;
+    float: left;
+    padding: 0 0.5rem;
+    border: 1px solid #EEE;
+}
+
+.installment-item {
+    position: relative;
+    float: left;
+    width: 5.75rem;
+    height: 3rem;
+    margin-right: 0.5rem;
+    border: 1px solid #EEE;
+}
+
+.serve-charge::before {
+    display: block;
+    content: "";
+}
+
+.installment-type {
+    font-size: 0.8rem;
+    line-height: 1.1rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.button-buy {
+    font-size: 1.5rem;
+    line-height: 3.3rem;
+    float: left;
+    width: 11.75rem;
+    margin-left: 5.35rem;
+    cursor: pointer;
+    text-align: center;
+    color: #FF0040;
+    border: 1px solid #FB1521;
+    background: #FFEDED;
+}
+
+.button-join-cart {
+    font-size: 1.5rem;
+    line-height: 3.3rem;
+    float: left;
+    width: 11.75rem;
+    margin-left: 2rem;
+    cursor: pointer;
+    text-align: center;
+    color: #FFF;
+    border: 1px solid #FB1521;
+    background: #FB1521;
+}
+
+.product-detail-more {
+    display: flex;
+    padding: 0 12.5rem;
+
+    justify-content: flex-start;
+}
+
+.more-item {
+    font-size: 1.3rem;
+    line-height: 1;
+    padding: 0.8rem 2.5rem;
+    cursor: pointer;
+    color: #6E6E6E;
+    border: 1px solid #BFBFBF;
+    border-bottom: 0;
+    background: #F0EFEF;
+}
+
+.comment-tab + .comment-tab {
+    border-left: 0;
+}
+
+.more-item.high-light {
+    color: #FF0036;
+    background: #FFF2F1;
+}
+
+.product-rich-text {
+    display: flex;
+    flex-direction: column;
+    padding: 0 12.5rem;
+
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.product-rich-text-hull {
+    border: 1px solid #BFBFBF;
+    width: 100%;
+}
+
+.product-rich-text img {
+    width: 100%;
+}
+
+.product-comment {
+    padding: 0 12.5rem;
+}
+
+.comment-tab {
+    font-size: 1.2rem;
+    display: flex;
+    padding: 0.8rem 1rem;
+    border: 1px solid #999;
+    background: #FFF2F1;
+
+    justify-content: flex-start;
+}
+
+.comment-tab-item {
+    font-size: 1rem;
+    line-height: 1;
+    width: 5rem;
+    cursor: pointer;
+    text-align: center;
+    color: #6E6E6E;
+    background: #FFF2F1;
+}
+
+.comment-tab-item.high-light {
+    color: #FF0036;
+}
+
+.comment-item {
+    display: flex;
+    width: 100%;
+    padding: 1.5rem;
+    border-bottom: 1px solid #EEE;
+
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.comment-avator {
+    display: flex;
+    overflow: hidden;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.comment-avator img {
+    width: 100%;
+}
+
+.comment-nickname {
+    width: 7.5rem;
+    text-align: center;
+}
+
+.comment-right {
+    width: 0;
+
+    flex-grow: 1;
+}
+
+.comment-content {
+    font-size: 1rem;
+    line-height: 1;
+    margin-top: 0.5rem;
+    color: #666;
+}
+
+.comment-item-iamges {
+    padding: 0.8rem 0;
+}
+
+.comment-more {
+    font-size: 0.8rem;
+    line-height: 1;
+    color: #999;
+}
+
+.pagination {
+    display: flex;
+    margin-top: 1rem;
+    padding-bottom: 3rem;
+
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.SystemUpsetService">
+	<resultMap type="com.cofc.pojo.vij.SystemUpset" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="company_name" property="companyName" jdbcType="VARCHAR" />
+		<result column="company_logo" property="companyLogo" jdbcType="VARCHAR" />
+		<result column="company_addres" property="companyAddres" jdbcType="VARCHAR"/>
+		<result column="we_chat_small" property="weChatSmall" jdbcType="VARCHAR"/>
+		<result column="welcom_text" property="welcomText" jdbcType="VARCHAR"/>
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="qq" property="qq" jdbcType="VARCHAR" />
+		<result column="we_chat_common" property="weChatCommon" jdbcType="VARCHAR" />
+		<result column="sys_phone" property="sysPhone" jdbcType="VARCHAR" />
+	</resultMap>
+	<insert id="addSystemUpset" parameterType="com.cofc.pojo.vij.SystemUpset"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tv_system_upset(app_id,company_name,company_logo,company_addres,welcom_text,phone,qq,we_chat_small,we_chat_common,sys_phone)
+		values(#{appId},#{companyName},#{companyLogo},#{companyAddres},#{welcomText},#{phone},#{qq},#{weChatSmall},#{weChatCommon},#{sysPhone})
+	</insert>
+	<update id="updateSystemUpset" parameterType="com.cofc.pojo.vij.SystemUpset">
+		update tv_system_upset
+		<trim prefix="set" suffixOverrides=",">
+			<if test="appId!=null">app_id = #{appId},</if>
+			<if test="companyName!=null and companyName!=''">company_name = #{companyName},</if>
+			<if test="companyLogo!=null and companyLogo!=''">company_logo = #{companyLogo},</if>
+			<if test="companyAddres!=null and companyAddres!=''">company_addres = #{companyAddres},</if>
+			<if test="phone!=null and phone!=''">phone = #{phone},</if>
+			<if test="qq!=null and qq!=''">qq = #{qq},</if>
+			<if test="weChatSmall!=null and weChatSmall!=''">we_chat_small = #{weChatSmall},</if>
+			<if test="weChatCommon!=null and weChatCommon!=''">we_chat_common = #{weChatCommon},</if>
+			<if test="welcomText!=null and welcomText!=''">welcom_text = #{welcomText},</if>
+			<if test="sysPhone!=null and sysPhone!=''">sys_phone = #{sysPhone},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<select id="getInfoById" parameterType="com.cofc.pojo.vij.SystemUpset" resultMap="BaseResultMap">
+		select * from tv_system_upset where 1=1
+		<if test="systemUpset.id != null">
+			and id = #{systemUpset.id}
+		</if>
+		<if test="systemUpset.appId != null">
+			and app_id = #{systemUpset.appId}
+		</if>
+	</select>
+	
+</mapper>

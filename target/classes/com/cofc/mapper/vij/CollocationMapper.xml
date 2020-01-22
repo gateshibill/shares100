@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.CollocationService">
+	<resultMap type="com.cofc.pojo.vij.Collocation" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="coll_title" property="collTitle" jdbcType="VARCHAR" />
+		<result column="coll_desc" property="collDesc" jdbcType="VARCHAR" />
+		<result column="coll_detail" property="collDetail" jdbcType="VARCHAR" />
+		<result column="coll_images" property="collImages" jdbcType="VARCHAR" />
+		<result column="is_recommend" property="isRecommend" jdbcType="INTEGER" />
+		<result column="coll_type" property="collType" jdbcType="INTEGER" />
+		<result column="coll_cover" property="collCover" jdbcType="VARCHAR" />
+		<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addColl" parameterType="com.cofc.pojo.vij.Collocation"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tv_collocation(coll_title,coll_desc,coll_detail,coll_images,is_recommend,coll_type,
+		coll_cover,order_status,create_time,login_plat)
+		values(#{collTitle},#{collDesc},#{collDetail},#{collImages},#{isRecommend},#{collType},#{collCover},
+		#{orderStatus},#{createTime},#{loginPlat})
+	</insert>
+	<update id="updateColl" parameterType="com.cofc.pojo.vij.Collocation">
+		update tv_collocation
+		<trim prefix="set" suffixOverrides=",">
+			<if test="collTitle!=null and collTitle!=''">coll_title = #{collTitle},</if>
+			<if test="collDesc!=null and collDesc!=''">coll_desc = #{collDesc},</if>
+			<if test="collDetail!=null and collDetail!=''">coll_detail = #{collDetail},</if>
+			<if test="collImages!=null and collImages!=''">coll_images = #{collImages},</if>
+			<if test="collCover!=null and collCover!=''">coll_cover = #{collCover},</if>
+			<if test="collType != null">coll_type = #{collType},</if>
+			<if test="orderStatus!=null">order_status = #{orderStatus},</if>
+			<if test="isRecommend!=null">is_recommend = #{isRecommend},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="delColl" parameterType="com.cofc.pojo.vij.Collocation">
+		delete from tv_collocation where id = #{id}
+	</delete>
+	<select id="getInfoById" resultMap="BaseResultMap">
+		select * from tv_collocation where id = #{id}
+	</select>
+	<select id="getCollCount" resultType="int">
+		select count(*) from tv_collocation where 1=1
+		<if test="coll.isRecommend != null">
+			and is_recommend = #{coll.isRecommend}
+		</if>
+		<if test="coll.collType != null">
+			and coll_type = #{coll.collType}
+		</if>
+		<if test="coll.loginPlat != null">
+			and login_plat = #{coll.loginPlat}
+		</if>
+	</select>
+	<select id="getCollList" resultMap="BaseResultMap">
+		select * from tv_collocation where 1=1
+		<if test="coll.isRecommend != null">
+			and is_recommend = #{coll.isRecommend}
+		</if>
+		<if test="coll.collType != null">
+			and coll_type = #{coll.collType}
+		</if>
+		<if test="coll.loginPlat != null">
+			and login_plat = #{coll.loginPlat}
+		</if>
+		order by order_status,create_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+</mapper>

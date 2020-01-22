@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.WebSiteService">
+	<resultMap type="com.cofc.pojo.aida.WebSite" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="cname" property="cname" jdbcType="VARCHAR" />
+		<result column="banner" property="banner" jdbcType="VARCHAR" />
+		<result column="cintro" property="cintro" jdbcType="VARCHAR" />
+		<result column="pintro" property="pintro" jdbcType="VARCHAR" />
+		<result column="cfind" property="cfind" jdbcType="VARCHAR" />
+		<result column="kehu" property="kehu" jdbcType="VARCHAR" />
+		<result column="team" property="team" jdbcType="VARCHAR" />
+		<result column="cphone" property="cphone" jdbcType="VARCHAR" />
+		<result column="caddress" property="caddress" jdbcType="VARCHAR" />
+	    <result column="app_id" property="appId" jdbcType="INTEGER" />				
+	    <result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="logo" property="logo" jdbcType="VARCHAR" />
+	    <result column="company_detail" property="companyDetail" jdbcType="VARCHAR" />								
+	</resultMap>
+	<insert id="addWebSite" parameterType="com.cofc.pojo.aida.WebSite"
+	 useGeneratedKeys="true" keyProperty="id">
+	 	insert into tf_website(cname,banner,cintro,pintro,cfind,kehu,team,cphone,caddress,app_id,is_effect,create_time,logo,company_detail)
+	 	values(#{cname},#{banner},#{cintro},#{pintro},#{cfind},#{kehu},#{team},#{cphone},#{caddress},#{appId},
+	 	#{isEffect},#{createTime},#{logo},#{companyDetail})
+	 </insert>
+	
+	 <update id="updateWebSite" parameterType="com.cofc.pojo.aida.WebSite">
+	 	update tf_website
+		<trim prefix="set" suffixOverrides=",">
+			<if test="cname!=null and cname!=''">cname=#{cname},</if>
+			<if test="banner!=null and banner!=''">banner=#{banner},</if>
+			<if test="cintro!=null and cintro!=''">cintro=#{cintro},</if>
+			<if test="pintro!=null and pintro!=''">pintro=#{pintro},</if>
+			<if test="cfind!=null and cfind!=''">cfind=#{cfind},</if>
+			<if test="kehu!=null and kehu!=''">kehu=#{kehu},</if>
+			<if test="team!=null and team!=''">team=#{team},</if>
+			<if test="cphone!=null and cphone!=''">cphone=#{cphone},</if>
+			<if test="caddress!=null and caddress!=''">caddress=#{caddress},</if>
+			<if test="isEffect!=null">is_effect=#{isEffect},</if>
+			<if test="logo!=null and logo!=''">logo=#{logo},</if>
+			<if test="companyDetail!=null and companyDetail!=''">company_detail=#{companyDetail},</if>
+		</trim>
+		where id = #{id}
+	 </update>
+	 <delete id="delWebSite" parameterType="com.cofc.pojo.aida.WebSite">
+	 	delete from tf_website where id = #{id}
+	 </delete>
+	  <select id="getWebSiteInfo" resultMap="BaseResultMap">
+	 	select * from tf_website where 1=1
+	 	<if test="id!=null">and id = #{id} </if>
+	 	<if test="appId!=null">and app_id = #{appId}</if>
+	 </select>
+	 <select id="getWebSiteCount" resultType="int">
+	 	select count(*) from tf_website where 1=1
+	 	<if test="web.appId != null">
+	 		and app_id = #{web.appId}
+	 	</if>
+	 	<if test="web.cname != null and web.cname!=''">
+	 		and cname like CONCAT ('%',#{web.cname},'%')
+	 	</if>
+	 	<if test="web.isEffect != null">
+	 		and is_effect = #{web.isEffect}
+	 	</if>
+	 </select>
+	<select id="getWebSiteList" resultMap="BaseResultMap">
+	 	select * from tf_website where 1=1
+	 	<if test="web.appId != null">
+	 		and app_id = #{web.appId}
+	 	</if>
+	 	<if test="web.cname != null and web.cname!=''">
+	 		and cname like CONCAT ('%',#{web.cname},'%')
+	 	</if>
+	 	<if test="web.isEffect != null">
+	 		and is_effect = #{web.isEffect}
+	 	</if>
+	 		order by create_time desc
+	 	<if test="page!=null and limit!=null">
+	 		limit #{page},#{limit}
+	 	</if>
+	 </select>
+	 <select id="getWebSiteCountByLoginPlat" resultType="int">
+	 	select count(*) from tf_website where 1=1
+	 	
+	 	<if test="web.cname != null and web.cname!=''">
+	 		and cname like CONCAT ('%',#{web.cname},'%')
+	 	</if>
+	 	<if test="web.isEffect != null">
+	 		and is_effect = #{web.isEffect}
+	 	</if>
+	 	and app_id in 
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	  </foreach>
+	 </select>
+	<select id="getWebSiteListByLoginPlat" resultMap="BaseResultMap">
+	 	select * from tf_website where 1=1
+	 	<if test="web.cname != null and web.cname!=''">
+	 		and cname like CONCAT ('%',#{web.cname},'%')
+	 	</if>
+	 	<if test="web.isEffect != null">
+	 		and is_effect = #{web.isEffect}
+	 	</if>
+	 	and app_id in 
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	  </foreach>
+	 		order by create_time desc
+	 	<if test="page!=null and limit!=null">
+	 		limit #{page},#{limit}
+	 	</if>
+	 </select>
+</mapper>

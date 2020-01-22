@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.WeixinPayResultService">
+	<resultMap type="com.cofc.pojo.WeixinPayResult" id="BaseResultMap">
+		<id column="result_id" property="resultId" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="VARCHAR" />
+		<result column="attach" property="attach" jdbcType="VARCHAR" />
+		<result column="bank_type" property="bankType" jdbcType="VARCHAR" />
+		<result column="cash_fee" property="cashFee" jdbcType="INTEGER" />
+		<result column="cash_fee_type" property="cashFeeType" jdbcType="VARCHAR" />
+		<result column="coupon_count" property="couponCount" jdbcType="INTEGER" />
+		<result column="coupon_fee" property="couponFee" jdbcType="INTEGER" />
+		<result column="coupon_fee_one" property="couponFeeOne"
+			jdbcType="INTEGER" />
+		<result column="coupon_id" property="couponId" jdbcType="VARCHAR" />
+		<result column="coupon_type" property="couponType" jdbcType="VARCHAR" />
+		<result column="device_info" property="deviceInfo" jdbcType="VARCHAR" />
+		<result column="err_code" property="errCode" jdbcType="VARCHAR" />
+		<result column="err_code_des" property="errCodeDes" jdbcType="VARCHAR" />
+		<result column="fee_type" property="feeType" jdbcType="VARCHAR" />
+		<result column="is_subscribe" property="isSubscribe" jdbcType="VARCHAR" />
+		<result column="mch_id" property="mchId" jdbcType="VARCHAR" />
+		<result column="nonce_str" property="nonceStr" jdbcType="VARCHAR" />
+		<result column="open_id" property="openId" jdbcType="VARCHAR" />
+		<result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR" />
+		<result column="result_code" property="resultCode" jdbcType="VARCHAR" />
+		<result column="settlement_total_fee" property="settlementTotalFee"
+			jdbcType="INTEGER" />
+		<result column="sign" property="sign" jdbcType="VARCHAR" />
+		<result column="time_end" property="timeEnd" />
+		<result column="total_fee" property="totalFee" jdbcType="INTEGER" />
+		<result column="trade_type" property="tradeType" jdbcType="VARCHAR" />
+		<result column="transaction_id" property="transactionId"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<insert id="addNewPayResult" parameterType="com.cofc.pojo.WeixinPayResult">
+		insert into
+		TB_WEIXIN_PAY_RESULT(app_id,attach,bank_type,cash_fee,cash_fee_type,
+		coupon_count,coupon_fee,coupon_fee_one,coupon_id,coupon_type,device_info,
+		err_code,err_code_des,fee_type,is_subscribe,mch_id,nonce_str,open_id,
+		out_trade_no,result_code,settlement_total_fee,sign,time_end,total_fee,
+		trade_type,transaction_id)
+		values(#{appId},#{attach},#{bankType},#{cashFee},#{cashFeeType},
+		#{couponCount},#{couponFee},#{couponFeeOne},#{couponId},#{couponType},#{deviceInfo},
+		#{errCode},#{errCodeDes},#{feeType},#{isSubscribe},#{mchId},#{nonceStr},#{openId},
+		#{outTradeNo},#{resultCode},#{settlementTotalFee},#{sign},#{timeEnd},#{totalFee},
+		#{tradeType},#{transactionId});
+	</insert>
+</mapper>

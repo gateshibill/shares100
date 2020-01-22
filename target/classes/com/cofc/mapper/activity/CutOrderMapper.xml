@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.activity.CutOrderService">
+	<resultMap type="com.cofc.pojo.activity.CutOrder" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="original_price" property="originalPrice"
+			jdbcType="DOUBLE" />
+		<result column="cut_price" property="cutPrice" jdbcType="DOUBLE" />
+		<result column="validate" property="validate" jdbcType="INTEGER" />
+		<result column="times" property="times" jdbcType="INTEGER" />
+		<result column="count" property="count" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addCutOrder" parameterType="com.cofc.pojo.activity.CutOrder"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tc_cut_order(app_id,goods_id,original_price,cut_price,validate,times,count,status,create_time)
+		values(#{appId},#{goodsId},#{originalPrice},#{cutPrice},{validate},{times},{count},#{status},#{create_time})
+	</insert>
+	<select id="getCutOrderList" parameterType="com.cofc.pojo.activity.CutOrder"
+		resultMap="BaseResultMap">
+		SELECT * from tc_cut_order
+		where app_id = #{appId} and (goods_id=#{goodsId} or 0=#{goodsId})
+	</select>
+	<select id="getCutOrder" parameterType="com.cofc.pojo.activity.CutOrder"
+		resultMap="BaseResultMap">
+		SELECT * from tc_cut_order
+		where id = #{id} and app_id = #{appId}
+	</select>
+
+	<update id="updateCutOrder" parameterType="com.cofc.pojo.activity.CutOrder">
+		update tc_cut_order
+		<trim prefix="set" suffixOverrides=",">
+			<if test="status!=null">status=#{status},</if>
+			<if test="count!=null">count=#{count},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="delCutOrder" parameterType="com.cofc.pojo.activity.CutOrder">
+		delete from
+		tc_cut_order
+		where id = #{id} and app_id = #{appId}
+	</delete>
+</mapper>

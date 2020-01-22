@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.OrderVoiceService">
+	<resultMap type="com.cofc.pojo.OrderVoice" id="BaseResultMap">
+		<id column="voice_id" property="voiceId" jdbcType="INTEGER" />
+		<result column="order_id" property="orderId" jdbcType="INTEGER" />
+			<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+			<result column="is_play" property="isPlay" jdbcType="INTEGER" />
+			<result column="create_time" property="createTime" />
+	</resultMap>
+	
+<select id="getOrderVoiceCount" resultType="int">
+	select count(*) from tb_order_voice where is_play = 0 and login_plat = #{loginPlat}
+	
+</select>
+
+<update id="updateOrderVoice" parameterType="com.cofc.pojo.OrderVoice">
+   update tb_order_voice set is_play = 1 where login_plat = #{loginPlat} and order_id = #{orderId}
+</update>
+
+<insert id="addOrderVoice" parameterType="com.cofc.pojo.OrderVoice">
+   insert into tb_order_voice (login_plat,order_id,is_play,create_time) 
+                    values(#{loginPlat},#{orderId},#{isPlay},#{createTime})
+</insert>
+</mapper>

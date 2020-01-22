@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.AutoWithdrawSetService">
+	<resultMap type="com.cofc.pojo.AutoWithdrawSet" id="AutoWithdrawSetMap">
+		<id column="application_id" property="applicationId" jdbcType="INTEGER" />
+		<result column="is_auto" property="isAuto" jdbcType="INTEGER" />
+		<result column="auto_fee" property="autoFee" jdbcType="DOUBLE" />
+	</resultMap>
+	<select id="getCurrentApplicationSet" resultMap="AutoWithdrawSetMap">
+		select * from
+		TB_AUTO_WITHDRAW_SET where application_id = #{applicationId}
+	</select>
+	<insert id="setAutoWithdrawInfo" parameterType="com.cofc.pojo.AutoWithdrawSet">
+		insert into
+		TB_AUTO_WITHDRAW_SET(application_id,is_auto,auto_fee)
+		values(#{applicationId},#{isAuto},#{autoFee})
+	</insert>
+</mapper>

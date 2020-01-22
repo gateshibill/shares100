@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.UserShoppingAddressService">
+	<resultMap type="com.cofc.pojo.UserShoppingAddress" id="BaseResultMap">
+		<id column="address_id" property="addressId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="shopping_address" property="shoppingAddress"
+			jdbcType="VARCHAR" />
+		<result column="delivery_name" property="deliveryName"
+			jdbcType="VARCHAR" />
+		<result column="delivery_phone" property="deliveryPhone"
+			jdbcType="VARCHAR" />
+		<result column="post_code" property="postCode" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="is_default" property="isDefault" jdbcType="INTEGER" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="findShoppingAddress" resultMap="BaseResultMap"
+		parameterType="Integer">
+		select * from TB_USER_SHOPPING_ADDRESS where user_id
+		=#{userId}
+	</select>
+	<insert id="addNewShoppingAddress" parameterType="com.cofc.pojo.UserShoppingAddress">
+		insert into
+		TB_USER_SHOPPING_ADDRESS(user_id,shopping_address,delivery_name,delivery_phone,post_code,create_time,is_default,
+		province,city,area)
+		values(#{userId},#{shoppingAddress},#{deliveryName},#{deliveryPhone},#{postCode},#{createTime},
+		#{isDefault},#{province},#{city},#{area})
+	</insert>
+	<update id="updateShoppingAddress" parameterType="com.cofc.pojo.UserShoppingAddress">
+		update TB_USER_SHOPPING_ADDRESS
+		<set>
+			update_time=#{updateTime}
+			<if test="shoppingAddress!=null and shoppingAddress!=''">
+				,shopping_address=#{shoppingAddress}
+			</if>
+			<if test="deliveryName!=null and deliveryName!=''">
+				,delivery_name=#{deliveryName}
+			</if>
+			<if test="deliveryPhone!=null and deliveryPhone!=''">
+				,delivery_phone=#{deliveryPhone}
+			</if>
+			<if test="postCode!=null and postCode!=''">
+				,post_code=#{postCode}
+			</if>
+			<if test="isDefault!=null">
+				,is_default=#{isDefault}
+			</if>
+			<if test="province!=null and province!=''">
+				,province=#{province}
+			</if>
+			<if test="city!=null and city!=''">
+				,city=#{city}
+			</if>
+			<if test="area!=null and area!=''">
+				,area=#{area}
+			</if>
+		</set>
+		where address_id=#{addressId}
+	</update>
+	<delete id="deleteAddress" parameterType="com.cofc.pojo.UserShoppingAddress">
+		delete from
+		TB_USER_SHOPPING_ADDRESS where address_id =#{addressId}
+	</delete>
+	<select id="getAddressById" resultMap="BaseResultMap">
+		select * from
+		TB_USER_SHOPPING_ADDRESS where address_id =#{addressId}
+	</select>
+	<update id="updateIsDefault" parameterType="com.cofc.pojo.UserShoppingAddress">
+		update TB_USER_SHOPPING_ADDRESS set is_default = #{isDefault} where user_id = #{userId}
+	</update>
+	<select id="selectOneAddressList" resultMap="BaseResultMap">
+		select * from TB_USER_SHOPPING_ADDRESS  where 1=1
+		<if test="isDefault != null">
+			and is_default = #{isDefault}
+		</if>
+		<if test="userId != null">
+			and user_id = #{userId}
+		</if>
+		order by create_time desc
+		limit 1
+	</select>
+</mapper>

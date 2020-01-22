@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ApplicationLeaveMessageService">
+	<resultMap type="com.cofc.pojo.ApplicationLeaveMessage" id="BaseResultMap">
+		<id column="message_id" property="messageId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="user_real_name" property="userRealName"
+			jdbcType="VARCHAR" />
+		<result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+		<result column="message_content" property="messageContent"
+			jdbcType="VARCHAR" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER"/>
+		<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		<association property="replyMessage"
+			javaType="com.cofc.pojo.ApplicationReplyMessage">
+			<id column="reply_id" property="replyId" jdbcType="INTEGER" />
+			<result column="reply_user_id" property="replyUserId"
+				jdbcType="INTEGER" />
+			<result column="message_id" property="messageId" jdbcType="INTEGER" />
+			<result column="content" property="content" jdbcType="VARCHAR" />
+			<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+			<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+			<result column="reply_nick_name" property="replyNickName" jdbcType="VARCHAR"/>
+		</association>
+	</resultMap>
+	<insert id="userLeaveMessage" parameterType="com.cofc.pojo.ApplicationLeaveMessage">
+		insert into
+		TB_APPLICATION_LEAVE_MESSAGE(user_id,user_real_name,message_content,user_phone,login_plat,create_time)
+		values(#{userId},#{userRealName},#{messageContent},#{userPhone},#{loginPlat},#{createTime})
+	</insert>
+	<select id="findMyAppMessages" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_LEAVE_MESSAGE l left join TB_USER_COMMON
+		u on l.user_id = u.user_id left join TB_APPLICATION_REPLY_MESSAGE as r
+		on r.message_id = l.message_id 
+		where 1 =1 and l.is_effect = 1
+		<if test="loginPlat!=null">
+			and l.login_plat = #{loginPlat}
+		</if>
+		order by l.create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	<select id="getUserMessageInfo" resultMap="BaseResultMap">
+		select * from TB_APPLICATION_LEAVE_MESSAGE l left join TB_USER_COMMON
+		u on
+		l.user_id = u.user_id left join TB_APPLICATION_REPLY_MESSAGE as r on
+		r.message_id = l.message_id
+		where l.user_id = #{userId} and l.login_plat = #{loginPlat}
+	</select>
+	<update id="updateIsEffect">
+	   update TB_APPLICATION_LEAVE_MESSAGE set is_effect = 0 where message_id = #{messageId}
+	</update>
+	
+	<select id="getMessageCount" resultType="int">
+	  select count(*) from TB_APPLICATION_LEAVE_MESSAGE where 1=1
+	  <if test="loginPlat != null">
+	    and login_plat = #{loginPlat}
+	  </if>
+	</select>
+	<select id="getMessageList" resultMap="BaseResultMap">
+	  select * from TB_APPLICATION_LEAVE_MESSAGE l left join TB_USER_COMMON
+		u on l.user_id = u.user_id 
+		where 1 =1 
+		<if test="loginPlat!=null">
+			and l.login_plat = #{loginPlat}
+		</if>
+		order by l.create_time desc
+		limit #{page},#{limit}
+	</select>
+	<select id="getMessageCountByLoginPlat" resultType="int">
+	select count(*) from TB_APPLICATION_LEAVE_MESSAGE where login_plat in
+	<foreach item="item"  index="index" collection="loginPlatList" open="("
+			separator="," close=")">
+			#{item}
+	</foreach>
+	</select>
+	<select id="getMessageListByLoginPlat" resultMap="BaseResultMap">
+	 select * from TB_APPLICATION_LEAVE_MESSAGE l left join TB_USER_COMMON
+		u on l.user_id = u.user_id 
+		where 1 =1 and l.login_plat in
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+			separator="," close=")">
+			#{item}
+	    </foreach>
+		order by l.create_time desc
+		limit #{page},#{limit}
+	</select>
+</mapper>

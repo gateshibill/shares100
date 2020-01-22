@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.AfficheCommonService">
+	<resultMap type="com.cofc.pojo.AfficheCommon" id="BaseResultMap">
+		<id column="affiche_id" property="afficheId" jdbcType="INTEGER" />
+		<result column="affiche_title" property="afficheTitle"
+			jdbcType="VARCHAR" />
+		<result column="affiche_details" property="afficheDetails"
+			jdbcType="VARCHAR" />
+		<result column="affiche_image" property="afficheImage"
+			jdbcType="VARCHAR" />
+		<result column="publisher_id" property="publisherId" jdbcType="INTEGER" />
+		<result column="affiche_type" property="afficheType" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="related_activity" property="relatedActivity"
+			jdbcType="INTEGER" />
+		<result column="affiche_begin_time" property="afficheBeginTime"
+			jdbcType="TIMESTAMP" />
+		<result column="affiche_end_time" property="afficheEndTime"
+			jdbcType="TIMESTAMP" />
+		<result column="read_count" property="readCount" jdbcType="INTEGER" />
+		<result column="praise_count" property="praiseCount" jdbcType="INTEGER" />
+		<result column="join_count" property="joinCount" jdbcType="INTEGER" />
+		<result column="is_remove" property="isRemove" jdbcType="INTEGER" />
+		<result column="subject_type" property="subjectType" jdbcType="VARCHAR" />
+		<result column="background_url" property="backgroundUrl" jdbcType="VARCHAR" />
+		<association property="afficheComUser" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+			<result column="user_sex" property="userSex" jdbcType="INTEGER" />
+		</association>
+	</resultMap>
+	<insert id="publishCommonAffiche" parameterType="com.cofc.pojo.AfficheCommon"
+		useGeneratedKeys="true" keyProperty="afficheId">
+		insert into TB_AFFICHE_COMMON
+		(affiche_title,affiche_details,affiche_image,publisher_id,affiche_type,login_plat,
+		create_time,related_activity,affiche_begin_time,affiche_end_time,read_count,
+		praise_count,join_count,is_remove,subject_type,background_url)values
+		(#{afficheTitle},#{afficheDetails},#{afficheImage},#{publisherId},
+		#{afficheType},#{loginPlat},#{createTime},#{relatedActivity},#{afficheBeginTime},
+		#{afficheEndTime},#{readCount},#{praiseCount},#{joinCount},#{isRemove},#{subjectType},#{backgroundUrl})
+	</insert>
+	<select id="getafficheById" resultMap="BaseResultMap"
+		parameterType="INTEGER">
+		select * from TB_AFFICHE_COMMON a left join
+		TB_USER_COMMON u on a.publisher_id = u.user_id where affiche_id =
+		#{afficheId}
+	</select>
+	<select id="findafficheList" resultMap="BaseResultMap">
+		select * from TB_AFFICHE_COMMON a left join TB_USER_COMMON u on
+		a.publisher_id =
+		u.user_id where 1 = 1
+		<if test="affc!=null">
+			<if test="affc.afficheId!=null">
+				and a.affiche_id = #{affc.afficheId}
+			</if>
+			<if test="affc.afficheType!=null">
+				and a.affiche_type = #{affc.afficheType}
+			</if>
+			<if test="affc.isRemove!=null">
+			  and a.is_remove = #{affc.isRemove}
+			</if>
+			<if test="affc.loginPlat!=null and loginPlat1==null">
+				and a.login_plat = #{affc.loginPlat}
+			</if>
+			<if test="affc.loginPlat==null and loginPlat1!=null">
+				and a.login_plat = #{loginPlat1}
+			</if>
+			<if test="affc.afficheTitle!=null and affc.afficheTitle!=''">
+				and a.affiche_title like
+				CONCAT('%',#{affc.afficheTitle},'%')
+			</if>
+			<if test="affc.publisherId!=null">
+				and a.publisher_id = #{affc.publisherId}
+			</if>
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (u.nick_name like
+			CONCAT('%',#{userKeyWords},'%') or u.real_name like
+			CONCAT('%',#{userKeyWords},'%'))
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and a.create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and a.create_time &lt;= #{endTime}
+		</if>
+		order by a.create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	<select id="getCountAffiche" resultType="int">
+		select count(*) from TB_AFFICHE_COMMON a left join TB_USER_COMMON u on
+		a.publisher_id
+		= u.user_id where 1=1
+		<if test="affc!=null">
+			<if test="affc.afficheId!=null">
+				and a.affiche_id = #{affc.afficheId}
+			</if>
+			<if test="affc.isRemove!=null">
+			  and a.is_remove = #{affc.isRemove}
+			</if>
+			<if test="affc.loginPlat!=null">
+				and a.login_plat = #{affc.loginPlat}
+			</if>
+			<if test="affc.afficheTitle!=null and affc.afficheTitle!=''">
+				and a.affiche_title like
+				CONCAT('%',#{affc.afficheTitle},'%')
+			</if>
+			<if test="affc.publisherId!=null">
+				and a.publisher_id = #{affc.publisherId}
+			</if>
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (u.nick_name like
+			CONCAT('%',#{userKeyWords},'%') or u.real_name like
+			CONCAT('%',#{userKeyWords},'%'))
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and a.create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and a.create_time &lt;= #{endTime}
+		</if>
+	</select>
+	<update id="updateAfficheInfo" parameterType="com.cofc.pojo.AfficheCommon">
+		update TB_AFFICHE_COMMON
+		<set>
+			is_remove = #{isRemove}
+			<if test="afficheTitle!=null and afficheTitle!=''">
+				,affiche_title=#{afficheTitle}
+			</if>
+			<if test="afficheDetails!=null and afficheDetails!=''">
+				,affiche_details=#{afficheDetails}
+			</if>
+			<if test="afficheImage!=null and afficheImage!=''">
+				,affiche_image=#{afficheImage}
+			</if>
+			<if test="readCount!=null and readCount!=''">
+				,read_count=#{readCount}
+			</if>
+			<if test="praiseCount!=null and praiseCount!=''">
+				,praise_count=#{praiseCount}
+			</if>
+			<if test="subjectType!=null and subjectType!=''">
+				,subject_type=#{subjectType}
+			</if>
+			<if test="backgroundUrl != null and backgroundUrl != ''">,background_url = #{backgroundUrl}</if>
+		</set>
+		where affiche_id = #{afficheId}
+	</update>
+	<update id="afficheUndercarriage">
+		update TB_AFFICHE_COMMON
+		<set>
+			is_remove=0
+		</set>
+		where affiche_id in
+		<foreach item="item" index="index" collection="idsList" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<delete id="deleteAffiche">
+	 delete from TB_AFFICHE_COMMON where affiche_id=#{afficheId}
+	</delete>
+	
+	<!-- 区分应用：防止sql冲突 -->
+	<select id="findafficheListByLoginPlat" resultMap="BaseResultMap">
+		select * from TB_AFFICHE_COMMON a left join TB_USER_COMMON u on
+		a.publisher_id =
+		u.user_id where 1 = 1
+		<if test="affc!=null">
+			<if test="affc.afficheId!=null">
+				and a.affiche_id = #{affc.afficheId}
+			</if>
+			<if test="affc.afficheType!=null">
+				and a.affiche_type = #{affc.afficheType}
+			</if>
+			<!-- <if test="affc.loginPlat!=null and loginPlat1==null">
+				and a.login_plat = #{affc.loginPlat}
+			</if> -->
+			<if test="affc.loginPlat==null and loginPlat1!=null">
+				and a.login_plat = #{loginPlat1}
+			</if>
+			<if test="affc.afficheTitle!=null and affc.afficheTitle!=''">
+				and a.affiche_title like
+				CONCAT('%',#{affc.afficheTitle},'%')
+			</if>
+			<if test="affc.publisherId!=null">
+				and a.publisher_id = #{affc.publisherId}
+			</if>
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (u.nick_name like
+			CONCAT('%',#{userKeyWords},'%') or u.real_name like
+			CONCAT('%',#{userKeyWords},'%'))
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and a.create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and a.create_time &lt;= #{endTime}
+		</if>
+		and a.login_plat in 
+		 <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	  </foreach>
+		order by a.create_time desc limit #{rowsId},#{pageSize}
+	</select>
+	<select id="getCountAfficheByLoginPlat" resultType="int">
+		select count(*) from TB_AFFICHE_COMMON a left join TB_USER_COMMON u on
+		a.publisher_id
+		= u.user_id where 1=1
+		<if test="affc!=null">
+			<if test="affc.afficheId!=null">
+				and a.affiche_id = #{affc.afficheId}
+			</if>
+			<!-- <if test="affc.loginPlat!=null">
+				and a.login_plat = #{affc.loginPlat}
+			</if> -->
+			<if test="affc.afficheTitle!=null and affc.afficheTitle!=''">
+				and a.affiche_title like
+				CONCAT('%',#{affc.afficheTitle},'%')
+			</if>
+			<if test="affc.publisherId!=null">
+				and a.publisher_id = #{affc.publisherId}
+			</if>
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (u.nick_name like
+			CONCAT('%',#{userKeyWords},'%') or u.real_name like
+			CONCAT('%',#{userKeyWords},'%'))
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and a.create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and a.create_time &lt;= #{endTime}
+		</if>
+		and a.login_plat in 
+		 <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	  </foreach>
+	</select>
+</mapper>

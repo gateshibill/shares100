@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ConfigScoreService">
+	<resultMap type="com.cofc.pojo.ConfigScore" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="day_login_score" property="dayLoginScore" jdbcType="INTEGER" />
+			<result column="sign_score" property="signScore" jdbcType="INTEGER" />
+			<result column="share_score" property="shareScore" jdbcType="INTEGER" />
+			<result column="visit_score" property="visitScore" jdbcType="INTEGER" />
+			<result column="two_visit_score" property="twoVisitScore" jdbcType="INTEGER" />
+			<result column="buy_score" property="buyScore" jdbcType="INTEGER" />
+			<result column="recharge_score" property="rechargeScore" jdbcType="INTEGER" />
+			<result column="register_score" property="registerScore" jdbcType="INTEGER" />
+			<result column="my_info_score" property="myInfoScore" jdbcType="INTEGER" />
+			<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />			
+			<result column="create_time" property="createTime"  jdbcType="TIMESTAMP"/>
+			<result column="update_time" property="updateTime"  jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+<update id="updateConfigScore" parameterType="com.cofc.pojo.ConfigScore"  useGeneratedKeys="true" keyProperty="id">
+   update TB_CONFIG_SCORE 
+   <trim prefix="set" suffixOverrides=",">
+   		<if test="dayLoginScore != null">day_login_score = #{dayLoginScore},</if>
+   		<if test="signScore != null">sign_score = #{signScore},</if>
+   		<if test="shareScore != null">share_score = #{shareScore},</if>
+   		<if test="visitScore != null">visit_score = #{visitScore},</if>
+   		<if test="twoVisitScore != null">two_visit_score = #{twoVisitScore},</if>
+   		<if test="buyScore != null">buy_score = #{buyScore},</if>
+   		<if test="rechargeScore != null">recharge_score = #{rechargeScore},</if>
+   		<if test="registerScore != null">register_score = #{registerScore},</if>
+   		<if test="myInfoScore != null">my_info_score = #{myInfoScore},</if>
+   		<if test="loginPlat != null">login_plat = #{loginPlat},</if>
+   		<if test="updateTime != null">update_time = #{updateTime},</if>
+   </trim>
+   where id = #{id}
+</update>
+
+<insert id="addConfigScore" parameterType="com.cofc.pojo.ConfigScore" useGeneratedKeys="true" keyProperty="id">
+   insert into TB_CONFIG_SCORE (day_login_score,sign_score,share_score,visit_score,two_visit_score,buy_score,
+   recharge_score,register_score,my_info_score,login_plat,create_time) 
+  values(#{dayLoginScore},#{signScore},#{shareScore},#{visitScore},#{twoVisitScore},#{buyScore},
+  #{rechargeScore},#{registerScore},#{myInfoScore},#{loginPlat},#{createTime})
+</insert>
+
+<select id="getConfigScoreById" resultMap="BaseResultMap">
+	select * from TB_CONFIG_SCORE where id = #{id}
+</select>
+<select id="getConfigScoreByLoginPlat" resultMap="BaseResultMap">
+	select * from TB_CONFIG_SCORE where login_plat = #{loginPlat}
+</select>
+<!-- 平台 -->
+<select id="getConfigList" resultMap="BaseResultMap">
+	select * from TB_CONFIG_SCORE where 1=1
+	<if test="score != null">
+		<if test="score.loginPlat != null">
+			and login_plat = #{score.loginPlat}
+		</if>
+	</if>
+	<if test="loginPlatList != null">
+		and login_plat in
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+						separator="," close=")">
+						#{item}
+		</foreach>
+	</if>   
+	<if test="page != null and limit != null">
+		limit #{page},#{limit}
+	</if>
+</select>
+<select id="getConfigCount" resultType="int">
+	select count(*) from TB_CONFIG_SCORE where 1=1
+	<if test="score != null">
+		<if test="score.loginPlat != null">
+			and login_plat = #{score.loginPlat}
+		</if>
+	</if>
+	<if test="loginPlatList != null">
+		and login_plat in
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+						separator="," close=")">
+						#{item}
+		</foreach>
+	</if>   
+</select>
+<delete id="delConfig" parameterType="com.cofc.pojo.ConfigScore">
+	delete from TB_CONFIG_SCORE where id = #{id}
+</delete>
+</mapper>

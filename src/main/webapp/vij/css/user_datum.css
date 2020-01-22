@@ -1,0 +1,148 @@
+/*鏍峰紡鍒濆鍖�*/
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+ul,
+ol,
+li {
+    list-style: none;
+}
+
+body {
+    font-family: "寰蒋闆呴粦";
+    font-size: 0.8rem;
+    letter-spacing: 0.01rem;
+}
+
+a {
+    text-decoration: none;
+}
+
+.page {
+    width: 100%;
+}
+
+/*centre begin*/
+.centre {
+    width: 100%;
+    height: 37.5rem;
+    background-color: #F0F2F2;
+}
+
+.centre-center {
+    width: 70rem;
+    height: 35rem;
+    margin: 0 auto;
+    padding-top: 2.5rem;
+    background-color: #F0F2F2;
+}
+
+.centre-center-left {
+    float: left;
+    width: 15%;
+    height: 35rem;
+    background-color: #FFF;
+    padding-top: 0.2rem;
+}
+
+.centre-center-left p {
+    margin-top: 0.8rem;
+    margin-left: 1rem;
+    color: #666;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.centre-center-left .left-user {
+    color: #1e8e66;
+}
+
+/*centre-center-right begin*/
+.centre-center-right {
+    position: relative;
+    float: right;
+    width: 83%;
+    height: 35rem;
+    background-color: #FFF;
+}
+
+
+.right-li-te {
+    width: 100%;
+    background-color: #FFF;
+    padding: 2rem 0;
+}
+
+.li-te-title {
+    font-size: 1.1rem;
+    line-height: 1;
+    margin: 0 2rem;
+    color: #666;
+}
+
+.centre-center-right .el-input__inner {
+    font-size: 14px;
+    border-radius: 0;
+}
+
+.centre-center-right .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.centre-center-right .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+
+.centre-center-right .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+}
+
+.centre-center-right .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+}
+
+/*淇敼璧勬枡  end*/
+/*centre-center-right end*/
+/*centre end*/
+
+.user-bottom {
+    width: 100%;
+    height: 2.5rem;
+    background-color: #F0F2F2;
+}
+
+.el-form-item__label {
+    font-size: 0.8rem;
+}
+
+.el-cascader__label {
+    width: 18rem;
+}
+
+.el-input__inner {
+    font-size: 14px;
+    max-width: 20rem;
+}
+
+.el-input__inner::-webkit-input-placeholder {
+    font-size: 14px;
+}
+
+.el-table {
+    font-size: 14px;
+}

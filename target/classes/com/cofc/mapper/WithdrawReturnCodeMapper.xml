@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.WithdrawReturnCodeService">
+	<resultMap type="com.cofc.pojo.WithdrawReturnCode" id="BaseResultMap">
+		<id column="code_id" property="codeId" jdbcType="INTEGER" />
+		<result column="mch_appid" property="mchAppid" jdbcType="VARCHAR" />
+		<result column="mchid" property="mchid" jdbcType="VARCHAR" />
+		<result column="device_info" property="deviceInfo" jdbcType="VARCHAR" />
+		<result column="nonce_str" property="nonceStr" jdbcType="VARCHAR" />
+		<result column="result_code" property="resultCode" jdbcType="VARCHAR" />
+		<result column="return_msg" property="returnMsg" jdbcType="VARCHAR" />
+		<result column="err_code" property="errCode" jdbcType="VARCHAR" />
+		<result column="err_code_des" property="errCodeDes" jdbcType="VARCHAR" />
+		<result column="partner_trade_no" property="partnerTradeNo"
+			jdbcType="VARCHAR" />
+		<result column="payment_no" property="paymentNo" jdbcType="VARCHAR" />
+		<result column="payment_time" property="paymentTime" jdbcType="VARCHAR" />
+	</resultMap>
+	<insert id="addWithdrawResultCode" parameterType="com.cofc.pojo.WithdrawReturnCode">
+		insert into
+		TB_WITHDRAW_RETURN_CODE(mch_appid,mchid,device_info,nonce_str,result_code,err_code,
+		err_code_des,partner_trade_no,payment_no,payment_time,return_msg)values
+		(#{mchAppid},#{mchid},#{deviceInfo},#{nonceStr},#{resultCode},#{errCode},
+		#{errCodeDes},#{partnerTradeNo},#{paymentNo},#{paymentTime},#{returnMsg})
+	</insert>
+</mapper>

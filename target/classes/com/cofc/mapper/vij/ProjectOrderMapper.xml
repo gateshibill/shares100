@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ProjectOrderService">
+	<resultMap type="com.cofc.pojo.vij.ProjectOrder" id="BaseResultMap">
+		<id column="porder_id" property="porderId" jdbcType="INTEGER" />
+		<result column="real_money" property="realMoney" jdbcType="DOUBLE" />
+		<result column="project_id" property="projectId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="project_order_no" property="projectOrderNo" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="is_deal" property="isDeal" jdbcType="INTEGER"/>
+		<result column="is_pay" property="isPay" jdbcType="INTEGER"/>
+		<result column="pay_type" property="payType" jdbcType="INTEGER"/>
+	</resultMap>
+	<insert id="addProjectOrder" parameterType="com.cofc.pojo.vij.ProjectOrder"
+		useGeneratedKeys="true" keyProperty="porderId">
+		insert into
+		tv_project_order(real_money,project_id,user_id,project_order_no,create_time,is_deal,is_pay,pay_type)
+		values(#{realMoney},#{projectId},#{userId},#{projectOrderNo},#{createTime},#{isDeal},#{isPay},#{payType})
+	</insert>
+	<select id="getProjectOrderByid" resultMap="BaseResultMap">
+		select * from tv_project_order where project_id = #{projectId}
+		<if test="isPay != null"> and is_pay = #{isPay}</if>
+	</select>
+	<select id="getOrderByid" resultMap="BaseResultMap">
+		select * from tv_project_order where porder_id = #{porderId}
+	</select>
+	<select id="getProjectOrderByOrderNo" resultMap="BaseResultMap">
+		select * from tv_project_order where project_order_no = #{projectOrderNo}
+	</select>
+	<update id="updateProjectOrder" parameterType="com.cofc.pojo.vij.ProjectOrder">
+		update tv_project_order 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="realMoney != null">
+				real_money = #{realMoney},
+			</if>
+			<if test="projectId != null">
+				project_id = #{projectId},
+			</if>
+			<if test="projectOrderNo != null and projectOrderNo !=''">
+				project_order_no = #{projectOrderNo},
+			</if>
+			<if test="isDeal != null">
+				is_deal = #{isDeal},
+			</if>
+			<if test="isPay != null">
+				is_pay = #{isPay},
+			</if>
+			<if test="payType != null">
+				pay_type = #{payType},
+			</if>
+		</trim>
+			where porder_id = #{porderId}
+	</update>
+	<update id="updateIsPay" parameterType="com.cofc.pojo.vij.ProjectOrder">
+		update tv_project_order  set is_pay = #{isPay} where porder_id = #{porderId}	
+	</update>
+</mapper>

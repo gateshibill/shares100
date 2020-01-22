@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ConfigTokenService">
+	<resultMap type="com.cofc.pojo.ConfigToken" id="BaseResultMap">
+		<id column="token_id" property="tokenId" jdbcType="INTEGER" />
+			<result column="new_price" property="newPrice" jdbcType="DOUBLE" />
+			<result column="price_rate" property="priceRate" jdbcType="DOUBLE" />
+			<result column="trade_count" property="tradeCount" jdbcType="DOUBLE" />
+			<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />			
+	</resultMap>
+	
+<update id="updateToken" parameterType="com.cofc.pojo.ConfigToken"  useGeneratedKeys="true" keyProperty="tokenId">
+   update TB_CONFIG_TOKEN 
+   <trim prefix="set" suffixOverrides=",">
+   		<if test="newPrice != null">new_price = #{newPrice},</if>
+   		<if test="priceRate != null">price_rate = #{priceRate},</if>
+   		<if test="tradeCount != null">trade_count = #{tradeCount},</if>
+   </trim>
+   where token_id = #{tokenId}
+</update>
+
+<insert id="addToken" parameterType="com.cofc.pojo.ConfigToken" useGeneratedKeys="true" keyProperty="tokenId">
+   insert into TB_CONFIG_TOKEN (new_price,price_rate,trade_count,login_plat) 
+  values(#{newPrice},#{priceRate},#{tradeCount},#{loginPlat})
+</insert>
+
+<select id="getTokenById" resultMap="BaseResultMap">
+	select * from TB_CONFIG_TOKEN where token_id = #{tokenId}
+</select>
+<select id="getTokenByLogin" resultMap="BaseResultMap">
+	select * from TB_CONFIG_TOKEN where login_plat = #{loginPlat}
+</select>
+<!-- 平台 -->
+<select id="getTokenList" resultMap="BaseResultMap">
+	select * from TB_CONFIG_TOKEN where 1=1
+	<if test="token != null">
+		<if test="token.loginPlat != null">
+			and login_plat = #{token.loginPlat}
+		</if>
+	</if>
+	<if test="loginPlatList != null">
+		and login_plat in
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+						separator="," close=")">
+						#{item}
+		</foreach>
+	</if>   
+	<if test="page != null and limit != null">
+		limit #{page},#{limit}
+	</if>
+</select>
+<select id="getTokenCount" resultType="int">
+	select count(*) from TB_CONFIG_TOKEN where 1=1
+	<if test="token != null">
+		<if test="token.loginPlat != null">
+			and login_plat = #{token.loginPlat}
+		</if>
+	</if>
+	<if test="loginPlatList != null">
+		and login_plat in
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+						separator="," close=")">
+						#{item}
+		</foreach>
+	</if>   
+</select>
+<delete id="delToken" parameterType="com.cofc.pojo.ConfigToken">
+	delete from TB_CONFIG_TOKEN where token_id = #{tokenId}
+</delete>
+</mapper>

@@ -1,0 +1,612 @@
+.counter-content {
+    padding: 0 12.5rem;
+}
+
+.counter-title {
+    font-size: 1.2rem;
+    padding: 1.8rem 0;
+    color: #909090;
+}
+
+.order-info {
+    width: 100%;
+    padding: 0 1.2rem;
+    border: 1px solid #CECECE;
+}
+
+.info-item-header {
+    margin-left: 0.6rem;
+    padding: 1.2rem 0;
+}
+
+.info-item-title {
+    font-size: 1.3rem;
+    padding: 1.0rem;
+}
+
+.title-left {
+    float: left;
+}
+
+.info-add-address {
+    font-size: 0.8rem;
+    line-height: 1.3rem;
+    float: right;
+    cursor: pointer;
+}
+
+.address-list {
+    display: flex;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid #EEE;
+
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.address-item {
+    position: relative;
+    float: left;
+    width: 16.3rem;
+    height: 7.2rem;
+    margin-right: 1rem;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    border: 1px solid #EEE;
+    border-radius: 0.5rem;
+}
+
+.address-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.receiver span {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #232323;
+}
+
+.address-item .address {
+    font-size: 0.8rem;
+    line-height: 1.2rem;
+    margin-top: 0.7rem;
+    color: #ADADAD;
+}
+
+.edit-address {
+    font-size: 1rem;
+    position: absolute;
+    bottom: 0.6rem;
+    left: 1.2rem;
+    cursor: pointer;
+    color: #E95D5E;
+}
+
+.pay-type-list {
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid #EEE;
+}
+
+.pay-type-item {
+    position: relative;
+    float: left;
+    width: 10rem;
+    text-align: center;
+    border: 1px solid #EEE;
+}
+
+.pay-type-item.high-light {
+    border: 1px solid #FF0040;
+}
+
+.pay-type-item img {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: none;
+    width: 1rem;
+}
+
+.pay-type-item.high-light img {
+    display: block;
+}
+
+.pay-type-item + .pay-type-item {
+    margin-left: 1.2rem;
+}
+
+.pay-type-text {
+    font-size: 1.2rem;
+    line-height: 2.8rem;
+    cursor: pointer;
+    color: #8B8B8B;
+}
+
+.order-title {
+    display: flex;
+    text-align: center;
+    border-bottom: 2px solid #24916A;
+
+    justify-content: space-between;
+}
+
+.order-title .order-title-product-name {
+    width: 22rem;
+}
+
+.order-title-item {
+    font-size: 0.9rem;
+    line-height: 1;
+    width: 9rem;
+    padding: 0.5rem 0;
+}
+
+.order-shop-name {
+    padding: 2.7rem 0 1.2rem 1.4rem;
+    border-bottom: 1px solid #24916A;
+}
+
+.order-shop-name span {
+    margin-right: 1rem;
+}
+
+.order-product-item-content {
+    display: flex;
+    padding: 1rem 0 1rem 1rem;
+
+    justify-content: space-between;
+}
+
+.order-product-image {
+    overflow: hidden;
+    width: 4rem;
+    height: 4rem;
+}
+
+.order-product-image img {
+    width: 100%;
+}
+
+.order-product-name {
+    font-size: 0.9rem;
+    line-height: 1.2;
+    float: left;
+    width: 16rem;
+    margin-left: 1rem;
+    color: #2B2B2B;
+}
+
+.order-product-type, .order-product-price, .order-product-counts, .order-product-discount, .order-product-subtotal {
+    font-size: 0.9rem;
+    line-height: 1.2;
+    width: 9rem;
+    text-align: center;
+    color: #2B2B2B;
+}
+
+.order-more {
+    width: 100%;
+    height: 8rem;
+    padding: 1.2rem;
+    background: #F5FEFD;
+}
+
+.order-more .el-checkbox__label {
+    font-size: 1rem;
+    line-height: 1.3rem;
+    color: #555;
+}
+
+.order-more-left {
+    float: left;
+}
+
+.invoice-box {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.invoice-checkbox, .invoice-info {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.invoice-checkbox span {
+    margin-left: 0.3rem;
+}
+
+.invoice-info span {
+    margin-left: 0.3rem;
+    color: #999;
+}
+
+.change-invoice {
+    margin-left: 0.3rem;
+    cursor: pointer;
+    color: #F00;
+}
+
+.order-more-right {
+    float: right;
+    width: 35rem;
+}
+
+.order-remark {
+    margin-top: 1.5rem;
+}
+
+.order-remark p {
+    font-size: 1rem;
+    line-height: 1.3rem;
+    float: left;
+    margin-right: 1.5rem;
+    color: #555;
+}
+
+.order-remark input {
+    font-size: 1rem;
+    line-height: 1.3rem;
+    float: left;
+    width: 19rem;
+    padding-left: 1rem;
+    border: 1px solid #EEE;
+    background: #F5FEFD;
+}
+
+.transport-type {
+    font-size: 1rem;
+    line-height: 1.3rem !important;
+}
+
+.transport-insuance {
+    margin-top: 1.5rem;
+}
+
+.transport-insuance p {
+    font-size: 1rem;
+    line-height: 1.3rem;
+    float: left;
+}
+
+.insuance-checkbox {
+    font-size: 1rem;
+    line-height: 1.3rem !important;
+    float: left;
+}
+
+.insuance-explain {
+    margin-left: 1rem;
+}
+
+.transport-insuance .insuance-price {
+    float: right;
+}
+
+.anonymous-content {
+    padding: 1.5rem 0;
+}
+
+.anonymous-checkbox {
+    float: right;
+    margin-right: 2rem;
+}
+
+.commit-order {
+    float: right;
+    width: 28.5rem;
+    margin-top: 1.5rem;
+}
+
+.commit-order-info {
+    padding: 0.7rem 2.2rem;
+    border: 2px solid #F7345E;
+}
+
+.real-payment, .commit-address, .commit-receiver {
+    text-align: right;
+}
+
+.real-payment {
+    font-size: 1rem;
+    color: #252525;
+}
+
+.real-payment span {
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+    color: #F7345E;
+}
+
+.commit-address {
+    font-size: 1rem;
+    margin-top: 1.8rem;
+    color: #9C9C9C;
+}
+
+.commit-receiver {
+    font-size: 1rem;
+    margin-top: 1rem;
+    color: #9C9C9C;
+}
+
+.commit-buttons {
+    margin-left: 8.5rem;
+}
+
+.button-cart, .button-commit {
+    font-size: 1.4rem;
+    line-height: 2.8rem;
+    float: left;
+    width: 10rem;
+    cursor: pointer;
+    text-align: center;
+    color: #FFF;
+    background: #F7345E;
+}
+
+.button-cart {
+    font-size: 1rem;
+    color: #1D8D67;
+    background: #FFF;
+}
+
+.el-dialog .el-input__inner {
+    font-size: 0.8rem;
+    width: 20rem;
+}
+
+.pay-content {
+    padding: 0 12.5rem;
+}
+
+.add-address-item {
+    display: flex;
+    padding: 0.5rem;
+
+    justify-content: flex-start;
+}
+
+.add-address-item p {
+    line-height: 2rem;
+    width: 5rem;
+}
+
+.add-address-item input {
+    width: 10rem;
+    height: 2rem;
+    border: 1px solid #EEE;
+}
+
+.pay-content-header {
+    padding: 1rem 0;
+}
+
+.pay-header-qcode {
+    float: left;
+    overflow: hidden;
+    width: 5rem;
+    height: 5rem;
+    background: #000;
+}
+
+.pay-header-tip {
+    float: left;
+    margin-left: 3rem;
+    padding: 0.7rem 0;
+}
+
+.pay-header-tip p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #626262;
+}
+
+.pay-header-order {
+    float: right;
+}
+
+.pay-header-order-price {
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+    color: #626262;
+}
+
+.pay-header-order-price span {
+    font-size: 1.4rem;
+    color: #F83435;
+}
+
+.pay-header-order-detail {
+    display: flex;
+    cursor: pointer;
+
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pay-header-order-detail p {
+    font-size: 1rem;
+    color: #208E67;
+}
+
+.pay-header-order-detail img {
+    width: 1.2rem;
+}
+
+.pay-list {
+    padding: 2.5rem 0;
+    border: 1px solid #EEE;
+}
+
+.pay-item {
+    position: relative;
+    float: left;
+    margin-left: 1rem;
+    padding: 1.25rem;
+    padding: 0.5rem 3.75rem;
+    cursor: pointer;
+    border: 1px solid #EEE;
+}
+
+.pay-item.high-light {
+    border: 2px solid #F00;
+}
+
+.pay-item img {
+    height: 3.5rem;
+}
+
+.pay-now {
+    float: right;
+}
+
+.pay-now-button {
+    font-size: 1.8rem;
+    line-height: 3.5rem;
+    width: 15rem;
+    margin: 0.5rem 1rem 0 0;
+    cursor: pointer;
+    text-align: center;
+    color: #FFF;
+    background: #1E8E66;
+}
+
+.el-dialog__body {
+    padding: 0;
+}
+
+.dialog-content {
+    border-top: 2px solid #EEE;
+    border-bottom: 2px solid #EEE;
+}
+
+.dialog-wxcode, .dialog-tip {
+    float: left;
+    min-height: 1px;
+}
+
+.dialog-wxcode {
+    width: 20rem;
+    padding: 3rem 6.25rem;
+}
+
+.wxcode-image {
+    margin-bottom: 1rem;
+}
+
+.dialog-wxcode {
+    font-size: 0.9rem;
+    color: #939393;
+}
+
+.dialog-tip {
+    float: right;
+    width: 10.5rem;
+    margin: 1.5rem 7rem 1.5rem 0;
+}
+
+.dialog-footer {
+    padding: 1.2rem 9.75rem;
+}
+
+.dialog-button {
+    font-size: 0.9rem;
+    line-height: 2.5rem;
+    width: 8.5rem;
+    cursor: pointer;
+    text-align: center;
+}
+
+.invoice-type-item {
+    text-align: center;
+    font-size: 14px;
+    line-height: 24px;
+    float: left;
+    width: 70px;
+    height: 100%;
+    margin: 6px 20px 6px 0;
+    padding: 0 0.1rem;
+    cursor: pointer;
+    border: 2px solid #eee;
+}
+
+.invoice-type-item.high-light {
+    position: relative;
+    border: 2px solid #FF0040;
+}
+
+.invoice-type-item img {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: none;
+    width: 14px;
+}
+
+.invoice-type-item.high-light img {
+    display: block;
+}
+
+.invoice-rise-item {
+    text-align: center;
+    font-size: 14px;
+    line-height: 24px;
+    float: left;
+    width: 70px;
+    height: 100%;
+    margin: 6px 20px 6px 0;
+    padding: 0 0.1rem;
+    cursor: pointer;
+    border: 2px solid #eee;
+}
+
+.invoice-rise-item.high-light {
+    position: relative;
+    border: 2px solid #FF0040;
+}
+
+.invoice-rise-item img {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: none;
+    width: 14px;
+}
+
+.invoice-rise-item.high-light img {
+    display: block;
+}
+
+.el-input.invoice-risename {
+    width: 800px;
+}
+
+.el-input.invoice-risename .el-input__inner{
+    width: auto;
+}
+
+.invoice-tips {
+    clear: both;
+    color: #999;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    font-size: 14px !important;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   font-size: 14px !important;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   font-size: 14px !important;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+   font-size: 14px !important;
+}

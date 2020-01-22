@@ -1,0 +1,253 @@
+/*閺嶅嘲绱￠崚婵嗩潗閸栵拷*/
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+ul, ol, li {
+    list-style: none;
+}
+
+body {
+    font-family: "瀵邦喛钂嬮梿鍛寸拨";
+    font-size: 0.8rem;
+    letter-spacing: 0.01rem;
+}
+
+a {
+    text-decoration: none;
+}
+
+.page {
+    width: 100%;
+}
+
+/*centre begin*/
+.centre {
+    width: 100%;
+    height: 37.5rem;
+    background-color: #F0F2F2;
+}
+
+.centre-center {
+    width: 70rem;
+    height: 35rem;
+    margin: 0 auto;
+    padding-top: 2.5rem;
+    background-color: #F0F2F2;
+}
+
+.centre-center-left {
+    float: left;
+    width: 15%;
+    height: 35rem;
+    background-color: #FFF;
+    padding-top:0.2rem;
+}
+.centre-center-left p{
+	margin-top:0.8rem;
+	margin-left:1rem;
+	color: #666;
+	font-size: 1.1rem;
+	line-height: 1;
+	cursor: pointer;
+}
+.centre-center-left .left-address{
+	color: #1e8e66;
+}
+/*centre-center-right begin*/
+.centre-center-right {
+    position: relative;
+    float: right;
+    width: 83%;
+    height: 35rem;
+    background-color: #FFF;
+}
+
+.centre-center-right .li-1 {
+    display: none;
+    width: 53rem;
+    height: 35rem;
+    padding-top:1rem;
+    padding-left:2rem;
+}
+
+.centre-center-right .right-li {
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
+    display: block;
+    width: 53rem;
+    height: 35rem;
+}
+
+/*閺�鎯版彛閸︽澘娼� begin*/
+.right-li-title {
+    display: flex;
+    width: 53rem;
+    height: 3rem;
+    margin-top: 1.5rem;
+    padding-right:2rem;
+
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title-name {
+    font-size: 1rem;
+    line-height: 1;
+    color: #413E3E;
+}
+
+.title-num {
+    font-size: 0.6rem;
+    line-height: 1rem;
+    margin-left: 0.6rem;
+    color: #413E3E;
+}
+
+/*閹绘劙鍟嬬拋鍓х枂 begin*/
+.li-set-title {
+    font-size: 1.4rem;
+    line-height: 1;
+    margin-top: 1.1rem;
+    color: #666;
+}
+
+.li-set-mintitle {	
+    font-size: 1rem;
+    line-height: 1;
+    margin-top: 1.5rem;
+    color: #787878;
+}
+
+.li-set-content {
+    width: 53rem;
+    height: 13rem;
+}
+
+.li-set-content li {
+    width: 53rem;
+    height: 1rem;
+    margin-top: 1.75rem;
+}
+
+.li-set-content li img {
+    float: left;
+    width: 1rem;
+    height: 1rem;
+}
+
+.content-p1 {
+    font-size: 1rem;
+    line-height: 1;
+    float: left;
+    width: 7rem;
+    height: 1rem;
+    margin-left: 0.2rem;
+    color: #333;
+}
+
+.content-p2 {
+    font-size: 1rem;
+    line-height: 1;
+    float: left;
+    width: 37rem;
+    height: 1rem;
+    color: #333;
+}
+
+.switch-btn {
+    position: relative;
+    display: inline-block;
+    width: 2rem;
+    height: 1rem;
+    cursor: pointer;
+    user-select: none;
+    border: 0.05rem solid #DFDFDF;
+    border-radius: 0.75rem;
+    outline: none;
+    background-color: #FDFDFD;
+    background-clip: content-box;
+    box-shadow: #DFDFDF 0 0 0 0 inset;
+
+    -webkit-appearance: none;
+}
+
+.switch-btn:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1rem;
+    height: 1rem;
+    content: "";
+    border-radius: 1rem;
+    background-color: #FFF;
+    box-shadow: 0 0.05rem 0.15rem rgba(0, 0, 0, 0.4);
+}
+
+.switch-btn:checked {
+    border-color: #56B0D4;
+    background-color: #56B0D4;
+    box-shadow: #56B0D4 0 0 0 16px inset;
+}
+
+.switch-btn:checked:before {
+    left: 0.9rem;
+}
+
+.switch-btn.switch-btn-animbg {
+    transition: background-color ease 0.4s;
+}
+
+.switch-btn.switch-btn-animbg:before {
+    transition: left 0.3s;
+}
+
+.switch-btn.switch-btn-animbg:checked {
+    transition: border-color 0.4s, background-color ease 0.4s;
+    background-color: #56B0D4;
+    box-shadow: #DFDFDF 0 0 0 0 inset;
+}
+
+.switch-btn.switch-btn-animbg:checked:before {
+    transition: left 0.3s;
+}
+
+/*.content-input{
+    display: inline-block;
+    -webkit-appearance: checkbox;
+}*/
+/*閹绘劙鍟嬬拋鍓х枂 end*/
+/*centre-center-right end*/
+/*centre end*/
+/*user-bottom begin*/
+.user-bottom {
+    width: 100%;
+    height: 2.5rem;
+    background-color: #F0F2F2;
+}
+
+/*user-bottom end*/
+
+.el-form-item__label {
+    font-size: 0.8rem;
+}
+
+.el-cascader__label {
+    width: 18rem;
+}
+
+.el-input__inner {
+    font-size: 0.8rem;
+    max-width: 20rem;
+}
+
+.el-input__inner::-webkit-input-placeholder {
+    font-size: 0.8rem;
+}
+
+.el-table {
+    font-size: 0.8rem;
+}

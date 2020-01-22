@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.PrizeCommonService">
+	<resultMap type="com.cofc.pojo.PrizeCommon" id="BaseResultMap">
+		<id column="prize_id" property="prizeId" jdbcType="INTEGER" />
+		<result column="prize_name" property="prizeName" jdbcType="VARCHAR" />
+		<result column="prize_image" property="prizeImage" jdbcType="VARCHAR" />
+		<result column="get_prize" property="getPrize" jdbcType="INTEGER" />
+		<result column="prize_count" property="prizeCount" jdbcType="INTEGER" />
+		<result column="prize_persent" property="prizePersent"
+			jdbcType="DOUBLE" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="orderid" property="orderId" jdbcType="INTEGER" />
+		<result column="activity_id" property="activityId" jdbcType="INTEGER" />
+		<result column="is_prized" property="isPrized" jdbcType="INTEGER" />
+		<result column="prize_type" property="prizeType" jdbcType="INTEGER" />
+		<result column="multiple" property="multiple" jdbcType="DOUBLE" />
+		<result column="background_color" property="backgroundColor" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="findPrizeByCriteria" resultMap="BaseResultMap">
+		select * from
+		TB_PRIZE_COMMON where activity_id = #{activityId}
+		order by orderid
+	</select>
+	<insert id="addBatchPrizes" parameterType="java.util.List">
+		insert into
+		TB_PRIZE_COMMON(prize_name,prize_image,get_prize,prize_count,prize_persent,
+		create_time,orderid,activity_id,is_prized,prize_type)values
+		<foreach collection="list" item="item" index="index" separator="," >  
+       	 (#{item.prizeName},#{item.prizeImage},#{item.getPrize},#{item.prizeCount},
+       	 	#{item.prizePersent},#{item.createTime},#{item.orderId},#{item.activityId},
+       	 	#{item.isPrized},#{item.prizeType})
+    	</foreach> 
+	</insert>
+	<update id="updatePrizeInfo" parameterType="com.cofc.pojo.PrizeCommon">
+		update TB_PRIZE_COMMON set prize_count = #{prizeCount} where prize_id = #{prizeId}
+	</update>
+</mapper>

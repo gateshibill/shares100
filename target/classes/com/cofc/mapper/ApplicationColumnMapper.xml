@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ApplicationColumnService">
+
+<resultMap type="com.cofc.pojo.ApplicationColumn" id="typeMap">
+
+<id column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="login_plat" property="loginPlat" jdbcType="VARCHAR" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+		<result column="order_no" property="orderNo" jdbcType="INTEGER" />
+		<result column="app_type" property="appType" jdbcType="INTEGER" />
+</resultMap>
+
+
+<select id="getApplicationTypeList" resultMap="typeMap">
+  select * from tb_application_column where is_effect = 1
+    order by order_no 
+</select>
+
+<select id="getApplicationColumnAppTypeById" resultMap="typeMap">
+  select * from tb_application_column where type_id=#{typeId}
+</select>
+</mapper>

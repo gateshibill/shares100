@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.SmsRecordService">
+	<resultMap type="com.cofc.pojo.vij.SmsRecord" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="send_time" property="sendTime" jdbcType="INTEGER" />
+		<result column="error_code" property="errorCode" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addSms" parameterType="com.cofc.pojo.vij.SmsRecord"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tv_sms_record(phone,code,app_id,send_time,error_code,type)
+		values(#{phone},#{code},#{appId},#{sendTime},#{errorCode},#{type})
+	</insert>
+	<select id="getSms" resultMap="BaseResultMap">
+		select * from tv_sms_record where phone = #{phone} and type = #{type} 
+		<if test="appId != null">and app_id = #{appId}</if>
+		<if test="code != null and code != ''">and code = #{code}</if>
+		order by send_time desc
+		limit 1
+	</select>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.goods.GoodsSpecTypeService">
+	<resultMap type="com.cofc.pojo.goods.GoodsSpecType" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="addGoodsSpecType" parameterType="com.cofc.pojo.goods.GoodsSpecType"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tg_goods_spec_type(app_id,goods_id,type,name)
+		values(#{appId},#{goodsId},#{type},#{name})
+	</insert>
+	<update id="updateGoodsSpecType" parameterType="com.cofc.pojo.goods.GoodsSpecType">
+		update tg_goods_spec_type
+		<trim prefix="set" suffixOverrides=",">
+			<if test="type!=null ">type=#{type},</if>
+			<if test="name!=null">name=#{name},</if>
+		</trim>
+		where id = #{id}
+	</update>
+
+	<delete id="deleteGoodsSpecType" parameterType="com.cofc.pojo.goods.GoodsSpecType">
+		delete from tg_goods_spec_type where id =#{id}
+	</delete>
+
+	<select id="getGoodsSpecType" resultMap="BaseResultMap">
+		select * from tg_goods_spec_type
+		where 1=1
+		<if test="appId != null">
+			and app_id = #{appId}
+		</if>
+		<if test="goodsId != null">
+			and goods_id =#{goodsId}
+		</if>
+	</select>
+</mapper>

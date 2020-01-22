@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.goods.MoreSpecService">
+	<resultMap type="com.cofc.pojo.goods.MoreSpec" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="spec_name" property="specName" jdbcType="VARCHAR" />
+		<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+	</resultMap>
+
+	<insert id="addMoreSpec" parameterType="com.cofc.pojo.goods.MoreSpec"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tv_more_spec(spec_name,order_status,is_effect)
+		values(#{specName},#{orderStatus},#{isEffect})
+	</insert>
+	<update id="updateMoreSpec" parameterType="com.cofc.pojo.goods.MoreSpec">
+		update tv_more_spec
+		<trim prefix="set" suffixOverrides=",">
+			<if test="specName!=null and specName != ''">spec_name=#{specName},</if>
+			<if test="orderStatus!=null">order_status=#{orderStatus},</if>
+			<if test="isEffect!=null">is_effect=#{isEffect},</if>
+		</trim>
+		where id = #{id}
+	</update>
+
+	<delete id="delMoreSpec" parameterType="com.cofc.pojo.goods.MoreSpec">
+		delete from tv_more_spec where id =#{id}
+	</delete>
+	<select id="getInfoById" resultMap="BaseResultMap">
+		select * from tv_more_spec where id =#{id}
+	</select>
+    <select id="getMoreSpecCount" resultType="int">
+        select count(*) from tv_more_spec	
+    </select>
+	
+	<select id="getMoreSpecList" resultMap="BaseResultMap">
+		select * from tv_more_spec order by order_status
+	</select>
+</mapper>

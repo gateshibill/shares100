@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.WeiXinRefundResultService">
+	<resultMap type="com.cofc.pojo.WeiXinRefundResult" id="BaseResultMap">
+		<id column="result_id" property="resultId" jdbcType="INTEGER" />
+		<result column="result_code" property="resultCode" jdbcType="VARCHAR" />
+		<result column="err_code" property="errCode" jdbcType="VARCHAR" />
+		<result column="err_code_des" property="errCodeDes" jdbcType="VARCHAR" />
+		<result column="app_id" property="appId" jdbcType="VARCHAR" />
+		<result column="mch_id" property="mchId" jdbcType="VARCHAR" />
+		<result column="nonce_str" property="nonceStr" jdbcType="VARCHAR" />
+		<result column="sign" property="sign" jdbcType="VARCHAR" />
+		<result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+		<result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR" />
+		
+		<result column="out_refund_no" property="outRefundNo" jdbcType="VARCHAR" />
+		<result column="refund_id" property="refundId" jdbcType="VARCHAR" />
+		<result column="refund_fee" property="refundFee" jdbcType="INTEGER" />
+		<result column="settlement_refund_fee" property="settlementRefundFee" jdbcType="INTEGER" />
+		<result column="total_fee" property="totalFee" jdbcType="INTEGER" />
+		<result column="settlement_total_fee" property="settlementTotalFee" jdbcType="INTEGER" />
+		<result column="fee_type" property="feeType" jdbcType="VARCHAR" />
+		<result column="cash_fee" property="cashFee" jdbcType="INTEGER" />
+		<result column="cash_fee_type" property="cashFeeType" jdbcType="VARCHAR" />
+		<result column="cash_refund_fee" property="cashRefundFee" jdbcType="INTEGER" />
+		
+		<result column="coupon_type_$n" property="couponType$n" jdbcType="VARCHAR" />
+		<result column="coupon_refund_fee" property="couponRefundFee" jdbcType="INTEGER" />
+		<result column="coupon_refund_fee_$n" property="couponRefundFee$n" jdbcType="INTEGER" />
+		<result column="coupon_refund_count" property="couponRefundCount" jdbcType="INTEGER" />
+		<result column="coupon_refund_id_$n" property="couponRefundId$n" jdbcType="VARCHAR" />
+		
+	</resultMap>
+	<insert id="addRefundResult" parameterType="com.cofc.pojo.WeiXinRefundResult">
+		insert into
+		TB_WEIXIN_REFUND_RESULT(result_code,err_code,err_code_des,app_id,mch_id,
+		nonce_str,sign,transaction_id,out_trade_no,out_refund_no,refund_id,
+		refund_fee,settlement_refund_fee,total_fee,settlement_total_fee,fee_type,cash_fee,cash_fee_type,
+		cash_refund_fee,coupon_type_$n,coupon_refund_fee,coupon_refund_fee_$n,coupon_refund_count,coupon_refund_id_$n)
+		values(#{resultCode},#{errCode},#{errCodeDes},#{appId},#{mchId},
+		#{nonceStr},#{sign},#{transactionId},#{outTradeNo},#{outRefundNo},#{refundId},
+		#{refundFee},#{settlementRefundFee},#{totalFee},#{settlementTotalFee},#{feeType},#{cashFee},#{cashFeeType},
+		#{cashRefundFee},#{couponType$n},#{couponRefundFee},#{couponRefundFee$n},#{couponRefundCount},#{couponRefundId$n});
+	</insert>
+</mapper>

@@ -1,0 +1,51 @@
+body {
+    font: 20px/1.5 "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
+    overflow-x: hidden;
+    width: 100%;
+    min-width: 1366px;
+    color: #333;
+    background-color: #FFF;
+}
+
+body, div, p, img, input, a, textarea {
+    display: block;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    resize: none;
+    border: none;
+    outline: none;
+
+    -webkit-appearance: none;
+}
+
+/*p {
+    line-height: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    word-break: keep-all;
+}*/
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+[v-cloak] {
+    display: none;
+}
+
+.flex-box::before, .flex-box::after {
+    display: block;
+    clear: both;
+    height: 0;
+    content: "";
+}
+
+.el-checkbox{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}

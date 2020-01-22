@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ProjectCommentService">
+	<resultMap type="com.cofc.pojo.vij.ProjectComment" id="BaseResultMap">
+		<id column="comment_id" property="commentId" jdbcType="INTEGER" />
+		<result column="comment_content" property="commentContent" jdbcType="VARCHAR" />
+		<result column="tag_str" property="tagStr" jdbcType="VARCHAR" />
+		<result column="project_id" property="projectId" jdbcType="INTEGER" />
+		<result column="comment_score" property="commentScore" jdbcType="DOUBLE" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="is_deal" property="isDeal" jdbcType="INTEGER"/>
+	</resultMap>
+	<insert id="addComment" parameterType="com.cofc.pojo.vij.ProjectComment"
+		useGeneratedKeys="true" keyProperty="commentId">
+		insert into tv_project_comment(comment_content,tag_str,project_id,comment_score,user_id,create_time,is_deal)
+		values(#{commentContent},#{tagStr},#{projectId},#{commentScore},#{userId},#{createTime},#{isDeal})
+	</insert>
+	
+	<delete id="delComment" parameterType="com.cofc.pojo.vij.ProjectComment">
+		delete from tv_project_comment where comment_id = #{commentId}
+	</delete>
+
+	<select id="getCommentCount" resultType="int">
+		select count(*) from tv_project_comment where 1=1
+		<if test="comment.projectId != null">
+			and project_id = #{comment.projectId}
+		</if>
+		<if test="comment.userId != null">
+			and user_id = #{comment.userId}
+		</if>
+		<!-- <if test="comment.isDeal != null">
+			and is_deal = #{comment.isDeal}
+		</if> -->
+		<if test="comment.commentContent != null and comment.commentContent !=''">
+			and comment_content like CONCAT('%',#{comment.commentContent},'%') 
+		</if>
+	</select>
+	<select id="getCommentList" resultMap="BaseResultMap">
+		select * from tv_project_comment where 1=1
+		<if test="comment.projectId != null">
+			and project_id = #{comment.projectId}
+		</if>
+		<if test="comment.userId != null">
+			and user_id = #{comment.userId}
+		</if>
+		<!-- <if test="comment.isDeal != null">
+			and is_deal = #{comment.isDeal}
+		</if> -->
+		<if test="comment.commentContent != null and comment.commentContent !=''">
+			and comment_content like CONCAT('%',#{comment.commentContent},'%') 
+		</if>
+		order by create_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	<select id="getProjectCommentByid" resultMap="BaseResultMap">
+		select * from tv_project_comment where project_Id = #{projectId}
+	</select>
+	<update id="updateComment" parameterType="com.cofc.pojo.vij.ProjectComment">
+		update tv_project_comment 
+	<trim prefix="set" suffixOverrides=",">
+	<if test="commentContent != null and commentContent !=''">
+		comment_content = #{commentContent},
+	</if>
+	<if test="tagStr != null and tagStr !=''">
+		tag_str = #{tagStr},
+	</if>
+	<if test="projectId != null">
+		project_id = #{projectId},
+	</if>
+	<if test="commentScore != null">
+		comment_score = #{commentScore},
+	</if>
+	<if test="isDeal != null">
+		is_deal =#{isDeal},	
+	</if>
+	</trim>
+		where comment_id = #{commentId}
+	</update>
+</mapper>

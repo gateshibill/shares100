@@ -1,0 +1,1049 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.video.VodBeanMapper">
+  <resultMap id="BaseResultMap" type="com.cofc.pojo.video.VodBean">
+    <id column="vod_id" jdbcType="INTEGER" property="vodId" />
+    <result column="type_id" jdbcType="SMALLINT" property="typeId" />
+    <result column="type_id_1" jdbcType="SMALLINT" property="typeId1" />
+    <result column="group_id" jdbcType="SMALLINT" property="groupId" />
+    <result column="vod_name" jdbcType="VARCHAR" property="vodName" />
+    <result column="vod_sub" jdbcType="VARCHAR" property="vodSub" />
+    <result column="vod_en" jdbcType="VARCHAR" property="vodEn" />
+    <result column="vod_status" jdbcType="BIT" property="vodStatus" />
+    <result column="vod_letter" jdbcType="CHAR" property="vodLetter" />
+    <result column="vod_color" jdbcType="VARCHAR" property="vodColor" />
+    <result column="vod_tag" jdbcType="VARCHAR" property="vodTag" />
+    <result column="vod_class" jdbcType="VARCHAR" property="vodClass" />
+    <result column="vod_pic" jdbcType="VARCHAR" property="vodPic" />
+    <result column="vod_pic_thumb" jdbcType="VARCHAR" property="vodPicThumb" />
+    <result column="vod_pic_slide" jdbcType="VARCHAR" property="vodPicSlide" />
+    <result column="vod_actor" jdbcType="VARCHAR" property="vodActor" />
+    <result column="vod_director" jdbcType="VARCHAR" property="vodDirector" />
+    <result column="vod_writer" jdbcType="VARCHAR" property="vodWriter" />
+    <result column="vod_behind" jdbcType="VARCHAR" property="vodBehind" />
+    <result column="vod_blurb" jdbcType="VARCHAR" property="vodBlurb" />
+    <result column="vod_remarks" jdbcType="VARCHAR" property="vodRemarks" />
+    <result column="vod_pubdate" jdbcType="VARCHAR" property="vodPubdate" />
+    <result column="vod_total" jdbcType="INTEGER" property="vodTotal" />
+    <result column="vod_serial" jdbcType="VARCHAR" property="vodSerial" />
+    <result column="vod_tv" jdbcType="VARCHAR" property="vodTv" />
+    <result column="vod_weekday" jdbcType="VARCHAR" property="vodWeekday" />
+    <result column="vod_area" jdbcType="VARCHAR" property="vodArea" />
+    <result column="vod_lang" jdbcType="VARCHAR" property="vodLang" />
+    <result column="vod_year" jdbcType="VARCHAR" property="vodYear" />
+    <result column="vod_version" jdbcType="VARCHAR" property="vodVersion" />
+    <result column="vod_state" jdbcType="VARCHAR" property="vodState" />
+    <result column="vod_author" jdbcType="VARCHAR" property="vodAuthor" />
+    <result column="vod_jumpurl" jdbcType="VARCHAR" property="vodJumpurl" />
+    <result column="vod_tpl" jdbcType="VARCHAR" property="vodTpl" />
+    <result column="vod_tpl_play" jdbcType="VARCHAR" property="vodTplPlay" />
+    <result column="vod_tpl_down" jdbcType="VARCHAR" property="vodTplDown" />
+    <result column="vod_isend" jdbcType="BIT" property="vodIsend" />
+    <result column="vod_lock" jdbcType="BIT" property="vodLock" />
+    <result column="vod_level" jdbcType="BIT" property="vodLevel" />
+    <result column="vod_points_play" jdbcType="SMALLINT" property="vodPointsPlay" />
+    <result column="vod_points_down" jdbcType="SMALLINT" property="vodPointsDown" />
+    <result column="vod_hits" jdbcType="INTEGER" property="vodHits" />
+    <result column="vod_hits_day" jdbcType="INTEGER" property="vodHitsDay" />
+    <result column="vod_hits_week" jdbcType="INTEGER" property="vodHitsWeek" />
+    <result column="vod_hits_month" jdbcType="INTEGER" property="vodHitsMonth" />
+    <result column="vod_duration" jdbcType="VARCHAR" property="vodDuration" />
+    <result column="vod_up" jdbcType="INTEGER" property="vodUp" />
+    <result column="vod_down" jdbcType="INTEGER" property="vodDown" />
+    <result column="vod_score" jdbcType="DECIMAL" property="vodScore" />
+    <result column="vod_score_all" jdbcType="INTEGER" property="vodScoreAll" />
+    <result column="vod_score_num" jdbcType="INTEGER" property="vodScoreNum" />
+    <result column="vod_time" jdbcType="INTEGER" property="vodTime" />
+    <result column="vod_time_add" jdbcType="INTEGER" property="vodTimeAdd" />
+    <result column="vod_time_hits" jdbcType="INTEGER" property="vodTimeHits" />
+    <result column="vod_time_make" jdbcType="INTEGER" property="vodTimeMake" />
+    <result column="vod_trysee" jdbcType="SMALLINT" property="vodTrysee" />
+    <result column="vod_douban_id" jdbcType="INTEGER" property="vodDoubanId" />
+    <result column="vod_douban_score" jdbcType="DECIMAL" property="vodDoubanScore" />
+    <result column="vod_reurl" jdbcType="VARCHAR" property="vodReurl" />
+    <result column="vod_rel_vod" jdbcType="VARCHAR" property="vodRelVod" />
+    <result column="vod_rel_art" jdbcType="VARCHAR" property="vodRelArt" />
+    <result column="vod_play_from" jdbcType="VARCHAR" property="vodPlayFrom" />
+    <result column="vod_play_server" jdbcType="VARCHAR" property="vodPlayServer" />
+    <result column="vod_play_note" jdbcType="VARCHAR" property="vodPlayNote" />
+    <result column="vod_down_from" jdbcType="VARCHAR" property="vodDownFrom" />
+    <result column="vod_down_server" jdbcType="VARCHAR" property="vodDownServer" />
+    <result column="vod_down_note" jdbcType="VARCHAR" property="vodDownNote" />
+    <result column="vod_pwd" jdbcType="VARCHAR" property="vodPwd" />
+    <result column="vod_pwd_url" jdbcType="VARCHAR" property="vodPwdUrl" />
+    <result column="vod_pwd_play" jdbcType="VARCHAR" property="vodPwdPlay" />
+    <result column="vod_pwd_play_url" jdbcType="VARCHAR" property="vodPwdPlayUrl" />
+    <result column="vod_pwd_down" jdbcType="VARCHAR" property="vodPwdDown" />
+    <result column="vod_pwd_down_url" jdbcType="VARCHAR" property="vodPwdDownUrl" />
+    <result column="vod_copyright" jdbcType="BIT" property="vodCopyright" />
+    <result column="vod_points" jdbcType="SMALLINT" property="vodPoints" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.cofc.pojo.video.VodBeanWithBLOBs">
+    <result column="vod_content" jdbcType="LONGVARCHAR" property="vodContent" />
+    <result column="vod_play_url" jdbcType="LONGVARCHAR" property="vodPlayUrl" />
+    <result column="vod_down_url" jdbcType="LONGVARCHAR" property="vodDownUrl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    vod_id, type_id, type_id_1, group_id, vod_name, vod_sub, vod_en, vod_status, vod_letter, 
+    vod_color, vod_tag, vod_class, vod_pic, vod_pic_thumb, vod_pic_slide, vod_actor, 
+    vod_director, vod_writer, vod_behind, vod_blurb, vod_remarks, vod_pubdate, vod_total, 
+    vod_serial, vod_tv, vod_weekday, vod_area, vod_lang, vod_year, vod_version, vod_state, 
+    vod_author, vod_jumpurl, vod_tpl, vod_tpl_play, vod_tpl_down, vod_isend, vod_lock, 
+    vod_level, vod_points_play, vod_points_down, vod_hits, vod_hits_day, vod_hits_week, 
+    vod_hits_month, vod_duration, vod_up, vod_down, vod_score, vod_score_all, vod_score_num, 
+    vod_time, vod_time_add, vod_time_hits, vod_time_make, vod_trysee, vod_douban_id, 
+    vod_douban_score, vod_reurl, vod_rel_vod, vod_rel_art, vod_play_from, vod_play_server, 
+    vod_play_note, vod_down_from, vod_down_server, vod_down_note, vod_pwd, vod_pwd_url, 
+    vod_pwd_play, vod_pwd_play_url, vod_pwd_down, vod_pwd_down_url, vod_copyright, vod_points
+  </sql>
+  <sql id="Blob_Column_List">
+    vod_content, vod_play_url, vod_down_url
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from mac_vod
+    where vod_id = #{vodId,jdbcType=INTEGER}
+  </select>
+  <select id="getVodListBycolumnId" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from mac_vod
+    where type_id = #{typeId} 
+    order by vod_time desc 
+    limit #{pageNo},#{pageSize}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mac_vod
+    where vod_id = #{vodId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cofc.pojo.video.VodBeanWithBLOBs">
+    insert into mac_vod (vod_id, type_id, type_id_1, 
+      group_id, vod_name, vod_sub, 
+      vod_en, vod_status, vod_letter, 
+      vod_color, vod_tag, vod_class, 
+      vod_pic, vod_pic_thumb, vod_pic_slide, 
+      vod_actor, vod_director, vod_writer, 
+      vod_behind, vod_blurb, vod_remarks, 
+      vod_pubdate, vod_total, vod_serial, 
+      vod_tv, vod_weekday, vod_area, 
+      vod_lang, vod_year, vod_version, 
+      vod_state, vod_author, vod_jumpurl, 
+      vod_tpl, vod_tpl_play, vod_tpl_down, 
+      vod_isend, vod_lock, vod_level, vod_points_play, 
+      vod_points_down, vod_hits, vod_hits_day, 
+      vod_hits_week, vod_hits_month, vod_duration, 
+      vod_up, vod_down, vod_score, 
+      vod_score_all, vod_score_num, vod_time, 
+      vod_time_add, vod_time_hits, vod_time_make, 
+      vod_trysee, vod_douban_id, vod_douban_score, 
+      vod_reurl, vod_rel_vod, vod_rel_art, 
+      vod_play_from, vod_play_server, vod_play_note, 
+      vod_down_from, vod_down_server, vod_down_note, 
+      vod_pwd, vod_pwd_url, vod_pwd_play, 
+      vod_pwd_play_url, vod_pwd_down, vod_pwd_down_url, 
+      vod_copyright, vod_points, vod_content, 
+      vod_play_url, vod_down_url)
+    values (#{vodId,jdbcType=INTEGER}, #{typeId,jdbcType=SMALLINT}, #{typeId1,jdbcType=SMALLINT}, 
+      #{groupId,jdbcType=SMALLINT}, #{vodName,jdbcType=VARCHAR}, #{vodSub,jdbcType=VARCHAR}, 
+      #{vodEn,jdbcType=VARCHAR}, #{vodStatus,jdbcType=BIT}, #{vodLetter,jdbcType=CHAR}, 
+      #{vodColor,jdbcType=VARCHAR}, #{vodTag,jdbcType=VARCHAR}, #{vodClass,jdbcType=VARCHAR}, 
+      #{vodPic,jdbcType=VARCHAR}, #{vodPicThumb,jdbcType=VARCHAR}, #{vodPicSlide,jdbcType=VARCHAR}, 
+      #{vodActor,jdbcType=VARCHAR}, #{vodDirector,jdbcType=VARCHAR}, #{vodWriter,jdbcType=VARCHAR}, 
+      #{vodBehind,jdbcType=VARCHAR}, #{vodBlurb,jdbcType=VARCHAR}, #{vodRemarks,jdbcType=VARCHAR}, 
+      #{vodPubdate,jdbcType=VARCHAR}, #{vodTotal,jdbcType=INTEGER}, #{vodSerial,jdbcType=VARCHAR}, 
+      #{vodTv,jdbcType=VARCHAR}, #{vodWeekday,jdbcType=VARCHAR}, #{vodArea,jdbcType=VARCHAR}, 
+      #{vodLang,jdbcType=VARCHAR}, #{vodYear,jdbcType=VARCHAR}, #{vodVersion,jdbcType=VARCHAR}, 
+      #{vodState,jdbcType=VARCHAR}, #{vodAuthor,jdbcType=VARCHAR}, #{vodJumpurl,jdbcType=VARCHAR}, 
+      #{vodTpl,jdbcType=VARCHAR}, #{vodTplPlay,jdbcType=VARCHAR}, #{vodTplDown,jdbcType=VARCHAR}, 
+      #{vodIsend,jdbcType=BIT}, #{vodLock,jdbcType=BIT}, #{vodLevel,jdbcType=BIT}, #{vodPointsPlay,jdbcType=SMALLINT}, 
+      #{vodPointsDown,jdbcType=SMALLINT}, #{vodHits,jdbcType=INTEGER}, #{vodHitsDay,jdbcType=INTEGER}, 
+      #{vodHitsWeek,jdbcType=INTEGER}, #{vodHitsMonth,jdbcType=INTEGER}, #{vodDuration,jdbcType=VARCHAR}, 
+      #{vodUp,jdbcType=INTEGER}, #{vodDown,jdbcType=INTEGER}, #{vodScore,jdbcType=DECIMAL}, 
+      #{vodScoreAll,jdbcType=INTEGER}, #{vodScoreNum,jdbcType=INTEGER}, #{vodTime,jdbcType=INTEGER}, 
+      #{vodTimeAdd,jdbcType=INTEGER}, #{vodTimeHits,jdbcType=INTEGER}, #{vodTimeMake,jdbcType=INTEGER}, 
+      #{vodTrysee,jdbcType=SMALLINT}, #{vodDoubanId,jdbcType=INTEGER}, #{vodDoubanScore,jdbcType=DECIMAL}, 
+      #{vodReurl,jdbcType=VARCHAR}, #{vodRelVod,jdbcType=VARCHAR}, #{vodRelArt,jdbcType=VARCHAR}, 
+      #{vodPlayFrom,jdbcType=VARCHAR}, #{vodPlayServer,jdbcType=VARCHAR}, #{vodPlayNote,jdbcType=VARCHAR}, 
+      #{vodDownFrom,jdbcType=VARCHAR}, #{vodDownServer,jdbcType=VARCHAR}, #{vodDownNote,jdbcType=VARCHAR}, 
+      #{vodPwd,jdbcType=VARCHAR}, #{vodPwdUrl,jdbcType=VARCHAR}, #{vodPwdPlay,jdbcType=VARCHAR}, 
+      #{vodPwdPlayUrl,jdbcType=VARCHAR}, #{vodPwdDown,jdbcType=VARCHAR}, #{vodPwdDownUrl,jdbcType=VARCHAR}, 
+      #{vodCopyright,jdbcType=BIT}, #{vodPoints,jdbcType=SMALLINT}, #{vodContent,jdbcType=LONGVARCHAR}, 
+      #{vodPlayUrl,jdbcType=LONGVARCHAR}, #{vodDownUrl,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cofc.pojo.video.VodBeanWithBLOBs">
+    insert into mac_vod
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="vodId != null">
+        vod_id,
+      </if>
+      <if test="typeId != null">
+        type_id,
+      </if>
+      <if test="typeId1 != null">
+        type_id_1,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="vodName != null">
+        vod_name,
+      </if>
+      <if test="vodSub != null">
+        vod_sub,
+      </if>
+      <if test="vodEn != null">
+        vod_en,
+      </if>
+      <if test="vodStatus != null">
+        vod_status,
+      </if>
+      <if test="vodLetter != null">
+        vod_letter,
+      </if>
+      <if test="vodColor != null">
+        vod_color,
+      </if>
+      <if test="vodTag != null">
+        vod_tag,
+      </if>
+      <if test="vodClass != null">
+        vod_class,
+      </if>
+      <if test="vodPic != null">
+        vod_pic,
+      </if>
+      <if test="vodPicThumb != null">
+        vod_pic_thumb,
+      </if>
+      <if test="vodPicSlide != null">
+        vod_pic_slide,
+      </if>
+      <if test="vodActor != null">
+        vod_actor,
+      </if>
+      <if test="vodDirector != null">
+        vod_director,
+      </if>
+      <if test="vodWriter != null">
+        vod_writer,
+      </if>
+      <if test="vodBehind != null">
+        vod_behind,
+      </if>
+      <if test="vodBlurb != null">
+        vod_blurb,
+      </if>
+      <if test="vodRemarks != null">
+        vod_remarks,
+      </if>
+      <if test="vodPubdate != null">
+        vod_pubdate,
+      </if>
+      <if test="vodTotal != null">
+        vod_total,
+      </if>
+      <if test="vodSerial != null">
+        vod_serial,
+      </if>
+      <if test="vodTv != null">
+        vod_tv,
+      </if>
+      <if test="vodWeekday != null">
+        vod_weekday,
+      </if>
+      <if test="vodArea != null">
+        vod_area,
+      </if>
+      <if test="vodLang != null">
+        vod_lang,
+      </if>
+      <if test="vodYear != null">
+        vod_year,
+      </if>
+      <if test="vodVersion != null">
+        vod_version,
+      </if>
+      <if test="vodState != null">
+        vod_state,
+      </if>
+      <if test="vodAuthor != null">
+        vod_author,
+      </if>
+      <if test="vodJumpurl != null">
+        vod_jumpurl,
+      </if>
+      <if test="vodTpl != null">
+        vod_tpl,
+      </if>
+      <if test="vodTplPlay != null">
+        vod_tpl_play,
+      </if>
+      <if test="vodTplDown != null">
+        vod_tpl_down,
+      </if>
+      <if test="vodIsend != null">
+        vod_isend,
+      </if>
+      <if test="vodLock != null">
+        vod_lock,
+      </if>
+      <if test="vodLevel != null">
+        vod_level,
+      </if>
+      <if test="vodPointsPlay != null">
+        vod_points_play,
+      </if>
+      <if test="vodPointsDown != null">
+        vod_points_down,
+      </if>
+      <if test="vodHits != null">
+        vod_hits,
+      </if>
+      <if test="vodHitsDay != null">
+        vod_hits_day,
+      </if>
+      <if test="vodHitsWeek != null">
+        vod_hits_week,
+      </if>
+      <if test="vodHitsMonth != null">
+        vod_hits_month,
+      </if>
+      <if test="vodDuration != null">
+        vod_duration,
+      </if>
+      <if test="vodUp != null">
+        vod_up,
+      </if>
+      <if test="vodDown != null">
+        vod_down,
+      </if>
+      <if test="vodScore != null">
+        vod_score,
+      </if>
+      <if test="vodScoreAll != null">
+        vod_score_all,
+      </if>
+      <if test="vodScoreNum != null">
+        vod_score_num,
+      </if>
+      <if test="vodTime != null">
+        vod_time,
+      </if>
+      <if test="vodTimeAdd != null">
+        vod_time_add,
+      </if>
+      <if test="vodTimeHits != null">
+        vod_time_hits,
+      </if>
+      <if test="vodTimeMake != null">
+        vod_time_make,
+      </if>
+      <if test="vodTrysee != null">
+        vod_trysee,
+      </if>
+      <if test="vodDoubanId != null">
+        vod_douban_id,
+      </if>
+      <if test="vodDoubanScore != null">
+        vod_douban_score,
+      </if>
+      <if test="vodReurl != null">
+        vod_reurl,
+      </if>
+      <if test="vodRelVod != null">
+        vod_rel_vod,
+      </if>
+      <if test="vodRelArt != null">
+        vod_rel_art,
+      </if>
+      <if test="vodPlayFrom != null">
+        vod_play_from,
+      </if>
+      <if test="vodPlayServer != null">
+        vod_play_server,
+      </if>
+      <if test="vodPlayNote != null">
+        vod_play_note,
+      </if>
+      <if test="vodDownFrom != null">
+        vod_down_from,
+      </if>
+      <if test="vodDownServer != null">
+        vod_down_server,
+      </if>
+      <if test="vodDownNote != null">
+        vod_down_note,
+      </if>
+      <if test="vodPwd != null">
+        vod_pwd,
+      </if>
+      <if test="vodPwdUrl != null">
+        vod_pwd_url,
+      </if>
+      <if test="vodPwdPlay != null">
+        vod_pwd_play,
+      </if>
+      <if test="vodPwdPlayUrl != null">
+        vod_pwd_play_url,
+      </if>
+      <if test="vodPwdDown != null">
+        vod_pwd_down,
+      </if>
+      <if test="vodPwdDownUrl != null">
+        vod_pwd_down_url,
+      </if>
+      <if test="vodCopyright != null">
+        vod_copyright,
+      </if>
+      <if test="vodPoints != null">
+        vod_points,
+      </if>
+      <if test="vodContent != null">
+        vod_content,
+      </if>
+      <if test="vodPlayUrl != null">
+        vod_play_url,
+      </if>
+      <if test="vodDownUrl != null">
+        vod_down_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="vodId != null">
+        #{vodId,jdbcType=INTEGER},
+      </if>
+      <if test="typeId != null">
+        #{typeId,jdbcType=SMALLINT},
+      </if>
+      <if test="typeId1 != null">
+        #{typeId1,jdbcType=SMALLINT},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=SMALLINT},
+      </if>
+      <if test="vodName != null">
+        #{vodName,jdbcType=VARCHAR},
+      </if>
+      <if test="vodSub != null">
+        #{vodSub,jdbcType=VARCHAR},
+      </if>
+      <if test="vodEn != null">
+        #{vodEn,jdbcType=VARCHAR},
+      </if>
+      <if test="vodStatus != null">
+        #{vodStatus,jdbcType=BIT},
+      </if>
+      <if test="vodLetter != null">
+        #{vodLetter,jdbcType=CHAR},
+      </if>
+      <if test="vodColor != null">
+        #{vodColor,jdbcType=VARCHAR},
+      </if>
+      <if test="vodTag != null">
+        #{vodTag,jdbcType=VARCHAR},
+      </if>
+      <if test="vodClass != null">
+        #{vodClass,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPic != null">
+        #{vodPic,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPicThumb != null">
+        #{vodPicThumb,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPicSlide != null">
+        #{vodPicSlide,jdbcType=VARCHAR},
+      </if>
+      <if test="vodActor != null">
+        #{vodActor,jdbcType=VARCHAR},
+      </if>
+      <if test="vodDirector != null">
+        #{vodDirector,jdbcType=VARCHAR},
+      </if>
+      <if test="vodWriter != null">
+        #{vodWriter,jdbcType=VARCHAR},
+      </if>
+      <if test="vodBehind != null">
+        #{vodBehind,jdbcType=VARCHAR},
+      </if>
+      <if test="vodBlurb != null">
+        #{vodBlurb,jdbcType=VARCHAR},
+      </if>
+      <if test="vodRemarks != null">
+        #{vodRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPubdate != null">
+        #{vodPubdate,jdbcType=VARCHAR},
+      </if>
+      <if test="vodTotal != null">
+        #{vodTotal,jdbcType=INTEGER},
+      </if>
+      <if test="vodSerial != null">
+        #{vodSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="vodTv != null">
+        #{vodTv,jdbcType=VARCHAR},
+      </if>
+      <if test="vodWeekday != null">
+        #{vodWeekday,jdbcType=VARCHAR},
+      </if>
+      <if test="vodArea != null">
+        #{vodArea,jdbcType=VARCHAR},
+      </if>
+      <if test="vodLang != null">
+        #{vodLang,jdbcType=VARCHAR},
+      </if>
+      <if test="vodYear != null">
+        #{vodYear,jdbcType=VARCHAR},
+      </if>
+      <if test="vodVersion != null">
+        #{vodVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="vodState != null">
+        #{vodState,jdbcType=VARCHAR},
+      </if>
+      <if test="vodAuthor != null">
+        #{vodAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="vodJumpurl != null">
+        #{vodJumpurl,jdbcType=VARCHAR},
+      </if>
+      <if test="vodTpl != null">
+        #{vodTpl,jdbcType=VARCHAR},
+      </if>
+      <if test="vodTplPlay != null">
+        #{vodTplPlay,jdbcType=VARCHAR},
+      </if>
+      <if test="vodTplDown != null">
+        #{vodTplDown,jdbcType=VARCHAR},
+      </if>
+      <if test="vodIsend != null">
+        #{vodIsend,jdbcType=BIT},
+      </if>
+      <if test="vodLock != null">
+        #{vodLock,jdbcType=BIT},
+      </if>
+      <if test="vodLevel != null">
+        #{vodLevel,jdbcType=BIT},
+      </if>
+      <if test="vodPointsPlay != null">
+        #{vodPointsPlay,jdbcType=SMALLINT},
+      </if>
+      <if test="vodPointsDown != null">
+        #{vodPointsDown,jdbcType=SMALLINT},
+      </if>
+      <if test="vodHits != null">
+        #{vodHits,jdbcType=INTEGER},
+      </if>
+      <if test="vodHitsDay != null">
+        #{vodHitsDay,jdbcType=INTEGER},
+      </if>
+      <if test="vodHitsWeek != null">
+        #{vodHitsWeek,jdbcType=INTEGER},
+      </if>
+      <if test="vodHitsMonth != null">
+        #{vodHitsMonth,jdbcType=INTEGER},
+      </if>
+      <if test="vodDuration != null">
+        #{vodDuration,jdbcType=VARCHAR},
+      </if>
+      <if test="vodUp != null">
+        #{vodUp,jdbcType=INTEGER},
+      </if>
+      <if test="vodDown != null">
+        #{vodDown,jdbcType=INTEGER},
+      </if>
+      <if test="vodScore != null">
+        #{vodScore,jdbcType=DECIMAL},
+      </if>
+      <if test="vodScoreAll != null">
+        #{vodScoreAll,jdbcType=INTEGER},
+      </if>
+      <if test="vodScoreNum != null">
+        #{vodScoreNum,jdbcType=INTEGER},
+      </if>
+      <if test="vodTime != null">
+        #{vodTime,jdbcType=INTEGER},
+      </if>
+      <if test="vodTimeAdd != null">
+        #{vodTimeAdd,jdbcType=INTEGER},
+      </if>
+      <if test="vodTimeHits != null">
+        #{vodTimeHits,jdbcType=INTEGER},
+      </if>
+      <if test="vodTimeMake != null">
+        #{vodTimeMake,jdbcType=INTEGER},
+      </if>
+      <if test="vodTrysee != null">
+        #{vodTrysee,jdbcType=SMALLINT},
+      </if>
+      <if test="vodDoubanId != null">
+        #{vodDoubanId,jdbcType=INTEGER},
+      </if>
+      <if test="vodDoubanScore != null">
+        #{vodDoubanScore,jdbcType=DECIMAL},
+      </if>
+      <if test="vodReurl != null">
+        #{vodReurl,jdbcType=VARCHAR},
+      </if>
+      <if test="vodRelVod != null">
+        #{vodRelVod,jdbcType=VARCHAR},
+      </if>
+      <if test="vodRelArt != null">
+        #{vodRelArt,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPlayFrom != null">
+        #{vodPlayFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPlayServer != null">
+        #{vodPlayServer,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPlayNote != null">
+        #{vodPlayNote,jdbcType=VARCHAR},
+      </if>
+      <if test="vodDownFrom != null">
+        #{vodDownFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="vodDownServer != null">
+        #{vodDownServer,jdbcType=VARCHAR},
+      </if>
+      <if test="vodDownNote != null">
+        #{vodDownNote,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPwd != null">
+        #{vodPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPwdUrl != null">
+        #{vodPwdUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPwdPlay != null">
+        #{vodPwdPlay,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPwdPlayUrl != null">
+        #{vodPwdPlayUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPwdDown != null">
+        #{vodPwdDown,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPwdDownUrl != null">
+        #{vodPwdDownUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="vodCopyright != null">
+        #{vodCopyright,jdbcType=BIT},
+      </if>
+      <if test="vodPoints != null">
+        #{vodPoints,jdbcType=SMALLINT},
+      </if>
+      <if test="vodContent != null">
+        #{vodContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="vodPlayUrl != null">
+        #{vodPlayUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="vodDownUrl != null">
+        #{vodDownUrl,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cofc.pojo.video.VodBeanWithBLOBs">
+    update mac_vod
+    <set>
+      <if test="typeId != null">
+        type_id = #{typeId,jdbcType=SMALLINT},
+      </if>
+      <if test="typeId1 != null">
+        type_id_1 = #{typeId1,jdbcType=SMALLINT},
+      </if>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=SMALLINT},
+      </if>
+      <if test="vodName != null">
+        vod_name = #{vodName,jdbcType=VARCHAR},
+      </if>
+      <if test="vodSub != null">
+        vod_sub = #{vodSub,jdbcType=VARCHAR},
+      </if>
+      <if test="vodEn != null">
+        vod_en = #{vodEn,jdbcType=VARCHAR},
+      </if>
+      <if test="vodStatus != null">
+        vod_status = #{vodStatus,jdbcType=BIT},
+      </if>
+      <if test="vodLetter != null">
+        vod_letter = #{vodLetter,jdbcType=CHAR},
+      </if>
+      <if test="vodColor != null">
+        vod_color = #{vodColor,jdbcType=VARCHAR},
+      </if>
+      <if test="vodTag != null">
+        vod_tag = #{vodTag,jdbcType=VARCHAR},
+      </if>
+      <if test="vodClass != null">
+        vod_class = #{vodClass,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPic != null">
+        vod_pic = #{vodPic,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPicThumb != null">
+        vod_pic_thumb = #{vodPicThumb,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPicSlide != null">
+        vod_pic_slide = #{vodPicSlide,jdbcType=VARCHAR},
+      </if>
+      <if test="vodActor != null">
+        vod_actor = #{vodActor,jdbcType=VARCHAR},
+      </if>
+      <if test="vodDirector != null">
+        vod_director = #{vodDirector,jdbcType=VARCHAR},
+      </if>
+      <if test="vodWriter != null">
+        vod_writer = #{vodWriter,jdbcType=VARCHAR},
+      </if>
+      <if test="vodBehind != null">
+        vod_behind = #{vodBehind,jdbcType=VARCHAR},
+      </if>
+      <if test="vodBlurb != null">
+        vod_blurb = #{vodBlurb,jdbcType=VARCHAR},
+      </if>
+      <if test="vodRemarks != null">
+        vod_remarks = #{vodRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPubdate != null">
+        vod_pubdate = #{vodPubdate,jdbcType=VARCHAR},
+      </if>
+      <if test="vodTotal != null">
+        vod_total = #{vodTotal,jdbcType=INTEGER},
+      </if>
+      <if test="vodSerial != null">
+        vod_serial = #{vodSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="vodTv != null">
+        vod_tv = #{vodTv,jdbcType=VARCHAR},
+      </if>
+      <if test="vodWeekday != null">
+        vod_weekday = #{vodWeekday,jdbcType=VARCHAR},
+      </if>
+      <if test="vodArea != null">
+        vod_area = #{vodArea,jdbcType=VARCHAR},
+      </if>
+      <if test="vodLang != null">
+        vod_lang = #{vodLang,jdbcType=VARCHAR},
+      </if>
+      <if test="vodYear != null">
+        vod_year = #{vodYear,jdbcType=VARCHAR},
+      </if>
+      <if test="vodVersion != null">
+        vod_version = #{vodVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="vodState != null">
+        vod_state = #{vodState,jdbcType=VARCHAR},
+      </if>
+      <if test="vodAuthor != null">
+        vod_author = #{vodAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="vodJumpurl != null">
+        vod_jumpurl = #{vodJumpurl,jdbcType=VARCHAR},
+      </if>
+      <if test="vodTpl != null">
+        vod_tpl = #{vodTpl,jdbcType=VARCHAR},
+      </if>
+      <if test="vodTplPlay != null">
+        vod_tpl_play = #{vodTplPlay,jdbcType=VARCHAR},
+      </if>
+      <if test="vodTplDown != null">
+        vod_tpl_down = #{vodTplDown,jdbcType=VARCHAR},
+      </if>
+      <if test="vodIsend != null">
+        vod_isend = #{vodIsend,jdbcType=BIT},
+      </if>
+      <if test="vodLock != null">
+        vod_lock = #{vodLock,jdbcType=BIT},
+      </if>
+      <if test="vodLevel != null">
+        vod_level = #{vodLevel,jdbcType=BIT},
+      </if>
+      <if test="vodPointsPlay != null">
+        vod_points_play = #{vodPointsPlay,jdbcType=SMALLINT},
+      </if>
+      <if test="vodPointsDown != null">
+        vod_points_down = #{vodPointsDown,jdbcType=SMALLINT},
+      </if>
+      <if test="vodHits != null">
+        vod_hits = #{vodHits,jdbcType=INTEGER},
+      </if>
+      <if test="vodHitsDay != null">
+        vod_hits_day = #{vodHitsDay,jdbcType=INTEGER},
+      </if>
+      <if test="vodHitsWeek != null">
+        vod_hits_week = #{vodHitsWeek,jdbcType=INTEGER},
+      </if>
+      <if test="vodHitsMonth != null">
+        vod_hits_month = #{vodHitsMonth,jdbcType=INTEGER},
+      </if>
+      <if test="vodDuration != null">
+        vod_duration = #{vodDuration,jdbcType=VARCHAR},
+      </if>
+      <if test="vodUp != null">
+        vod_up = #{vodUp,jdbcType=INTEGER},
+      </if>
+      <if test="vodDown != null">
+        vod_down = #{vodDown,jdbcType=INTEGER},
+      </if>
+      <if test="vodScore != null">
+        vod_score = #{vodScore,jdbcType=DECIMAL},
+      </if>
+      <if test="vodScoreAll != null">
+        vod_score_all = #{vodScoreAll,jdbcType=INTEGER},
+      </if>
+      <if test="vodScoreNum != null">
+        vod_score_num = #{vodScoreNum,jdbcType=INTEGER},
+      </if>
+      <if test="vodTime != null">
+        vod_time = #{vodTime,jdbcType=INTEGER},
+      </if>
+      <if test="vodTimeAdd != null">
+        vod_time_add = #{vodTimeAdd,jdbcType=INTEGER},
+      </if>
+      <if test="vodTimeHits != null">
+        vod_time_hits = #{vodTimeHits,jdbcType=INTEGER},
+      </if>
+      <if test="vodTimeMake != null">
+        vod_time_make = #{vodTimeMake,jdbcType=INTEGER},
+      </if>
+      <if test="vodTrysee != null">
+        vod_trysee = #{vodTrysee,jdbcType=SMALLINT},
+      </if>
+      <if test="vodDoubanId != null">
+        vod_douban_id = #{vodDoubanId,jdbcType=INTEGER},
+      </if>
+      <if test="vodDoubanScore != null">
+        vod_douban_score = #{vodDoubanScore,jdbcType=DECIMAL},
+      </if>
+      <if test="vodReurl != null">
+        vod_reurl = #{vodReurl,jdbcType=VARCHAR},
+      </if>
+      <if test="vodRelVod != null">
+        vod_rel_vod = #{vodRelVod,jdbcType=VARCHAR},
+      </if>
+      <if test="vodRelArt != null">
+        vod_rel_art = #{vodRelArt,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPlayFrom != null">
+        vod_play_from = #{vodPlayFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPlayServer != null">
+        vod_play_server = #{vodPlayServer,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPlayNote != null">
+        vod_play_note = #{vodPlayNote,jdbcType=VARCHAR},
+      </if>
+      <if test="vodDownFrom != null">
+        vod_down_from = #{vodDownFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="vodDownServer != null">
+        vod_down_server = #{vodDownServer,jdbcType=VARCHAR},
+      </if>
+      <if test="vodDownNote != null">
+        vod_down_note = #{vodDownNote,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPwd != null">
+        vod_pwd = #{vodPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPwdUrl != null">
+        vod_pwd_url = #{vodPwdUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPwdPlay != null">
+        vod_pwd_play = #{vodPwdPlay,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPwdPlayUrl != null">
+        vod_pwd_play_url = #{vodPwdPlayUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPwdDown != null">
+        vod_pwd_down = #{vodPwdDown,jdbcType=VARCHAR},
+      </if>
+      <if test="vodPwdDownUrl != null">
+        vod_pwd_down_url = #{vodPwdDownUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="vodCopyright != null">
+        vod_copyright = #{vodCopyright,jdbcType=BIT},
+      </if>
+      <if test="vodPoints != null">
+        vod_points = #{vodPoints,jdbcType=SMALLINT},
+      </if>
+      <if test="vodContent != null">
+        vod_content = #{vodContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="vodPlayUrl != null">
+        vod_play_url = #{vodPlayUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="vodDownUrl != null">
+        vod_down_url = #{vodDownUrl,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where vod_id = #{vodId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cofc.pojo.video.VodBeanWithBLOBs">
+    update mac_vod
+    set type_id = #{typeId,jdbcType=SMALLINT},
+      type_id_1 = #{typeId1,jdbcType=SMALLINT},
+      group_id = #{groupId,jdbcType=SMALLINT},
+      vod_name = #{vodName,jdbcType=VARCHAR},
+      vod_sub = #{vodSub,jdbcType=VARCHAR},
+      vod_en = #{vodEn,jdbcType=VARCHAR},
+      vod_status = #{vodStatus,jdbcType=BIT},
+      vod_letter = #{vodLetter,jdbcType=CHAR},
+      vod_color = #{vodColor,jdbcType=VARCHAR},
+      vod_tag = #{vodTag,jdbcType=VARCHAR},
+      vod_class = #{vodClass,jdbcType=VARCHAR},
+      vod_pic = #{vodPic,jdbcType=VARCHAR},
+      vod_pic_thumb = #{vodPicThumb,jdbcType=VARCHAR},
+      vod_pic_slide = #{vodPicSlide,jdbcType=VARCHAR},
+      vod_actor = #{vodActor,jdbcType=VARCHAR},
+      vod_director = #{vodDirector,jdbcType=VARCHAR},
+      vod_writer = #{vodWriter,jdbcType=VARCHAR},
+      vod_behind = #{vodBehind,jdbcType=VARCHAR},
+      vod_blurb = #{vodBlurb,jdbcType=VARCHAR},
+      vod_remarks = #{vodRemarks,jdbcType=VARCHAR},
+      vod_pubdate = #{vodPubdate,jdbcType=VARCHAR},
+      vod_total = #{vodTotal,jdbcType=INTEGER},
+      vod_serial = #{vodSerial,jdbcType=VARCHAR},
+      vod_tv = #{vodTv,jdbcType=VARCHAR},
+      vod_weekday = #{vodWeekday,jdbcType=VARCHAR},
+      vod_area = #{vodArea,jdbcType=VARCHAR},
+      vod_lang = #{vodLang,jdbcType=VARCHAR},
+      vod_year = #{vodYear,jdbcType=VARCHAR},
+      vod_version = #{vodVersion,jdbcType=VARCHAR},
+      vod_state = #{vodState,jdbcType=VARCHAR},
+      vod_author = #{vodAuthor,jdbcType=VARCHAR},
+      vod_jumpurl = #{vodJumpurl,jdbcType=VARCHAR},
+      vod_tpl = #{vodTpl,jdbcType=VARCHAR},
+      vod_tpl_play = #{vodTplPlay,jdbcType=VARCHAR},
+      vod_tpl_down = #{vodTplDown,jdbcType=VARCHAR},
+      vod_isend = #{vodIsend,jdbcType=BIT},
+      vod_lock = #{vodLock,jdbcType=BIT},
+      vod_level = #{vodLevel,jdbcType=BIT},
+      vod_points_play = #{vodPointsPlay,jdbcType=SMALLINT},
+      vod_points_down = #{vodPointsDown,jdbcType=SMALLINT},
+      vod_hits = #{vodHits,jdbcType=INTEGER},
+      vod_hits_day = #{vodHitsDay,jdbcType=INTEGER},
+      vod_hits_week = #{vodHitsWeek,jdbcType=INTEGER},
+      vod_hits_month = #{vodHitsMonth,jdbcType=INTEGER},
+      vod_duration = #{vodDuration,jdbcType=VARCHAR},
+      vod_up = #{vodUp,jdbcType=INTEGER},
+      vod_down = #{vodDown,jdbcType=INTEGER},
+      vod_score = #{vodScore,jdbcType=DECIMAL},
+      vod_score_all = #{vodScoreAll,jdbcType=INTEGER},
+      vod_score_num = #{vodScoreNum,jdbcType=INTEGER},
+      vod_time = #{vodTime,jdbcType=INTEGER},
+      vod_time_add = #{vodTimeAdd,jdbcType=INTEGER},
+      vod_time_hits = #{vodTimeHits,jdbcType=INTEGER},
+      vod_time_make = #{vodTimeMake,jdbcType=INTEGER},
+      vod_trysee = #{vodTrysee,jdbcType=SMALLINT},
+      vod_douban_id = #{vodDoubanId,jdbcType=INTEGER},
+      vod_douban_score = #{vodDoubanScore,jdbcType=DECIMAL},
+      vod_reurl = #{vodReurl,jdbcType=VARCHAR},
+      vod_rel_vod = #{vodRelVod,jdbcType=VARCHAR},
+      vod_rel_art = #{vodRelArt,jdbcType=VARCHAR},
+      vod_play_from = #{vodPlayFrom,jdbcType=VARCHAR},
+      vod_play_server = #{vodPlayServer,jdbcType=VARCHAR},
+      vod_play_note = #{vodPlayNote,jdbcType=VARCHAR},
+      vod_down_from = #{vodDownFrom,jdbcType=VARCHAR},
+      vod_down_server = #{vodDownServer,jdbcType=VARCHAR},
+      vod_down_note = #{vodDownNote,jdbcType=VARCHAR},
+      vod_pwd = #{vodPwd,jdbcType=VARCHAR},
+      vod_pwd_url = #{vodPwdUrl,jdbcType=VARCHAR},
+      vod_pwd_play = #{vodPwdPlay,jdbcType=VARCHAR},
+      vod_pwd_play_url = #{vodPwdPlayUrl,jdbcType=VARCHAR},
+      vod_pwd_down = #{vodPwdDown,jdbcType=VARCHAR},
+      vod_pwd_down_url = #{vodPwdDownUrl,jdbcType=VARCHAR},
+      vod_copyright = #{vodCopyright,jdbcType=BIT},
+      vod_points = #{vodPoints,jdbcType=SMALLINT},
+      vod_content = #{vodContent,jdbcType=LONGVARCHAR},
+      vod_play_url = #{vodPlayUrl,jdbcType=LONGVARCHAR},
+      vod_down_url = #{vodDownUrl,jdbcType=LONGVARCHAR}
+    where vod_id = #{vodId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cofc.pojo.video.VodBean">
+    update mac_vod
+    set type_id = #{typeId,jdbcType=SMALLINT},
+      type_id_1 = #{typeId1,jdbcType=SMALLINT},
+      group_id = #{groupId,jdbcType=SMALLINT},
+      vod_name = #{vodName,jdbcType=VARCHAR},
+      vod_sub = #{vodSub,jdbcType=VARCHAR},
+      vod_en = #{vodEn,jdbcType=VARCHAR},
+      vod_status = #{vodStatus,jdbcType=BIT},
+      vod_letter = #{vodLetter,jdbcType=CHAR},
+      vod_color = #{vodColor,jdbcType=VARCHAR},
+      vod_tag = #{vodTag,jdbcType=VARCHAR},
+      vod_class = #{vodClass,jdbcType=VARCHAR},
+      vod_pic = #{vodPic,jdbcType=VARCHAR},
+      vod_pic_thumb = #{vodPicThumb,jdbcType=VARCHAR},
+      vod_pic_slide = #{vodPicSlide,jdbcType=VARCHAR},
+      vod_actor = #{vodActor,jdbcType=VARCHAR},
+      vod_director = #{vodDirector,jdbcType=VARCHAR},
+      vod_writer = #{vodWriter,jdbcType=VARCHAR},
+      vod_behind = #{vodBehind,jdbcType=VARCHAR},
+      vod_blurb = #{vodBlurb,jdbcType=VARCHAR},
+      vod_remarks = #{vodRemarks,jdbcType=VARCHAR},
+      vod_pubdate = #{vodPubdate,jdbcType=VARCHAR},
+      vod_total = #{vodTotal,jdbcType=INTEGER},
+      vod_serial = #{vodSerial,jdbcType=VARCHAR},
+      vod_tv = #{vodTv,jdbcType=VARCHAR},
+      vod_weekday = #{vodWeekday,jdbcType=VARCHAR},
+      vod_area = #{vodArea,jdbcType=VARCHAR},
+      vod_lang = #{vodLang,jdbcType=VARCHAR},
+      vod_year = #{vodYear,jdbcType=VARCHAR},
+      vod_version = #{vodVersion,jdbcType=VARCHAR},
+      vod_state = #{vodState,jdbcType=VARCHAR},
+      vod_author = #{vodAuthor,jdbcType=VARCHAR},
+      vod_jumpurl = #{vodJumpurl,jdbcType=VARCHAR},
+      vod_tpl = #{vodTpl,jdbcType=VARCHAR},
+      vod_tpl_play = #{vodTplPlay,jdbcType=VARCHAR},
+      vod_tpl_down = #{vodTplDown,jdbcType=VARCHAR},
+      vod_isend = #{vodIsend,jdbcType=BIT},
+      vod_lock = #{vodLock,jdbcType=BIT},
+      vod_level = #{vodLevel,jdbcType=BIT},
+      vod_points_play = #{vodPointsPlay,jdbcType=SMALLINT},
+      vod_points_down = #{vodPointsDown,jdbcType=SMALLINT},
+      vod_hits = #{vodHits,jdbcType=INTEGER},
+      vod_hits_day = #{vodHitsDay,jdbcType=INTEGER},
+      vod_hits_week = #{vodHitsWeek,jdbcType=INTEGER},
+      vod_hits_month = #{vodHitsMonth,jdbcType=INTEGER},
+      vod_duration = #{vodDuration,jdbcType=VARCHAR},
+      vod_up = #{vodUp,jdbcType=INTEGER},
+      vod_down = #{vodDown,jdbcType=INTEGER},
+      vod_score = #{vodScore,jdbcType=DECIMAL},
+      vod_score_all = #{vodScoreAll,jdbcType=INTEGER},
+      vod_score_num = #{vodScoreNum,jdbcType=INTEGER},
+      vod_time = #{vodTime,jdbcType=INTEGER},
+      vod_time_add = #{vodTimeAdd,jdbcType=INTEGER},
+      vod_time_hits = #{vodTimeHits,jdbcType=INTEGER},
+      vod_time_make = #{vodTimeMake,jdbcType=INTEGER},
+      vod_trysee = #{vodTrysee,jdbcType=SMALLINT},
+      vod_douban_id = #{vodDoubanId,jdbcType=INTEGER},
+      vod_douban_score = #{vodDoubanScore,jdbcType=DECIMAL},
+      vod_reurl = #{vodReurl,jdbcType=VARCHAR},
+      vod_rel_vod = #{vodRelVod,jdbcType=VARCHAR},
+      vod_rel_art = #{vodRelArt,jdbcType=VARCHAR},
+      vod_play_from = #{vodPlayFrom,jdbcType=VARCHAR},
+      vod_play_server = #{vodPlayServer,jdbcType=VARCHAR},
+      vod_play_note = #{vodPlayNote,jdbcType=VARCHAR},
+      vod_down_from = #{vodDownFrom,jdbcType=VARCHAR},
+      vod_down_server = #{vodDownServer,jdbcType=VARCHAR},
+      vod_down_note = #{vodDownNote,jdbcType=VARCHAR},
+      vod_pwd = #{vodPwd,jdbcType=VARCHAR},
+      vod_pwd_url = #{vodPwdUrl,jdbcType=VARCHAR},
+      vod_pwd_play = #{vodPwdPlay,jdbcType=VARCHAR},
+      vod_pwd_play_url = #{vodPwdPlayUrl,jdbcType=VARCHAR},
+      vod_pwd_down = #{vodPwdDown,jdbcType=VARCHAR},
+      vod_pwd_down_url = #{vodPwdDownUrl,jdbcType=VARCHAR},
+      vod_copyright = #{vodCopyright,jdbcType=BIT},
+      vod_points = #{vodPoints,jdbcType=SMALLINT}
+    where vod_id = #{vodId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ProjectViewService">
+	<resultMap type="com.cofc.pojo.vij.ProjectView" id="BaseResultMap">
+		<id column="view_id" property="viewId" jdbcType="INTEGER" />
+		<result column="project_id" property="projectId" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="view_type" property="viewType" jdbcType="INTEGER" />
+		<result column="is_deal" property="isDeal" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<insert id="addProjecView" parameterType="com.cofc.pojo.vij.ProjectView" 
+				useGeneratedKeys="true" keyProperty="viewId" >
+	INSERT INTO tv_project_view(project_id,content,view_type,is_deal,create_time)
+	VALUES(#{projectId},#{content},#{viewType},#{isDeal},#{createTime})
+	</insert>
+	<update id="updateProject" parameterType="com.cofc.pojo.vij.ProjectView">
+		UPDATE tv_project_view 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="projectId !=null">
+				project_id = #{projectId},
+			</if>
+			<if test="content != null  and content != ''">
+				content = #{content},
+			</if>
+			<if test="isDeal !=null">
+				is_deal = #{isDeal},
+			</if>
+		</trim>
+		 WHERE view_id = #{viewId}
+	</update>
+	<update id="updateProjectView" parameterType="com.cofc.pojo.vij.ProjectView">
+		UPDATE tv_project_view 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="content != null  and content != ''">
+				content = #{content},
+			</if>
+			<if test="isDeal !=null">
+				is_deal = #{isDeal},
+			</if>
+		</trim>
+		 WHERE project_id = #{projectId}
+		 and view_type = #{viewType}
+	</update>
+	<delete id="delProjectView" parameterType="com.cofc.pojo.vij.ProjectView">
+		DELETE FROM tv_project_view WHERE view_id = #{viewId}
+	</delete>
+	
+	<select id="getProjectViewCount" resultType="int">
+		SELECT count(*) FROM tv_project_view WHERE 1 = 1
+		<if test="view.projectId != null">
+			and project_id = #{view.projectId}
+		</if>
+		<if test="view.viewType != null">
+			and view_type = #{view.viewType}
+		</if>
+		<if test="view.isDeal != null">
+			and is_deal = #{view.isDeal}
+		</if>
+	</select>
+	<select id="getProjectViewList" resultMap="BaseResultMap">
+		select * from tv_project_view WHERE 1 = 1
+		<if test="view.projectId != null">
+			and project_id = #{view.projectId}
+		</if>
+		<if test="view.viewType != null">
+			and view_type = #{view.viewType}
+		</if>
+		<if test="view.isDeal != null">
+			and is_deal = #{view.isDeal}
+		</if>
+		order by create_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	<select id="getProjectViewById" resultMap="BaseResultMap">
+		select * from tv_project_view where project_id = #{projectId} and view_type = #{viewType}
+	</select>
+	</mapper>

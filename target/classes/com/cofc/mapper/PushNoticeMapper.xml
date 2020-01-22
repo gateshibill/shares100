@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.PushNoticeService">
+	<resultMap type="com.cofc.pojo.PushNotice" id="BaseResultMap">
+		<id column="notice_id" property="noticeId" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat"
+			jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="open_id" property="openId" jdbcType="VARCHAR" />
+		<result column="notice_type" property="noticeType" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addNoticeInfo" parameterType="com.cofc.pojo.PushNotice"
+		useGeneratedKeys="true" keyProperty="notice_id">
+		insert into
+		tb_push_notice(login_plat,user_id,open_id,notice_type,create_time)
+		values(#{loginPlat},#{userId},#{openId},#{noticeType},#{createTime})
+	</insert>
+	<update id="updateNoticeInfo" parameterType="com.cofc.pojo.PushNotice">
+		update tb_push_notice
+		<trim prefix="set" suffixOverrides=",">
+			<if test="loginPlat != null">login_plat=#{loginPlat},</if>
+			<if test="userId != null">user_id=#{userId},</if>
+			<if test="openId!=null">open_id=#{openId},</if>
+			<if test="noticeType!=null">notice_type=#{noticeType},</if>
+		</trim>
+		where notice_id = #{noticeId}
+	</update>
+	
+	<select id="getNoticeDetail" resultMap="BaseResultMap">
+	  select * from tb_push_notice where notice_id = #{noticeId}
+	</select>
+	 
+	<delete id="delelteNotice">
+	   delete from tb_push_notice where notice_id = #{noticeId}
+	</delete>
+	
+	<select id="checkUserForNotice" resultType="int">
+	  select count(*) from tb_push_notice where login_plat = #{loginPlat} and notice_type = #{noticeType}
+	  <if test="userId != null">and user_id = #{userId}</if>
+	  <if test="openId != null">and open_id = #{openId}</if>
+	</select>
+	
+	<select id="getNoticeCount" resultType="int">
+	    select count(*) from tb_push_notice where 1=1
+	    <if test="notice.loginPlat != null"> and login_plat = #{notice.loginPlat}</if>
+	    <if test="notice.noticeType != null"> and notice_type = #{notice.noticeType}</if>
+	</select>
+	
+	<select id="getNoticeList" resultMap="BaseResultMap">
+	    select * from tb_push_notice where 1=1
+	    <if test="notice.loginPlat != null"> and login_plat = #{notice.loginPlat}</if>
+	    <if test="notice.noticeType != null"> and notice_type = #{notice.noticeType}</if>
+	    order by create_time desc limit #{page},#{limit}
+	</select>
+	
+	
+	<select id="getNoticeCountByLoginPlat" resultType="int">
+      select count(*) from tb_push_notice where 1=1 
+      <if test="notice.noticeType != null"> and notice_type = #{notice.noticeType}</if>
+       and login_plat in
+       <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+		</foreach>
+     </select>
+	<select id="getNoticeListByLoginPlat" resultMap="BaseResultMap">
+	  select * from tb_push_notice where 1=1 
+      <if test="notice.noticeType!=null">and notice_type=${notice.noticeType}</if>
+       and login_plat in
+       <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+		</foreach>
+      order by create_time desc limit #{page},#{limit}
+	</select>
+	
+	<select id="getSengMessage" resultMap="BaseResultMap">
+	  select * from tb_push_notice where login_plat = #{loginPlat} and notice_type = 2
+	</select>
+	
+</mapper>

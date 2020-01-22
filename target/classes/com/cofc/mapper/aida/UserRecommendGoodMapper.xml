@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.UserRecommendGoodService">
+	<resultMap type="com.cofc.pojo.aida.UserRecommendGood" id="BaseResultMap">
+		<id column="tj_id" property="tjId" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+	    <result column="good_id" property="goodId" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="goods_name" property="goodsName" jdbcType="INTEGER" />
+		<result column="sell_price" property="sellPrice" jdbcType="VARCHAR" />
+		<result column="goods_image" property="goodsImage" jdbcType="VARCHAR" />		
+	</resultMap>
+	 <select id="getRecommendList" resultMap="BaseResultMap">
+	 	select * from tf_user_recommend_good as g left join
+	 	tb_goods_common as c on g.good_id = c.goods_id	
+	 	where c.is_selled=1 and c.goods_status=1 and c.is_pass_sell=1
+	 	<if test="re.userId != null">
+	 		and g.user_id = #{re.userId}
+	 	</if>
+	 	<if test="re.appId != null">
+	 		and g.app_id = #{re.appId}
+	 	</if>
+	 	order by g.create_time desc
+	 	limit #{page},#{limit}
+	 </select>
+</mapper>

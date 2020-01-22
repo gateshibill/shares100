@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.OrderFollowService">
+	<resultMap type="com.cofc.pojo.aida.OrderFollow" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="order_no" property="orderNo" jdbcType="INTEGER" />
+		<result column="sales_person_id" property="salesPersonId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		<result column="nick_name" property="userName" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="note" property="note" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="addOrderFollow" parameterType="com.cofc.pojo.aida.OrderFollow"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tf_order_follow(app_id,order_no,sales_person_id,user_id,content,status,create_time,note)
+		values(#{appId},#{orderNo},#{salesPersonId},#{userId},#{content},#{status},#{createTime},#{note})
+	</insert>
+	
+	<select id="getOrderFollowListBySalesPersonId" resultMap="BaseResultMap">
+		select * from
+		tf_order_follow a left join tb_user_common b on a.user_id=b.user_id
+		where a.sales_person_id = #{salesPersonId} and a.app_id = #{appId}
+		and (#{userId}=0 or a.user_id=#{userId})
+		order by a.create_time desc 
+		 limit
+		#{page},#{pageSize}
+	</select>
+	
+
+</mapper>

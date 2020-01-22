@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ScoreRecordService">
+	<resultMap type="com.cofc.pojo.ScoreRecord" id="BaseResultMap">
+		<id column="record_id" property="recordId" jdbcType="INTEGER" />
+			<result column="score" property="score" jdbcType="INTEGER" />
+			<result column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+			<result column="content" property="content" jdbcType="VARCHAR" />
+			<result column="is_remove" property="isRemove" jdbcType="INTEGER" />
+			<result column="create_time" property="createTime"  jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+
+<insert id="addScoreRecord" parameterType="com.cofc.pojo.ScoreRecord" useGeneratedKeys="true" keyProperty="recordId">
+   insert into TB_SCORE_RECORD (score,user_id,login_plat,content,is_remove,create_time) 
+  values(#{score},#{userId},#{loginPlat},#{content},0,#{createTime})
+</insert>
+
+<select id="getScoreRecordCount" resultType="int">
+	select count(*) from TB_SCORE_RECORD where 1=1
+	<if test="record.userId != null">
+		and user_id = #{record.userId}
+	</if>
+	<if test="record.loginPlat != null">
+		and login_plat = #{record.loginPlat}
+	</if>
+	<if test="record.isRemove != null">
+		and is_remove = #{record.isRemove}
+	</if>
+</select>
+<select id="getScoreRecordList" resultMap="BaseResultMap">
+	select * from TB_SCORE_RECORD where 1=1
+	<if test="record.userId != null">
+		and user_id = #{record.userId}
+	</if>
+	<if test="record.loginPlat != null">
+		and login_plat = #{record.loginPlat}
+	</if>
+	<if test="record.isRemove != null">
+		and is_remove = #{record.isRemove}
+	</if>
+	order by create_time desc
+	<if test="page != null and limit != null">
+		limit #{page},#{limit}
+	</if>
+</select>
+</mapper>

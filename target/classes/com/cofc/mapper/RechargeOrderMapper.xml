@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.RechargeOrderService">
+	<resultMap type="com.cofc.pojo.RechargeOrder" id="BaseResultMap">
+		<id column="recharge_id" property="rechargeId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+	    <result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+	  	<result column="recharge_money" property="rechargeMoney" jdbcType="DOUBLE" />
+	  	<result column="recharge_status" property="rechargeStatus" jdbcType="INTEGER" />
+	  	<result column="remark" property="remark" jdbcType="VARCHAR" />
+	  	<result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+	  	<result column="is_remove" property="isRemove" jdbcType="INTEGER" />
+	  	<result column="recharge_order" property="rechargeOrder" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+		<result column="send_money" property="sendMoney" jdbcType="DOUBLE"/>
+	</resultMap>
+	
+	
+	<insert id="addRechargeOrder" parameterType="com.cofc.pojo.RechargeOrder"
+		useGeneratedKeys="true" keyProperty="rechargeId">
+		insert into
+		TB_RECHARGE_ORDER(user_id,login_plat,recharge_money,recharge_status,remark,user_phone,
+		is_remove,recharge_order,create_time,pay_time,send_money)
+		values(#{userId},#{loginPlat},#{rechargeMoney},#{rechargeStatus},#{remark},#{userPhone},
+		#{isRemove},#{rechargeOrder},#{createTime},#{payTime},#{sendMoney})
+	</insert>
+	<select id="getlistByRechargeId" resultMap="BaseResultMap">
+		select * from TB_RECHARGE_ORDER where is_remove = 0 and recharge_id = #{rechargeId}
+	</select>
+	<select id="wxgetlistByUserId" resultMap="BaseResultMap">
+		select * from TB_RECHARGE_ORDER where is_remove = 0 and recharge_status = 1  and user_id = #{userId} and login_plat = #{loginPlat}
+		order by create_time desc limit #{pageNo},#{pageSize}
+	</select>
+	<update id="updateRechargeOrder" parameterType="com.cofc.pojo.RechargeOrder">
+		update TB_RECHARGE_ORDER
+		<trim prefix="set" suffixOverrides=",">
+			<if test="rechargeMoney!=null and rechargeMoney!=''">recharge_money!==#{rechargeMoney},</if>
+			<if test="rechargeStatus!=null">recharge_status=#{rechargeStatus},</if>
+			<if test="payTime!=null">pay_time=#{payTime},</if>
+			<if test="remark!=null and remark!=''">remark!==#{remark},</if>
+			<if test="userPhone!=null and userPhone!=''">user_phone!==#{userPhone},</if>
+		</trim>
+		where recharge_id = #{rechargeId}
+	</update>
+	<select id="getRechargeCount" resultType="int">
+      select count(*) from TB_RECHARGE_ORDER where is_remove = 0 
+      <if test="order.loginPlat!=null">and login_plat=${order.loginPlat}</if>
+      <if test="order.rechargeStatus!=null">and recharge_status=${order.rechargeStatus}</if>
+     </select>
+	<select id="getAllRechargeList" resultMap="BaseResultMap">
+	  select * from TB_RECHARGE_ORDER where is_remove = 0 
+      <if test="order.loginPlat!=null">and login_plat=${order.loginPlat}</if>
+      <if test="order.rechargeStatus!=null">and recharge_status=${order.rechargeStatus}</if>
+      order by create_time desc limit #{page},#{limit}
+	</select>
+	<select id="getRechargeCountByLoginPlat" resultType="int">
+      select count(*) from TB_RECHARGE_ORDER where is_remove = 0 
+      <if test="order.rechargeStatus!=null">and recharge_status=${order.rechargeStatus}</if>
+      and login_plat in
+       <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+		</foreach>
+     </select>
+	<select id="getAllRechargeListByLoginPlat" resultMap="BaseResultMap">
+	  select * from TB_RECHARGE_ORDER where is_remove = 0 
+      <if test="order.rechargeStatus!=null">and recharge_status=${order.rechargeStatus}</if>
+       and login_plat in
+       <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+		</foreach>
+      order by create_time desc limit #{page},#{limit}
+	</select>
+</mapper>

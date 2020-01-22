@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.ActionRecordService">
+	<resultMap type="com.cofc.pojo.aida.ActionRecord" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="sales_person_id" property="salesPersonId"
+			jdbcType="INTEGER" />
+		<result column="gateway" property="gateway" jdbcType="INTEGER" />
+		<result column="source_id" property="sourceId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+		<result column="object_type" property="objectType" jdbcType="INTEGER" />
+		<result column="object_type_name" property="objectTypeName"
+			jdbcType="VARCHAR" />
+		<result column="object_id" property="objectType" jdbcType="INTEGER" />
+		<result column="object_name" property="objectName" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="times" property="times" jdbcType="INTEGER" />
+		<result column="note" property="note" jdbcType="VARCHAR" />
+
+		<association property="user" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<insert id="addActionRecord" parameterType="com.cofc.pojo.aida.ActionRecord"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tf_action_record(app_id,user_id,sales_person_id,gateway,source_id,type,type_name,object_type,object_type_name,object_id,object_name,title,
+		content,url,create_time,times,note)
+		values(#{appId},#{userId},#{salesPersonId},#{gateway},#{sourceId},#{type},#{typeName},#{objectType},#{objectTypeName},#{objectId},#{objectName},#{title},
+		#{content},#{url},#{createTime},#{times},#{note})
+	</insert>
+
+	<delete id="deleteActionRecord">
+		delete from tf_action_record where id =#{id}
+	</delete>
+
+	<select id="getlistByActionRecordId" resultMap="BaseResultMap">
+		select * from
+		tf_action_record where id = #{id}
+	</select>
+
+	<select id="getActionRecordCount" resultType="int">
+		select count(*)
+		from
+		tf_action_record where app_id =#{appId}
+	</select>
+	<select id="getSinlgeActionRecordCount" resultType="int">
+		select
+		count(*) from
+		tf_action_record
+		where app_id =#{appId} and
+		sales_person_id =#{salesPersonId} and
+		user_id =#{userId}
+		and type
+		=#{type} and object_type =#{objectType}
+		and (object_id=#{objectId} or
+		#{objectId}=0)
+	</select>
+	<select id="getSalesPersonVisitedCount" resultType="int">
+		select
+		count(*) from
+		tf_action_record where app_id =#{appId} and
+		sales_person_id =#{salesPersonId}
+	</select>
+	<select id="getVisitedCount" resultType="int">
+		select
+		count(*) from
+		tf_action_record where app_id =#{appId} and
+		sales_person_id
+		=#{salesPersonId}
+		and (type=#{type} or 0=#{type})
+		and
+		(object_type=#{objectType} or 0=#{objectType})
+	</select>
+	<select id="getVisitedCountEx" resultType="int">
+		select
+		count(*) from
+		tf_action_record where app_id =#{appId} and
+		(sales_person_id=#{salesPersonId} or 0=#{salesPersonId})
+		and
+		(type=#{type} or null=#{type})
+		and
+		(object_type=#{objectType} or
+		null=#{objectType})
+		and create_time &gt;= #{startTime}
+		and create_time
+		&lt;= #{endTime}
+	</select>
+	<select id="getActionRecordList" resultMap="BaseResultMap">
+		select * from
+		tf_action_record where app_id =#{appId} order by create_time desc
+		limit
+		#{pageNo},#{pageSize}
+	</select>
+
+	<select id="getActionRecordCountByTypeAndObjectType" resultType="int">
+		select count(*) from
+		tf_action_record where app_id =#{appId} and
+		(sales_person_id =#{salesPersonId} or 0=#{salesPersonId})
+		and
+		(user_id
+		=#{userId} or
+		0=#{userId})and
+		type=#{type} and object_type
+		=#{objectType}
+	</select>
+	<select id="getActionRecordListByTypeAndObjectType" resultMap="BaseResultMap">
+		select * from
+		tf_action_record where app_id =#{appId} and type =#{type}
+		and
+		object_type =#{objectType} order by create_time desc limit
+		#{pageNo},#{pageSize}
+	</select>
+
+	<select id="getActionRecordListBySalesId" resultMap="BaseResultMap">
+		select *
+		from
+		tf_action_record where app_id =#{appId}
+		order by create_time desc
+		limit
+		#{pageNo},#{pageSize}
+	</select>
+
+	<!-- 销售人员对于一个行为下所有人,用于首页里面查看名片的详细 -->
+	<select id="getActionRecordListBySpAndType" resultMap="BaseResultMap">
+		select *
+		from
+		tf_action_record where app_id =#{appId} and type=#{type} and
+		=#{objectType} and object_id=#{objectId}
+		order by create_time desc
+		limit
+		#{page},#{pageSize}
+	</select>
+	<select id="getCustomerActionRecordList" resultMap="BaseResultMap">
+		select * from
+		tf_action_record where app_id =#{appId} and
+		sales_customer_id=#{salesCustomerId}
+		order by create_time desc limit
+		#{page},#{pageSize}
+	</select>
+</mapper>

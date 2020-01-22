@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.UserFeedBackService">
+	<resultMap type="com.cofc.pojo.UserFeedBack" id="BaseResultMap">
+		<id column="feed_id" property="feedId" jdbcType="INTEGER" />
+		<result column="feed_user" property="feedUser" jdbcType="INTEGER" />
+		<result column="feeder_phone" property="feederPhone" jdbcType="VARCHAR" />
+		<result column="feeder_email" property="feederEmail" jdbcType="VARCHAR" />
+		<result column="feed_detail" property="feedDetail" jdbcType="VARCHAR" />
+		<result column="feed_time" property="feedTime" />
+	</resultMap>
+	<insert id="addNewFeedBack" parameterType="com.cofc.pojo.UserFeedBack">
+		insert into
+		TB_USER_FEED_BACK
+		(feed_user,feeder_phone,feeder_email,feed_detail,feed_time)
+		values(#{feedUser},#{feederPhone},#{feederEmail},#{feedDetail},#{feedTime})
+	</insert>
+</mapper>

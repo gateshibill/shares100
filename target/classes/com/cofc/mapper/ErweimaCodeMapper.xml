@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ErweimaCodeService">
+	<resultMap type="com.cofc.pojo.ErweimaCode" id="BaseResultMap">
+		<id column="code_id" property="codeId" jdbcType="INTEGER" />
+		<result column="desk_id" property="deskId" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="code_path" property="codePath" jdbcType="VARCHAR" />
+		<result column="path" property="path" jdbcType="VARCHAR" />
+		<result column="use_count" property="useCount" jdbcType="INTEGER" />
+		<result column="download_count" property="downloadCount" jdbcType="INTEGER" />
+		<result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />		
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+		
+		
+		<!-- <association property="backRole" javaType="com.cofc.pojo.BackRole">
+		<id column="role_id" property="roleId" jdbcType="INTEGER" />
+		 <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+		</association> -->
+		
+	</resultMap>
+	
+	
+	<insert id="addCode" parameterType="com.cofc.pojo.ErweimaCode"
+	  useGeneratedKeys="true" keyProperty="codeId">
+	   insert into TB_ERWEIMA_CODE (desk_id,login_plat,code_path,path,create_user_id,is_effect,create_time) 
+	          values(#{deskId},#{loginPlat},#{codePath},#{path},#{createUserId},#{isEffect},#{createTime})
+	</insert>
+	
+	<select id="getAllCount" resultType="int">
+		select count(*) from TB_ERWEIMA_CODE where 1 = 1
+		<if test="code.loginPlat != null">and login_plat=#{code.loginPlat}</if>
+		<if test="code.createUserId != null"> and create_user_id = #{code.createUserId} </if>
+	</select>
+	<select id="getAllList" resultMap="BaseResultMap">
+	select * from TB_ERWEIMA_CODE where 1 = 1
+	<if test="code.loginPlat != null">and login_plat=#{code.loginPlat}</if>
+	<if test="code.createUserId != null"> and create_user_id = #{code.createUserId} </if>
+	order by create_time desc limit #{page},#{limit}
+	</select>
+	<select id="getCodeInfo" resultMap="BaseResultMap">
+	  select * from TB_ERWEIMA_CODE  where login_plat = #{loginPlat} and desk_id =#{deskId}
+	</select>
+	<select id="getCodeInfoByCodeId" resultMap="BaseResultMap">
+	  select * from TB_ERWEIMA_CODE where code_id = #{codeId}
+	</select>
+	<update id="updateCode" parameterType="com.cofc.pojo.ErweimaCode"
+	     useGeneratedKeys="true" keyProperty="codeId">
+		update TB_ERWEIMA_CODE
+		<trim prefix="set" suffixOverrides=",">
+			<if test="deskId!=null">desk_id=#{deskId},</if>
+			<if test="loginPlat!=null">login_plat=#{loginPlat},</if>
+			<if test="codePath!=null and codePath!=''">codePath=#{codePath},</if>
+			<if test="path!=null and path!=''">path=#{path},</if>
+			<if test="isEffect!=null">is_effect=#{isEffect},</if>
+		</trim>
+		where code_id = #{codeId}
+	</update>
+    
+    <select id="getAllCountByLoginPlat" resultType="int">
+		select count(*) from TB_ERWEIMA_CODE where 1 = 1
+		<if test="code.createUserId != null"> and create_user_id = #{code.createUserId} </if>
+		and login_plat in
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach>
+	</select>
+	<select id="getAllListByLoginPlat" resultMap="BaseResultMap">
+	select * from TB_ERWEIMA_CODE where 1 = 1
+	<if test="code.createUserId != null"> and create_user_id = #{code.createUserId} </if>
+	and login_plat in
+		<foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach>
+	order by create_time desc limit #{page},#{limit}
+	</select>
+</mapper>

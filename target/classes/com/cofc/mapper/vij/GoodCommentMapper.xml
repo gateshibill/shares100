@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.GoodCommentService">
+	<resultMap type="com.cofc.pojo.vij.GoodComment" id="BaseResultMap">
+		<id column="cid" property="cid" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="good_id" property="goodId" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="level" property="level" jdbcType="INTEGER" />
+		<result column="praise_count" property="praiseCount" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="images" property="images" jdbcType="VARCHAR" />
+		<result column="score" property="score" jdbcType="INTEGER" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+		<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+	</resultMap>
+	<insert id="addComment" parameterType="com.cofc.pojo.vij.GoodComment"
+		useGeneratedKeys="true" keyProperty="cid">
+		insert into
+		tv_good_comment(user_id,good_id,content,parent_id,level,create_time,score,images)
+		values(#{userId},#{goodId},#{content},#{parentId},#{level},#{createTime},#{score},#{images})
+	</insert>
+	<update id="updateComment" parameterType="com.cofc.pojo.vij.GoodComment">
+		update tv_good_comment
+		<trim prefix="set" suffixOverrides=",">
+			<if test="content!=null and content!=''">content = #{content},</if>
+			<if test="images!=null and images!=''">images = #{images},</if>
+			<if test="praiseCount!=null">praise_count = #{praiseCount},</if>
+		</trim>
+		where cid = #{cid}
+	</update>
+	<delete id="delComment" parameterType="com.cofc.pojo.vij.GoodComment">
+		delete from tv_good_comment where cid = #{cid}
+	</delete>
+	<select id="getCommentCount" resultType="int">
+		select count(*) from tv_good_comment as c left join tb_user_common as u on u.user_id = c.user_id where 1=1
+		<if test="comment != null">
+			<if test="comment.userId != null">
+				and c.user_id = #{comment.userId}
+			</if>
+			<if test="comment.goodId != null">
+				and c.good_id = #{comment.goodId}
+			</if>
+			<if test="comment.level != null">
+				and c.level = #{comment.level}
+			</if>
+			<if test="comment.score != null">
+				and c.score = #{comment.score}
+			</if>
+		</if>
+		<if test="status != null">
+			<if test="status == 1">
+				and (c.score = 1 or c.score = 2)
+			</if>
+			<if test="status == 2">
+				and c.score = 3
+			</if>
+			<if test="status == 3">
+				and (c.score = 4 or c.score = 5)
+			</if>
+		</if>
+	</select>
+	<select id="getCommentList" resultMap="BaseResultMap">
+		select * from tv_good_comment as c left join tb_user_common as u on u.user_id = c.user_id where 1=1
+		<if test="comment != null">
+			<if test="comment.userId != null">
+				and c.user_id = #{comment.userId}
+			</if>
+			<if test="comment.goodId != null">
+				and c.good_id = #{comment.goodId}
+			</if>
+			<if test="comment.level != null">
+				and c.level = #{comment.level}
+			</if>
+			<if test="comment.score != null">
+				and c.score = #{comment.score}
+			</if>
+		</if>
+		<if test="status != null">
+			<if test="status == 1">
+				and (c.score = 1 or c.score = 2)
+			</if>
+			<if test="status == 2">
+				and c.score = 3
+			</if>
+			<if test="status == 3">
+				and (c.score = 4 or c.score = 5)
+			</if>
+		</if>
+		order by c.create_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	<select id="getChildList" resultMap="BaseResultMap">
+		select * from tv_good_comment as c left join tb_user_common as u on u.user_id = c.user_id where c.parent_id = #{parentId}
+	</select>
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.CardPraiseService">
+	<resultMap type="com.cofc.pojo.aida.CardPraise" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="card_id" property="cardId" jdbcType="INTEGER" />
+	    <result column="head_image" property="headImage" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="is_praise" property="isPraise" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addPraise" parameterType="com.cofc.pojo.aida.CardPraise"
+	 useGeneratedKeys="true" keyProperty="id">
+	 	insert into tf_card_praise(user_id,card_id,head_image,create_time,is_praise)
+	 	values(#{userId},#{cardId},#{headImage},#{createTime},#{isPraise})
+	 </insert>
+	
+	 <update id="updatePraise" parameterType="com.cofc.pojo.aida.CardPraise">
+	 	update tf_card_praise
+		<trim prefix="set" suffixOverrides=",">
+			<if test="isPraise!=null">is_praise=#{isPraise},</if>
+		</trim>
+		where id = #{id}
+	 </update>
+	 <delete id="delPraise" parameterType="com.cofc.pojo.aida.CardPraise">
+	 	delete from tf_card_praise where id = #{id}
+	 </delete>
+	 <select id="getPraiseList" resultMap="BaseResultMap">
+	 	select * from tf_card_praise where 1=1
+	 	<if test="praise.userId != null">
+	 		and user_id = #{impress.userId}
+	 	</if>
+	 	<if test="praise.cardId != null">
+	 		and card_id = #{praise.cardId}
+	 	</if>
+	 	<if test="praise.isPraise != null">
+	 		and is_praise = #{praise.isPraise}
+	 	</if>
+	 	<if test="page != null and limit != null">
+	 		limit #{page},#{limit}
+	 	</if>
+	 </select>
+	 <select id="getInfoByuserId" resultMap="BaseResultMap">
+	 	select * from tf_card_praise where user_id = #{userId} and card_id = #{cardId}
+	 </select>
+	 <select id="getPraiseCount" resultType="int">
+	 	select count(*) from tf_card_praise where card_id = #{cardId} and is_praise = 1
+	 </select>
+</mapper>

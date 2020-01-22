@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.PositionService">
+	<resultMap type="com.cofc.pojo.aida.Position" id="BaseResultMap">
+		<id column="position_id" property="positionId" jdbcType="INTEGER" />
+		<result column="position_name" property="positionName" jdbcType="VARCHAR" />
+		<result column="money" property="money" jdbcType="VARCHAR" />
+		<result column="experience" property="experience" jdbcType="VARCHAR" />
+		<result column="education" property="education" jdbcType="VARCHAR" />
+		<result column="detail" property="detail" jdbcType="VARCHAR" />
+		<result column="hr_phone" property="hrPhone" jdbcType="VARCHAR" />
+		<result column="company" property="company" jdbcType="VARCHAR" />
+	    <result column="app_id" property="appId" jdbcType="INTEGER" />				
+	    <result column="is_show" property="isShow" jdbcType="INTEGER" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />				
+	</resultMap>
+	<insert id="addPosition" parameterType="com.cofc.pojo.aida.Position"
+	 useGeneratedKeys="true" keyProperty="positionId">
+	 	insert into tf_position(position_name,money,experience,education,detail,hr_phone,company,app_id,is_show,create_time)
+	 	values(#{positionName},#{money},#{experience},#{education},#{detail},#{hrPhone},#{company},#{appId},#{isShow},#{createTime})
+	 </insert>
+	
+	 <update id="updatePosition" parameterType="com.cofc.pojo.aida.Position">
+	 	update tf_position
+		<trim prefix="set" suffixOverrides=",">
+			<if test="positionName!=null and positionName!=''">position_name=#{positionName},</if>
+			<if test="money!=null and money!=''">money=#{money},</if>
+			<if test="experience!=null and experience!=''">experience=#{experience},</if>
+			<if test="education!=null and education!=''">education=#{education},</if>
+			<if test="detail!=null and detail!=''">detail=#{detail},</if>
+			<if test="hrPhone!=null and hrPhone!=''">hr_phone=#{hrPhone},</if>
+			<if test="company!=null and company!=''">company=#{company},</if>
+			<if test="isShow!=null">is_show=#{isShow},</if>
+		</trim>
+		where position_id = #{positionId}
+	 </update>
+	 <delete id="delPosition" parameterType="com.cofc.pojo.aida.Position">
+	 	delete from tf_position where position_id = #{positionId}
+	 </delete>
+	  <select id="getPositionInfo" resultMap="BaseResultMap">
+	 	select * from tf_position where position_id = #{positionId}
+	 </select>
+	 <select id="getPositionCount" resultType="int">
+	 	select count(*) from tf_position where 1=1
+	 	<if test="pos.appId != null">
+	 		and app_id = #{pos.appId}
+	 	</if>
+	 	<if test="pos.positionName != null and pos.positionName!=''">
+	 		and position_name like CONCAT ('%',#{pos.positionName},'%')
+	 	</if>
+	 	<if test="pos.isShow != null">
+	 		and is_show = #{pos.isShow}
+	 	</if>
+	 </select>
+	<select id="getPositionList" resultMap="BaseResultMap">
+	 	select * from tf_position where 1=1
+	 	<if test="pos.appId != null">
+	 		and app_id = #{pos.appId}
+	 	</if>
+	 	<if test="pos.positionName != null and pos.positionName!=''">
+	 		and position_name like CONCAT ('%',#{pos.positionName},'%')
+	 	</if>
+	 	<if test="pos.isShow != null">
+	 		and is_show = #{pos.isShow}
+	 	</if>
+	 		order by create_time desc
+	 	<if test="page!=null and limit!=null">
+	 		limit #{page},#{limit}
+	 	</if>
+	 </select>
+</mapper>

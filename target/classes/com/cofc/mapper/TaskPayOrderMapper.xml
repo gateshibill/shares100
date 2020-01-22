@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.TaskPayOrderService">
+	<resultMap type="com.cofc.pojo.TaskPayOrder" id="BaseResultMap">
+		<id column="order_id" property="orderId" jdbcType="INTEGER" />
+		<result column="compete_id" property="competeId" jdbcType="INTEGER" />
+		<result column="order_fee" property="orderFee" jdbcType="DOUBLE" />
+		<result column="real_fee" property="realFee" jdbcType="DOUBLE" />
+		<result column="order_time" property="orderTime" jdbcType="TIMESTAMP" />
+		<result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+		<result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+		<result column="partner_id" property="partnerId" jdbcType="INTEGER" />
+		<result column="out_trade_number" property="outTradeNumber"
+			jdbcType="VARCHAR" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="small_routine" property="smallRoutine"
+			jdbcType="INTEGER" />
+		<result column="buyer_id" property="buyerId" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="userSeletedCompete" parameterType="com.cofc.pojo.TaskPayOrder"
+		useGeneratedKeys="true" keyProperty="orderId">
+		insert into
+		TB_TASK_PAY_ORDER(compete_id,order_fee,real_fee,order_time,pay_time,pay_status,
+		partner_id,out_trade_number,login_plat,small_routine,buyer_id)
+		values(#{competeId},#{orderFee},#{realFee},#{orderTime},#{payTime},
+		#{payStatus},#{partnerId},#{outTradeNumber},#{loginPlat},#{smallRoutine},#{buyerId});
+	</insert>
+	<select id="cofirmSelectedThisOrder" resultMap="BaseResultMap">
+		select * from
+		TB_TASK_PAY_ORDER where compete_id = #{competeId}
+	</select>
+	<update id="updateTaskOrderInfo" parameterType="com.cofc.pojo.TaskPayOrder">
+		update TB_TASK_PAY_ORDER
+		<trim prefix="set" suffixOverrides=",">
+			<if test="outTradeNumber!=null and outTradeNumber!=''">out_trade_number=#{outTradeNumber},</if>
+			<if test="orderTime!=null">order_time=#{orderTime},</if>
+			<if test="payStatus!=null">pay_status=#{payStatus},</if>
+			<if test="smallRoutine!=null">small_routine=#{smallRoutine},</if>
+		</trim>
+		where order_id = #{orderId}
+	</update>
+	<select id="getOrderById" resultMap="BaseResultMap">
+		select * from
+		TB_TASK_PAY_ORDER where order_id = #{orderId}
+	</select>
+	<select id="getPayCount" resultType="INT">
+	  	select count(*) from TB_TASK_PAY_ORDER where 1=1
+	  	<if test="payorder.payStatus != null and payorder.payStatus !=''">
+	  	 and pay_status = #{payorder.payStatus}
+	  	</if>
+	  	<if test="payorder.loginPlat != null and payorder.loginPlat != ''">
+	  	 and login_plat = #{payorder.loginPlat}
+	  	</if>
+	</select>
+	<select id="getAllTaskPayList" resultMap="BaseResultMap">
+	   select * from TB_TASK_PAY_ORDER where 1=1
+	  	<if test="payorder.payStatus != null and payorder.payStatus !=''">
+	  	 and pay_status = #{payorder.payStatus}
+	  	</if>
+	  	<if test="payorder.loginPlat != null and payorder.loginPlat != ''">
+	  	 and login_plat = #{payorder.loginPlat}
+	  	</if>
+	  	order by order_time desc limit #{page},#{limit}
+	</select>
+	<select id="getCountOfTradeMoney" resultType="String">
+	select sum(real_fee) from TB_TASK_PAY_ORDER where pay_status=1
+		<if test="startTime!=null and startTime!=''">
+			and order_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and order_time &lt;= #{endTime}
+		</if>
+	</select>
+</mapper>

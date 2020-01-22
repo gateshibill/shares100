@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.ShareActivityService">
+  <resultMap type="com.cofc.pojo.ShareActivity" id="activityMap">
+	<id column="activity_id" property="activityId" jdbcType="INTEGER" />
+	<result column="activity_desc" property="activityDesc" jdbcType="VARCHAR" />
+	<result column="publisher_id" property="publisherId" jdbcType="INTEGER" />
+	<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+	<result column="activity_status" property="activityStatus" jdbcType="INTEGER" />
+	<result column="activity_image" property="activityImage" jdbcType="VARCHAR" />
+	<result column="create_time" property="createTime" />
+	<result column="update_time" property="updateTime" />
+	<result column="share_number" property="shareNumber" jdbcType="INTEGER" />
+	<result column="is_public" property="isPublic" jdbcType="INTEGER" />
+	
+	<association property="user" javaType="com.cofc.pojo.UserCommon">
+	       <id column="user_id" property="userId" jdbcType="INTEGER" />
+	       <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+	</association>
+	
+	<!--  -->
+	<association property="application" javaType="com.cofc.pojo.ApplicationCommon">
+	       <id column="application_id" property="applicationId" jdbcType="INTEGER" />
+	       <result column="application_name" property="applicationName" jdbcType="VARCHAR" />
+	</association>
+  </resultMap>
+  
+  <select id="getShareActivityById" resultMap="activityMap">
+     select * from TB_SHARE_ACTIVITY where activity_id=#{activityId}
+  </select>
+  
+  <select id="getShareActivityList" resultMap="activityMap">
+       select * from TB_SHARE_ACTIVITY a 
+         left join TB_USER_COMMON u on a.publisher_id=u.user_id
+         left join TB_APPLICATION_COMMON ac on a.login_plat=ac.application_id
+          where 1=1
+          <if test="userId != null">
+          and a.publisher_id=#{userId}
+         </if>
+         order by a.create_time desc limit #{pageNo},#{pageSize}
+  </select>
+  
+  <select id="getShareActivityCount" resultType="int">
+     select count(*) from TB_SHARE_ACTIVITY where 1=1
+     <if test="userId != null">
+         and publisher_id=#{userId}
+     </if>
+  </select>
+  
+  <insert id="addShareActivity" parameterType="com.cofc.pojo.ShareActivity"
+        useGeneratedKeys="true" keyProperty="activityId">
+     insert TB_SHARE_ACTIVITY (activity_desc,publisher_id,login_plat,activity_status,activity_image,create_time,share_number,is_public) 
+                 values(#{activityDesc},#{publisherId},#{loginPlat},#{activityStatus},#{activityImage},#{createTime},#{shareNumber},#{isPublic})
+  </insert>
+  
+  <update id="updateShareActivity" parameterType="com.cofc.pojo.ShareActivity">
+    update TB_SHARE_ACTIVITY 
+    <trim prefix="set" suffixOverrides=",">
+		     	update_time=#{updateTime},
+			<if test="activityStatus !=null">activity_status=#{activityStatus},</if>
+			<if test="isPublic !=null">is_public=#{isPublic},</if>
+			<if test="shareNumber !=null">share_number=#{shareNumber},</if>
+			<if test="activityDesc !=null and activityDesc !=''">activity_desc=#{activityDesc},</if>
+		</trim>
+		where activity_id=#{activityId}
+  </update>
+  <delete id="deleteShareActivity">
+  delete from TB_SHARE_ACTIVITY where activity_id=#{activityId} 
+  </delete>
+  <select id="getShareActivityName" resultMap="activityMap">
+   select * from TB_SHARE_ACTIVITY where publisher_id=#{publisherId} and activity_desc=#{activityDesc}
+  </select>
+  
+  <select id="getActivityIds" resultMap="activityMap">
+   select * from TB_SHARE_ACTIVITY where activity_id in 
+   <foreach item="item" index="index" collection="ids" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+  </select>
+</mapper>

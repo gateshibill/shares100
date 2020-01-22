@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.GroupUsersService">
+	<resultMap type="com.cofc.pojo.GroupUsers" id="BaseResultMap">
+		<id column="tb_id" property="tbId" jdbcType="INTEGER" />
+		<result column="group_id" property="groupId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="is_creater" property="isCreater" jdbcType="INTEGER" />
+		<result column="join_time" property="joinTime" jdbcType="TIMESTAMP" />
+		<result column="is_examined" property="isExamined" jdbcType="INTEGER" />
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		<result column="user_sex" property="userSex" jdbcType="INTEGER" />
+		<result column="head_card" property="headCard" jdbcType="VARCHAR" />
+		<result column="card_image" property="cardImage" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="e_mail" property="email" jdbcType="VARCHAR" />
+		<result column="wallet_balance" property="walletBalance"
+			jdbcType="DOUBLE" />
+		<result column="compony" property="compony" jdbcType="VARCHAR" />
+		<result column="compony_introduce" property="componyIntroduce"
+			jdbcType="VARCHAR" />
+		<result column="union_id" property="unionId" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="user_level" property="userLevel" jdbcType="INTEGER" />
+		<result column="integral" property="integral" jdbcType="INTEGER" />
+		<result column="is_manager" property="isManager" jdbcType="INTEGER" />
+		<result column="concerned_count" property="concernedCount"
+			jdbcType="INTEGER" />
+		<result column="is_member" property="isMember" jdbcType="INTEGER" />
+		<result column="user_status" property="userStatus" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="access_time" property="accessTime" jdbcType="TIMESTAMP" />
+		<result column="is_renzheng" property="isRenzheng" jdbcType="INTEGER" />
+		<result column="give_voucher" property="giveVoucher" jdbcType="INTEGER" />
+	    <result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="money" property="money" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="comfirmIsJoinThisGroup" resultMap="BaseResultMap">
+		select * from
+		TB_GROUP_USERS where user_id = #{userId} and group_id =#{loginPlat}
+	</select>
+	<insert id="UserJoinGroup" parameterType="com.cofc.pojo.GroupUsers">
+		insert into
+		TB_GROUP_USERS(group_id,user_id,is_creater,join_time)
+		values(#{groupId},#{userId},#{isCreater},#{joinTime})
+	</insert>
+	<select id="groupUsersList"  resultMap="BaseResultMap">
+		select * from
+		TB_GROUP_USERS g left join TB_USER_COMMON u on g.user_id
+		= u.user_id
+		where g.group_id =#{loginPlat}
+		<if test="isExamined!=null">
+			and g.is_examined = #{isExamined}
+		</if>
+		<if test="isRenzheng != null">
+		    and u.is_renzheng = #{isRenzheng}
+		</if>
+		order by g.is_examined desc,u.access_time desc limit
+		#{rowsId},#{pageSize}
+	</select>
+	<select id="getGroupUserCount" resultType="int">
+		select count(*) from
+		TB_GROUP_USERS where group_id = #{loginPlat}
+	</select>
+	<select id="backFindGroupUsersList" resultMap="BaseResultMap">
+		select * from
+		TB_GROUP_USERS g left join TB_USER_COMMON u on g.user_id
+		= u.user_id
+		where g.group_id =#{user.loginPlat}
+		<if test="user.nickName!=null and user.nickName!=''">
+			and (u.nick_name like CONCAT('%',#{user.nickName},'%')
+			or u.real_name like CONCAT('%',#{user.nickName},'%'))
+		</if>
+		<if test="user.userId!=null">
+			and u.user_id = #{user.userId}
+		</if>
+		<if test="user.introducer!=null">
+			and u.introducer = #{user.introducer}
+		</if>
+		<if test="user.isRenzheng!=null">
+			and u.is_renzheng = #{user.isRenzheng}
+		</if>
+		<if test="user.userStatus!=null">
+			and u.user_status = #{user.userStatus}
+		</if>
+		<if test="user.isManager!=null">
+			and g.is_creater = #{user.isManager}
+		</if>
+		<if test="startTime!=null and startTime !=''">
+			and u.create_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and u.create_time &lt;= #{endTime}
+		</if>
+		order by u.access_time desc limit #{rowsId},#{pageSize}
+	</select>
+	<update id="changeUserExaminedStatus" parameterType="com.cofc.pojo.GroupUsers">
+		update TB_GROUP_USERS set is_examined = #{isExamined} where tb_id = #{tbId}
+	</update>
+	
+	<update id="updateGiveVoucher" parameterType="com.cofc.pojo.GroupUsers">
+	  update TB_GROUP_USERS set give_voucher=#{giveVoucher} where user_id=#{userId} and group_id=#{groupId}
+	</update>
+	<update id="updateInfoMes" parameterType="com.cofc.pojo.GroupUsers">
+	  update TB_GROUP_USERS 
+	  <trim prefix="set" suffixOverrides=",">
+	     <if test="address!=null and address!=''">address=#{address},</if>
+	     <if test="money!=null">money=#{money},</if>
+	     <if test="giveVoucher!=null">give_voucher=#{giveVoucher},</if>	
+	  </trim>
+	  where user_id=#{userId} and group_id=#{groupId}
+	</update>
+</mapper>

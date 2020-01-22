@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="gb2312"?>
+					  <Root>
+					  <UDPPort>30030</UDPPort>			<!-- 转发UDP端口 -->
+					   <AutoRunSer>1</AutoRunSer>		<!-- 自动启动服务 -->
+					   <DstIP>127.0.0.1</DstIP>			<!-- 客户端广播的目标地址-->
+					   <SerPort>30033</SerPort>			<!-- 程序作为服务端监听的端口-->
+					  </Root>

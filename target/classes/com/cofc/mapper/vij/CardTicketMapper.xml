@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.CardTicketService">
+	<resultMap type="com.cofc.pojo.vij.CardTicket" id="BaseResultMap">
+		<id column="ticket_id" property="ticketId" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="ticket_name" property="ticketName" jdbcType="VARCHAR" />
+		<result column="ticket_desc" property="ticketDesc" jdbcType="VARCHAR" />
+		<result column="ticket_money" property="ticketMoney" jdbcType="INTEGER" />
+		<result column="ticket_number" property="ticketNumber" jdbcType="INTEGER" />
+		<result column="ticket_type" property="ticketType" jdbcType="INTEGER" />
+		<result column="active_time" property="activeTime" jdbcType="INTEGER" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addCardTicket" parameterType="com.cofc.pojo.vij.CardTicket"
+		useGeneratedKeys="true" keyProperty="ticketId">
+		insert into tv_card_ticket(login_plat,ticket_name,ticket_desc,ticket_money,ticket_number,
+		ticket_type,active_time,is_effect,create_time) 
+		values(#{loginPlat},#{ticketName},#{ticketDesc},#{ticketMoney},#{ticketNumber},#{ticketType},#{activeTime},
+		#{isEffect},#{createTime})
+	</insert>
+	<update id="updateCardTicket" parameterType="com.cofc.pojo.vij.CardTicket">
+		update tv_card_ticket
+		<trim prefix="set" suffixOverrides=",">
+			<if test="ticketName!=null and ticketName!=''">ticket_name = #{ticketName},</if>
+			<if test="ticketDesc!=null and ticketDesc!=''">ticket_desc = #{ticketDesc},</if>
+			<if test="ticketMoney!=null">ticket_money = #{ticketMoney},</if>
+			<if test="ticketNumber!=null">ticket_number = #{ticketNumber},</if>
+			<if test="ticketType!=null">ticket_type = #{ticketType},</if>
+			<if test="activeTime!=null">active_time = #{activeTime},</if>
+			<if test="isEffect!=null">is_effect = #{isEffect},</if>
+		</trim>
+		where ticket_id = #{ticketId}
+	</update>
+    <delete id="delCardTicket" parameterType="com.cofc.pojo.vij.CardTicket">
+    	delete from tv_card_ticket where ticket_id = #{ticketId}
+    </delete>
+	<select id="getInfoById" resultMap="BaseResultMap">
+		select * from tv_card_ticket where ticket_id = #{ticketId}
+	</select>
+	
+	<select id="getCardTicketCount" resultType="int">
+		select count(*) from tv_card_ticket where 1=1
+		<if test="ticket.ticketName != null and ticket.ticketName !=''">
+			and ticket_name like CONCAT('%',#{ticket.ticketName},'%') 
+		</if>
+		<if test="ticket.loginPlat != null">
+			and login_plat = #{ticket.loginPlat}
+		</if>
+		<if test="ticket.ticketType != null">
+			and ticket_type = #{ticket.ticketType}
+		</if>
+		<if test="ticket.isEffect != null">
+			and is_effect = #{ticket.isEffect}
+		</if>
+	</select>
+	<select id="getCardTicketList" resultMap="BaseResultMap">
+		select * from tv_card_ticket where 1=1
+		<if test="ticket.ticketName != null and ticket.ticketName !=''">
+			and ticket_name like CONCAT('%',#{ticket.ticketName},'%') 
+		</if>
+		<if test="ticket.loginPlat != null">
+			and login_plat = #{ticket.loginPlat}
+		</if>
+		<if test="ticket.ticketType != null">
+			and ticket_type = #{ticket.ticketType}
+		</if>
+		<if test="ticket.isEffect != null">
+			and is_effect = #{ticket.isEffect}
+		</if>
+		order by create_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	
+	<!-- 多平台 -->
+	<select id="getCardTicketCountByLoginPlat" resultType="int">
+		select count(*) from tv_card_ticket where 1=1
+		<if test="ticket.ticketName != null and ticket.ticketName !=''">
+			and ticket_name like CONCAT('%',#{ticket.ticketName},'%') 
+		</if>
+		<if test="ticket.ticketType != null">
+			and ticket_type = #{ticket.ticketType}
+		</if>
+		<if test="ticket.isEffect != null">
+			and is_effect = #{ticket.isEffect}
+		</if>
+		<if test="loginPlatList != null">
+			and login_plat in 
+			 <foreach item="item"  index="index" collection="loginPlatList" open="("
+						separator="," close=")">
+						#{item}
+		    </foreach>
+	    </if> 
+	</select>
+	
+	<select id="getCardTicketListByLoginPlat" resultMap="BaseResultMap">
+		select * from tv_card_ticket where 1=1
+		<if test="ticket.ticketName != null and ticket.ticketName !=''">
+			and ticket_name like CONCAT('%',#{ticket.ticketName},'%') 
+		</if>
+		<if test="ticket.ticketType != null">
+			and ticket_type = #{ticket.ticketType}
+		</if>
+		<if test="ticket.isEffect != null">
+			and is_effect = #{ticket.isEffect}
+		</if>
+		<if test="loginPlatList != null">
+			and login_plat in 
+			 <foreach item="item"  index="index" collection="loginPlatList" open="("
+						separator="," close=")">
+						#{item}
+		    </foreach>
+	    </if> 
+	    	order by create_time desc
+	    <if test="page != null and limit != null">
+	    	limit #{page},#{limit}
+	    </if>
+	</select>
+</mapper>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ProjectLogService">
+	<resultMap type="com.cofc.pojo.vij.ProjectLog" id="BaseResultMap">
+		<id column="plog_id" property="plogId" jdbcType="INTEGER" />
+		<result column="project_id" property="projectId" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="detail" property="detail" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addProjectLog" parameterType="com.cofc.pojo.vij.ProjectLog"
+		useGeneratedKeys="true" keyColumn="plogId">
+		INSERT INTO
+		tv_project_log(project_id,status,remark,detail,user_id,create_time,title)
+		VALUES(#{projectId},#{status},#{remark},#{detail},#{userId},#{createTime},#{title})
+	</insert>
+	<update id="updateProjectLog" parameterType="com.cofc.pojo.vij.ProjectLog">
+		update tv_project_log
+		<trim prefix="set" suffixOverrides=",">
+			<if test="projectId !=null">
+				project_id = #{projectId},
+			</if>
+			<if test="status !=null">
+				status = #{status},
+			</if>
+			<if test="title !=null and title !=''">
+				title = #{title},
+			</if>
+			<if test="remark !=null and remark !=''">
+				remark = #{remark},
+			</if>
+			<if test="detail != null and detail !=''">
+				detail = #{detail},
+			</if>
+			<if test="userId !=null">
+				user_id = #{userId},
+			</if>
+		</trim>
+		where plog_id = #{plogId}
+	</update>
+
+	<delete id="delProjectLog" parameterType="com.cofc.pojo.vij.ProjectLog">
+		DELETE FROM tv_project_log where plog_id = #{plogId}
+	</delete>
+
+	<select id="getProjectLogCount" resultType="int">
+		SELECT COUNT(*) FROM tv_project_log where 1=1
+		<if test="log.status != null">
+			and status = #{log.status}
+		</if>
+		<if test="log.projectId != null">
+			and project_id = #{log.projectId}
+		</if>
+	</select>
+
+	<select id="getProjectLogList" resultMap="BaseResultMap">
+		SELECT * FROM tv_project_log where 1 = 1
+		<if test="log.status != null">
+			and status = #{log.status}
+		</if>
+		<if test="log.projectId != null">
+			and project_id = #{log.projectId}
+		</if>
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	<select id="getProjectLogByid" resultMap="BaseResultMap">
+		select * from tv_project_log where project_id = #{projectId}
+	</select>
+</mapper>

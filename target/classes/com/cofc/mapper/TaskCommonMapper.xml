@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.TaskCommonService">
+	<resultMap type="com.cofc.pojo.TaskCommon" id="BaseResultMap">
+		<id column="task_id" property="taskId" jdbcType="INTEGER" />
+		<result column="publisher_id" property="publisherId" jdbcType="INTEGER" />
+		<result column="publish_reason" property="publishReason"
+			jdbcType="VARCHAR" />
+		<result column="task_content" property="taskContent" jdbcType="VARCHAR" />
+		<result column="supply_fee" property="supplyFee" jdbcType="DOUBLE" />
+		<result column="is_anonymous" property="isAnonymous" jdbcType="INTEGER" />
+		<result column="task_start_time" property="taskStartTime"
+			jdbcType="TIMESTAMP" />
+		<result column="task_end_time" property="taskEndTime" jdbcType="TIMESTAMP" />
+		<result column="task_status" property="taskStatus" jdbcType="INTEGER" />
+		<result column="longitude" property="longitude" jdbcType="VARCHAR" />
+		<result column="latitude" property="latitude" jdbcType="VARCHAR" />
+		<result column="lacation_name" property="lacationName"
+			jdbcType="VARCHAR" />
+		<result column="task_images" property="taskImages" jdbcType="VARCHAR" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="satisfied_service" property="satisfiedService"
+			jdbcType="VARCHAR" />
+		<result column="competed_count" property="competedCount"
+			jdbcType="INTEGER" />
+		<association property="usercommon" javaType="com.cofc.pojo.UserCommon">
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<insert id="publishNewTask" parameterType="com.cofc.pojo.TaskCommon"
+		useGeneratedKeys="true" keyProperty="taskId">
+		insert into
+		TB_TASK_COMMON(publisher_id,publish_reason,task_content,supply_fee,is_anonymous,
+		task_start_time,task_end_time,task_status,longitude,latitude,lacation_name,
+		task_images,login_plat,satisfied_service,competed_count)
+		values(#{publisherId},#{publishReason},#{taskContent},#{supplyFee},#{isAnonymous},
+		#{taskStartTime},#{taskEndTime},#{taskStatus},#{longitude},#{latitude},#{lacationName},
+		#{taskImages},#{loginPlat},#{satisfiedService},#{competedCount});
+	</insert>
+	<select id="getTaskCount" resultType="int">
+		select count(*) from
+		TB_TASK_COMMON as c
+	</select>
+	<select id="findTaskByLoginPlat" resultMap="BaseResultMap">
+		select *
+		from TB_TASK_COMMON t left join
+		TB_USER_COMMON u on
+		t.publisher_id =
+		u.user_id where 1 =1
+		<if test="loginPlat!=null">
+			and t.login_plat = #{loginPlat}
+		</if>
+		order by t.task_status,t.task_start_time desc limit
+		#{pageNo},#{pageSize}
+	</select>
+	<select id="getTaskById" resultMap="BaseResultMap">
+		select * from TB_TASK_COMMON
+		t left join
+		TB_USER_COMMON u on
+		t.publisher_id =
+		u.user_id where
+		t.task_id = #{taskId}
+	</select>
+	<select id="getTaskList" resultMap="BaseResultMap">
+		select * from TB_TASK_COMMON
+		as c left join TB_USER_COMMON as u on
+		c.publisher_id = u.user_id where
+		1=1 limit #{page},#{limit}
+	</select>
+	<update id="changeTaskInfo" parameterType="com.cofc.pojo.TaskCommon">
+		update TB_TASK_COMMON
+		<trim prefix="set" suffixOverrides=",">
+			<if test="publishReason!=null and publishReason!=''">publish_reason=#{publishReason},</if>
+			<if test="taskContent!=null and taskContent!=''">task_content=#{taskContent},</if>
+			<if test="supplyFee!=null">supply_fee=#{supplyFee},</if>
+			<if test="taskStatus!=null">task_status=#{taskStatus},</if>
+			<if test="longitude!=null and longitude!=''">longitude=#{longitude},</if>
+			<if test="latitude!=null and latitude!=''">latitude=#{latitude},</if>
+			<if test="lacationName!=null and lacationName!=''">lacation_name=#{lacationName},</if>
+			<if test="taskImages!=null and taskImages!=''">task_images=#{taskImages},</if>
+			<if test="satisfiedService!=null and satisfiedService!=''">satisfied_service=#{satisfiedService},</if>
+			<if test="competedCount!=null">competed_count=#{competedCount},</if>
+		</trim>
+		where task_id = #{taskId}
+	</update>
+	<select id="findMyPublishedTasks" resultMap="BaseResultMap">
+		select * from TB_TASK_COMMON t left join TB_USER_COMMON u on
+		t.publisher_id = u.user_id where 1 = 1
+		<if test="loginPlat!=null">
+			and t.login_plat = #{loginPlat}
+		</if>
+		<if test="userId!=null">
+			and t.publisher_id = #{userId}
+		</if>
+		<if test="taskStatus!=null">
+			and t.task_status = #{taskStatus}
+		</if>
+		order by t.task_status,t.task_start_time desc limit
+		#{pageNo},#{pageSize}
+	</select>
+	<select id="findMyCompetedTasks" resultMap="BaseResultMap">
+		select * from
+		TB_TASK_COMPETE tp left join TB_TASK_COMMON tc on
+		tp.compete_task =
+		tc.task_id left join TB_USER_COMMON u on tc.publisher_id = u.user_id where 1 = 1
+		<if test="loginPlat!=null">
+			and tc.login_plat = #{loginPlat}
+		</if>
+		<if test="userId!=null">
+			and tp.competitor_user = #{userId}
+		</if>
+		<if test="competeStatus!=null">
+			and tp.compete_status = #{competeStatus}
+		</if>
+		order by tc.task_end_time desc limit
+		#{pageNo},#{pageSize}
+	</select>
+	<select id="getTaskIds" resultMap="BaseResultMap">
+	   select * from tb_task_common where task_id in
+	<foreach item="item" index="index" collection="ids" open="("
+			separator="," close=")">
+			#{item}
+	</foreach>
+	</select>
+	
+	<select id="deleteTask">
+	  delete from tb_task_common where task_id=#{taskId}
+	</select>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.GroupTypesService">
+	<resultMap type="com.cofc.pojo.GroupTypes" id="BaseResultMap">
+		<id column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser"
+			jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="is_using" property="isUsing" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="default_picture" property="defaultPicture" jdbcType="VARCHAR" />
+		<result column="type_type" property="typeType" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="findGroupTypesByplat" resultMap="BaseResultMap">
+		select * from TB_GROUP_TYPES where 1 = 1
+		<if test="loginPlat">
+			and login_plat = #{loginPlat}
+		</if>
+		<if test="isUsing!=null">
+			and is_using = #{isUsing}
+		</if>
+		<if test="typeType!=null">
+			and type_type = #{typeType}
+		</if>
+		<if test="rowsId !=null and pageSize != null">
+			limit #{rowsId},#{pageSize}
+		</if>
+	</select>
+	<select id="getGroupBygroupId" resultMap="BaseResultMap">
+		select * from TB_GROUP_TYPES where type_id = #{groupType}
+	</select>
+	<select id="findTagCommonList" resultMap="BaseResultMap">
+	select * from TB_GROUP_TYPES where type_type=2
+	and type_id in
+	<foreach item="item" index="index" collection="ids" open="("
+		separator="," close=")">
+		#{item}
+	</foreach>
+</select>
+</mapper>

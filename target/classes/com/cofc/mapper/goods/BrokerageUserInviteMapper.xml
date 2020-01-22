@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.goods.BrokerageUserInviteService">
+	<resultMap type="com.cofc.pojo.goods.BrokerageUserInvite" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="invite_user_id" property="inviteUserId" jdbcType="INTEGER" />
+		<result column="period" property="period" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="last_time" property="lastTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addBrokerageGoods" parameterType="com.cofc.pojo.goods.BrokerageUserInvite"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tg_brokerage_user_invite(app_id,goods_id,user_id,invite_user_id,period,create_time,last_time)
+		values(#{appId},#{goodsId},#{userId},#{inviteUserId},#{period},#{createTime},#{lastTime})
+	</insert>
+	<update id="updateBrokerageGoods" parameterType="com.cofc.pojo.goods.BrokerageUserInvite">
+		update tg_brokerage_user_invite
+		<trim prefix="set" suffixOverrides=",">
+			<if test="period!=null">period=#{period},</if>	
+			<if test="lastTime!=null">last_time=#{lastTime},</if>
+		</trim>
+		where id = #{id}
+	</update>
+
+	<delete id="deleteBrokerageGoods" parameterType="com.cofc.pojo.goods.BrokerageUserInvite">
+		delete from tg_brokerage_user_invite where id =#{id}
+	</delete>
+
+	<select id="getBrokerageGoods" resultMap="BaseResultMap">
+		select * from tg_brokerage_user_invite
+		where app_id=#{appId} and
+		goods_id =#{goodsId}  and
+		user_id =#{userId} and
+		invite_user_id =#{inviteUserId}
+	</select>
+</mapper>

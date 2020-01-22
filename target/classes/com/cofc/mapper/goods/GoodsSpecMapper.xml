@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.goods.GoodsSpecService">
+	<resultMap type="com.cofc.pojo.goods.GoodsSpec" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="price" property="price" jdbcType="DOUBLE" />
+		<result column="type1" property="type1" jdbcType="VARCHAR" />
+		<result column="type2" property="type2" jdbcType="VARCHAR" />
+		<result column="type3" property="type3" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addGoodsSpec" parameterType="com.cofc.pojo.goods.GoodsSpec"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tg_goods_spec(app_id,goods_id,price,type1,type2,type3,create_time)
+		values(#{appId},#{goodsId},#{price},#{type1},#{type2},#{type3},#{createTime})
+	</insert>
+	<update id="updateGoodsSpec" parameterType="com.cofc.pojo.goods.GoodsSpec">
+		update tg_goods_spec
+		<trim prefix="set" suffixOverrides=",">
+			<if test="price!=null ">price=#{price},</if>
+			<if test="type1!=null and type1 != ''">type1=#{type1},</if>
+			<if test="type2!=null and type2 != ''">type2=#{type2},</if>
+			<if test="type3!=null and type3 != ''">type3=#{type3},</if>
+			<if test="createTime!=null">create_time=#{createTime},</if>
+		</trim>
+		where id = #{id}
+	</update>
+
+	<delete id="deleteGoodsSpec" parameterType="com.cofc.pojo.goods.GoodsSpec">
+		delete from tg_goods_spec where id =#{id}
+	</delete>
+
+	<select id="getGoodsSpec" resultMap="BaseResultMap">
+		select * from tg_goods_spec
+		where 1=1
+		<if test="appId != null">and app_id=#{appId}</if>
+		<if test="goodsId != null">and goods_id =#{goodsId}</if>
+	</select>
+	<select id="getGoodsSpecById" resultMap="BaseResultMap">
+		select * from tg_goods_spec where id = #{id}
+	</select>
+</mapper>

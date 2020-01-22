@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.WorkWeixinService">
+	<resultMap type="com.cofc.pojo.aida.WorkWeixin" id="BaseResultMap">
+	    <id column="id" property="id" jdbcType="INTEGER" />
+		<id column="work_id" property="workId" jdbcType="INTEGER" />
+		<result column="work_name" property="workName" jdbcType="VARCHAR" />
+		<result column="qy_id" property="qyId" jdbcType="VARCHAR" />
+		<result column="app_name" property="appName" jdbcType="VARCHAR" />		
+		<result column="agent_id" property="agentId" jdbcType="VARCHAR" />		
+		<result column="app_secret" property="appSecret" jdbcType="VARCHAR" />		
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />		
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+		<result column="xcx_app_id" property="xcxAppId" jdbcType="INTEGER" />								
+	</resultMap>
+	 <select id="getInfoById" resultMap="BaseResultMap">
+	 	 select * from tf_work_weixin where id = #{id}
+	 </select>
+	 <select id="getInfoByWorkId" resultMap="BaseResultMap">
+	 	select * from tf_work_weixin where work_id = #{workId} and xcx_app_id = #{appId}
+	 </select>
+	 <insert id="addWorkWeixin" parameterType="com.cofc.pojo.aida.WorkWeixin"
+	 useGeneratedKeys="true" keyProperty="id">
+	 	insert into tf_work_weixin(work_id,work_name,qy_id,app_name,agent_id,app_secret,create_time,is_effect,xcx_app_id)
+	 	values(#{workId},#{workName},#{qyId},#{appName},#{agentId},#{appSecret},#{createTime},#{isEffect},#{xcxAppId})
+	 </insert>
+	 <update id="updateWorkWeixin" parameterType="com.cofc.pojo.aida.WorkWeixin">
+	 	update tf_work_weixin
+		<trim prefix="set" suffixOverrides=",">
+			<if test="workId!=null">work_id=#{workId},</if>
+			<if test="workName!=null and workName!=''">work_name=#{workName},</if>
+			<if test="qyId!=null and qyId!=''">qy_id=#{qyId},</if>
+			<if test="appName!=null and appName!=''">app_name=#{appName},</if>
+			<if test="agentId!=null and agentId!=''">agent_id=#{agentId},</if>
+			<if test="appSecret!=null and appSecret!=''">app_secret=#{appSecret},</if>
+			<if test="isEffect!=null">is_effect=#{isEffect},</if>
+			<if test="xcxAppId!=null">xcx_app_id=#{xcxAppId},</if>
+		</trim>
+		where id = #{id}
+	 </update>
+	 <delete id="delWork" parameterType="com.cofc.pojo.aida.WorkWeixin">
+	 	delete from tf_work_weixin where id = #{id}
+	 </delete>
+	 <select id="getWorkCount" resultType="int">
+	    select count(*) from tf_work_weixin where 1=1
+	    <if test="work.workName != null and work.workName != ''">
+	   		and work_name like CONCAT ('%',#{work.workName},'%')
+	    </if>
+	    <if test="work.qyId != null and work.qyId != ''">and qy_id = #{work.qyId}</if>
+	    <if test="work.appName != null and work.appName != ''">
+	    	and app_name like CONCAT ('%',#{work.appName},'%')
+	    </if>
+	    <if test="work.agentId != null and work.agentId != ''">and agent_id = #{work.agentId}</if>
+	    <if test="work.isEffect != null">and is_effect = #{work.isEffect}</if>
+	    <if test="work.xcxAppId != null">and xcx_app_id = #{work.xcxAppId}</if>
+	 </select>
+	 <select id="getWorkList" resultMap="BaseResultMap">
+	 	select * from tf_work_weixin where 1=1
+	    <if test="work.workName != null and work.workName != ''">
+	   		and work_name like CONCAT ('%',#{work.workName},'%')
+	    </if>
+	    <if test="work.qyId != null and work.qyId != ''">and qy_id = #{work.qyId}</if>
+	    <if test="work.appName != null and work.appName != ''">
+	    	and app_name like CONCAT ('%',#{work.appName},'%')
+	    </if>
+	    <if test="work.agentId != null and work.agentId != ''">and agent_id = #{work.agentId}</if>
+	    <if test="work.isEffect != null">and is_effect = #{work.isEffect}</if>
+	    <if test="work.xcxAppId != null">and xcx_app_id = #{work.xcxAppId}</if>
+	    order by create_time desc
+	    <if test="page != null and limit != null">
+	    	limit #{page},#{limit}
+	    </if>
+	 </select>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.GoodShareCodeService">
+	<resultMap type="com.cofc.pojo.GoodShareCode" id="BaseResultMap">
+		<id column="code_id" property="codeId" jdbcType="INTEGER" />
+		<result column="good_id" property="goodId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="saler_id" property="salerId" jdbcType="INTEGER" />
+		<result column="good_code_url" property="goodCodeUrl" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addGoodCode" parameterType="com.cofc.pojo.GoodShareCode"
+		useGeneratedKeys="true" keyProperty="codeId">
+		insert into
+		tb_good_share_code(good_id,user_id,app_id,good_code_url,create_time,saler_id)
+		values(#{goodId},#{userId},#{appId},#{goodCodeUrl},#{createTime},#{salerId})
+	</insert>
+	
+	<select id="getGoodCode" resultMap="BaseResultMap">
+		SELECT * from tb_good_share_code where 1=1
+		<if test="appId != null"> and app_id = #{appId}</if>
+		<if test="userId != null"> and user_id = #{userId}</if>
+		<if test="goodId != null"> and good_id = #{goodId}</if>
+	</select>
+	
+</mapper>

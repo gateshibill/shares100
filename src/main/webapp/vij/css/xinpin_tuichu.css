@@ -1,0 +1,265 @@
+/*样式初始化*/
+*{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+ul,ol,li{
+	list-style: none;
+}
+body{
+	font-size: 0.8rem;
+	font-family: '微软雅黑';
+	letter-spacing: 0.01rem;
+}
+a{
+	text-decoration: none;
+}
+.page{
+	width: 100%;
+}
+
+
+/*navigation begin */
+.navigation{
+	width: 100%;
+	height: 6rem;
+}
+.navigation-center{
+	width: 70rem;
+	height: 6rem;
+	margin: 0 auto;
+}
+.navigation-center-le{
+	width: 26rem;
+	height: 6rem;
+	float: left;
+}
+.navigation-center-logo{
+	width: 26rem;
+	height: 3.7rem;
+	margin-top: 1.2rem;
+}
+.navigation-center-logo img{
+	width: 26rem;
+	height: 3.7rem;
+}
+.navigation-center-ri{
+	width: 44rem;
+	height: 6rem;
+	float: right;
+}
+.navigation-center-ri-na{
+	width: 25.75rem;
+	height: 6rem;
+	float: left;
+}
+.navigation-center-ri-na ul{
+	width: 22.75rem;
+	height: 1.25rem;
+	margin-top: 2.37rem;
+	margin-left: 5rem;
+}
+.navigation-center-ri-na ul li{
+	width: 4rem;
+	height: 1.25rem;
+	font-size: 1.25rem;
+	float: left;
+}
+.navigation-center-ri-na ul li a{
+	color: #787878;
+}
+
+.navigation-center-ri-so{
+	width: 18.25rem;
+	height: 6rem;
+	float: right;
+}
+.navigation-center-ri-sousuo {
+	width: 17.85rem;
+	height: 3rem;
+	margin-top: 1.3rem;
+	border: 0.2rem solid #e4e4e4;
+}
+.navigation-center-ri-sousuo input{
+	width: 14.65rem;
+	height: 3rem;
+	background-color: #fff;
+	float: left;
+	border-right:0.2rem solid #e4e4e4;
+	color: #333;
+	font-size: 1.5rem; 
+}
+.navigation-center-ri-sousuo button{
+	width: 3rem;
+	height: 3rem;
+	background-color: #fff;
+	cursor: pointer;
+}
+.navigation-center-ri-sousuo button img{
+	width: 1rem;
+	height: 1rem;
+	margin-top: 0.4rem;
+	margin-left: 0.4rem;
+}
+/*navigation end */
+
+/*mulu begin*/
+.mulu{
+	width: 100%;
+	height: 2.5rem;
+}
+.mulu-center{
+	width: 70rem;
+	height: 2.5rem;
+	margin: 0 auto;
+	position: relative;
+}
+.mulu-center-p{
+	width: auto;
+	height: 1rem;
+	margin: 0 auto;
+	position: absolute;
+	top: 0.75rem;
+	left: 0rem;
+	color: #7c7c7c;
+	font-size: 1rem;
+	line-height: 1rem;
+}
+.mulu-center-p a{
+	color: #7c7c7c;
+}
+/*mulu end*/
+
+/*jiancai begin*/
+.jiancai{
+	width: 100%;
+	background-color: #eeeded;
+}
+.jiancai-center{
+	width: 70rem;
+	height: auto;
+	margin: 0 auto;
+}
+.jiancai-center-title{
+	width: 70rem;
+	height: 3.25rem;
+	position: relative;
+}
+.jiancai-center-title-t{
+	width: 70rem;
+	height: 1.5rem;
+	position: absolute;
+	top: 1.7rem;
+	left: 0rem;
+}
+.jiancai-center-title-t img{
+	width: 1.5rem;
+	height: 1.5rem;
+	float: left;
+}
+.jiancai-center-title-t p{
+	width: 40rem;
+	height: 1.5rem;
+	float: left;
+	margin-left: 1.5rem;
+	color: #5c5c5c;
+	font-size: 1.25rem;
+	line-height: 1.5rem;
+}
+
+.jiancai-center-type{
+	width: 70rem;
+	height: 1.75rem;
+	position: relative;
+}
+.jiancai-center-type ul{
+	width: 70rem;
+	height: 1rem;
+	position: absolute;
+	top: 0rem;
+	right: -1rem;
+}
+.jiancai-center-type ul li{
+	width: auto;
+	height: 1rem;
+	float: right;
+	margin-right: 1rem;
+}
+.jiancai-center-type ul li a{
+	color:#5c5c5c; 
+}
+.jiancai-center-goods{
+	width: 70rem;
+	height: auto;
+}
+.jiancai-center-goods-ul{
+	width: 71rem;
+	height: auto;
+	margin-top: -0.7rem;
+	margin-left: -0.7rem;
+}
+.jiancai-center-goods-ul li{
+	width: 13.4rem;
+	height: 18rem;
+	background-color: #fff;
+	float: left;
+	margin-left: 0.7rem;
+	margin-top: 0.7rem;
+}
+.jiancai-center-goods-ul-image{
+	width: 13.4rem;
+	height: 13.4rem;
+	background-color: #999;
+}
+.jiancai-center-goods-ul-image img{
+	width: 13.4rem;
+	height: 13.4rem;
+}
+.jiancai-center-goods-ul-p1{
+	width: 13.4rem;
+    height: 1.6rem;
+    margin-top: 0.8rem;
+    color: #5c5c5c;
+    font-size: 0.8rem;
+    line-height: 0.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.jiancai-center-goods-ul-p1 a{
+	color:#5c5c5c; 
+}
+.jiancai-center-goods-ul-p2{
+	width: 13.4rem;
+	height: 0.9rem;
+	margin-top: 0.8rem;
+	color:red; 
+	font-size: 0.8rem;
+	line-height: 0.8rem;
+}
+/*jiancai end*/
+
+/*jiancai-banner begin*/
+.jiancai-banner{
+	width: 100%;
+	height: 10rem;
+	background-color: #eeeded;
+}
+.jiancai-banner-center{
+	width: 70rem;
+	height: 10rem;
+	margin: 0 auto;
+	position: relative;
+}
+.jiancai-banner-center-image{
+	width: 70rem;
+	height: 7.5rem;
+	background-color: #91c6de;
+	position: absolute;
+	top: 2.5rem;
+	left: 0rem;
+}
+/*jiancai-banner end*/

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ProjectCheckItemService"> 
+	<resultMap type="com.cofc.pojo.vij.ProjectCheckItem" id="BaseResultMap">
+		<id column="item_id" property="itemId" jdbcType="INTEGER"/>
+		<result column="check_id" property="checkId" jdbcType="INTEGER"/>
+		<result column="item_name" property="itemName" jdbcType="VARCHAR"/>
+		<result column="item_status" property="itemStatus" jdbcType="INTEGER"/>
+		<result column="item_detail" property="itemDetail" jdbcType="VARCHAR"/>
+		<result column="check_name" property="checkName" jdbcType="VARCHAR"/>
+		<result column="is_deal" property="isDeal" jdbcType="INTEGER"/>
+	</resultMap>
+	<!-- 添加方法 -->
+		<insert id="addProjectCheckItem" parameterType="com.cofc.pojo.vij.ProjectCheckItem" 
+		useGeneratedKeys="true" keyProperty="checkId">
+			INSERT INTO tv_project_check_item(check_id,item_name,item_status,item_detail,is_deal)
+			VALUES(#{checkId},#{itemName},#{itemStatus},#{itemDetail},#{isDeal})
+		</insert>
+		<!-- 修改方法 -->
+		<update id="updateProjectCheckItem" parameterType="com.cofc.pojo.vij.ProjectCheckItem">
+			UPDATE tv_project_check_item
+			<trim prefix="set" suffixOverrides=",">
+			<if test="checkId !=null">
+			  check_id = #{checkId},
+			</if>
+			<if test="itemName !=null and itemName !=''">
+			  item_name = #{itemName},
+			</if>
+			<if test="itemStatus !=null">
+			  item_status = #{itemStatus},
+			</if>
+			<if test="itemDetail !=null and itemDetail !=''">
+			   item_detail=#{itemDetail}, 
+			</if>
+			 <if test="isDeal !=null">
+			   is_deal=#{isDeal}, 
+			</if>
+			</trim>
+			WHERE item_id =#{itemId}
+		</update>
+		<!-- 删除方法 -->
+		<delete id="deleteProjectCheckItem" parameterType="com.cofc.pojo.vij.ProjectCheckItem">
+		DELETE from tv_project_check_item WHERE item_id =#{itemId}
+		</delete>
+		<!-- 详情 -->
+		<select id="getInfoById" resultMap="BaseResultMap">
+		SELECT * from tv_project_check_item where item_id =#{itemId}
+		</select>
+		<!-- 总数 -->
+		<select id="getProjectCheckItemCount" resultType="int">
+			SELECT count(*) from tv_project_check_item where 1=1
+			<if test="pCheckItem.checkId !=null">
+			 and check_id = #{pCheckItem.checkId}
+			</if>
+			<if test="pCheckItem.itemName !=null and pCheckItem.itemName !=''">
+			 and item_name = #{pCheckItem.itemName}
+			</if>
+			<if test="pCheckItem.itemStatus !=null">
+			 and item_status = #{pCheckItem.itemStatus}
+			</if>
+			<if test="pCheckItem.itemDetail !=null and pCheckItem.itemDetail !=''">
+			  and item_detail=#{pCheckItem.itemDetail} 
+			</if>
+		</select>
+		<!-- 查询 -->
+		<select id="getProjectCheckItemList" resultMap="BaseResultMap">
+			SELECT * FROM tv_project_check_item where 1=1
+			<if test="pCheckItem.checkId !=null">
+			 	and check_id = #{pCheckItem.checkId}
+			</if>
+			<if test="pCheckItem.itemName !=null and pCheckItem.itemName !=''">
+				 and item_name like CONCAT('%',#{pCheckItem.itemName},'%')
+			</if>
+			<if test="pCheckItem.itemStatus !=null">
+				 and item_status = #{pCheckItem.itemStatus}
+			</if>
+			<if test="pCheckItem.itemDetail !=null and pCheckItem.itemDetail !=''">
+				 and item_detail = #{pCheckItem.itemDetail} 
+			</if>
+			<if test="page != null and limit != null">
+				 limit #{page},#{limit}
+			</if>
+		</select>
+		<select id="checkisAll" resultType="int">
+			select count(*) from tv_project_check_item where 1=1
+			<if test="checkId != null">
+				and check_id = #{checkId}
+			</if>
+			<if test="itemStatus != null">
+				and item_status = #{itemStatus}
+			</if>
+		</select>
+	</mapper>

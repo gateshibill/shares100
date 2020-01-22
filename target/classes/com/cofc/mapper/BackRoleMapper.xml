@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.BackRoleService">
+	<resultMap type="com.cofc.pojo.BackRole" id="BackRoleMap">
+		<id column="role_id" property="roleId" jdbcType="INTEGER" />
+			<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+			<result column="role_permission" property="rolePermission" jdbcType="VARCHAR" />
+			<result column="create_time" property="createTime" />
+			<result column="create_user" property="createUser" jdbcType="INTEGER" />
+	</resultMap>
+	<!-- 根据当前登录用户拿到对应的角色 -->
+	<select id="getBackRoleRoleIds" resultMap="BackRoleMap">
+		select * from TB_BACK_ROLE where role_id in
+		<foreach item="item" index="index" collection="ids" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="getRoleMenuIds" resultMap="BackRoleMap">
+	select * from TB_BACK_ROLE where role_id =#{roleId}
+	</select>
+	<select id="getRoleStringById" resultMap="BackRoleMap">
+	select * from TB_BACK_ROLE where role_id =#{roleId}
+	</select>
+	<select id="findBackRoleList" resultMap="BackRoleMap">
+	select * from TB_BACK_ROLE where 1=1
+</select>
+
+<select id="showBackRoleList" resultMap="BackRoleMap">
+	select * from TB_BACK_ROLE where 1=1
+	<if test="roleId != null">
+		and role_id=#{roleId}
+	</if>
+	<if test="roleName != null">
+		and role_name like CONCAT('%',#{roleName},'%')
+	</if>
+	order by role_id desc
+	<if test="page != null and limit != null">
+	  limit #{page},#{limit}
+	</if>
+</select>
+<select id="getBackRoleCount" resultType="int">
+	select count(*) from TB_BACK_ROLE where 1=1
+	<if test="roleId != null">
+		and role_id=#{roleId}
+	</if>
+	<if test="roleName != null">
+		and role_name like CONCAT('%',#{roleName},'%')
+	</if>
+</select>
+<select id="getBackRoleName" resultMap="BackRoleMap">
+select * from TB_BACK_ROLE where role_name=#{roleName}
+</select>
+<update id="updateBackRole" parameterType="com.cofc.pojo.BackRole">
+   update TB_BACK_ROLE set role_name=#{roleName},role_permission=#{rolePermission}
+             where role_id=#{roleId}
+</update>
+
+<delete id="deleteRoleId">
+delete from TB_BACK_ROLE where role_id=#{roleId} 
+</delete>
+<insert id="addBackRole" parameterType="com.cofc.pojo.BackRole">
+   insert into TB_BACK_ROLE (role_name,role_permission,create_time,create_user) 
+                    values(#{roleName},#{rolePermission},#{createTime},#{createUser})
+</insert>
+</mapper>

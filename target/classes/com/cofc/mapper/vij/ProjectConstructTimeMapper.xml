@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ProjectConstructTimeService">
+	<resultMap type="com.cofc.pojo.vij.ProjectConstructTime" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="project_id" property="projectId" jdbcType="INTEGER" />
+		<result column="construct_start_time" property="constructStartTime" jdbcType="INTEGER" />
+		<result column="construct_end_time" property="constructEndTime" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addConstructTime" parameterType="com.cofc.pojo.vij.ProjectConstructTime"
+		useGeneratedKeys="true" keyProperty="id">
+		 INSERT INTO tv_project_construct_time(project_id,construct_start_time,construct_end_time) 
+ 		 	VALUES(#{projectId},#{constructStartTime},#{constructEndTime})
+	</insert>
+	<update id="updateConstuctTime" parameterType="com.cofc.pojo.vij.Adviser">
+		update tv_project_construct_time
+		<trim prefix="set" suffixOverrides=",">
+			<if test="constructStartTime!=null">construct_start_time = #{constructStartTime},</if>
+			<if test="constructEndTime!=null">construct_end_time = #{constructEndTime},</if>			
+		</trim>
+		where id = #{id}
+	</update>
+	
+	<select id="getInfoByProjectId" resultMap="BaseResultMap">
+		select * from tv_project_construct_time where project_id = #{projectId}
+	</select>
+	
+</mapper>

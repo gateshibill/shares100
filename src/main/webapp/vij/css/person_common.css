@@ -1,0 +1,107 @@
+/*鏍峰紡鍒濆鍖�*/
+*{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+ul,ol,li{
+	list-style: none;
+}
+body{
+	font-size: 0.8rem;
+	font-family: '寰蒋闆呴粦';
+	letter-spacing: 0.01rem;
+}
+.page{
+	width: 100%;
+}
+
+/*navigation begin */
+.navigation {
+	width: 100%;
+	height: 6rem;
+}
+.navigation-center {
+	width: 70rem;
+	height: 6rem;
+	margin: 0 auto;
+}
+.navigation-center-le {
+	float: left;
+	width: 26rem;
+	height: 6rem;
+}
+.navigation-center-logo {
+	width: 26rem;
+	height: 3.7rem;
+	margin-top: 1.2rem;
+}
+.navigation-center-logo img {
+	width: 26rem;
+	height: 3.7rem;
+}
+.navigation-center-ri {
+	float: right;
+	width: 44rem;
+	height: 6rem;
+}
+.navigation-center-ri-na {
+	float: left;
+	width: 25.75rem;
+	height: 6rem;
+}
+.navigation-center-ri-na ul {
+	width: 25.75rem;
+	height: 1.25rem;
+	margin-top: 2.37rem;
+	margin-left: 2rem;
+}
+.navigation-center-ri-na ul li {
+	font-size: 1.25rem;
+	float: left;
+	width: auto;
+	height: 1.25rem;
+	margin-left: 2rem;
+}
+.navigation-center-ri-na ul li a {
+	color: #111;
+}
+.navigation-center-ri-so {
+	float: right;
+	width: 18.25rem;
+	height: 6rem;
+}
+.navigation-center-ri-sousuo {
+	width: 17.85rem;
+	height: 3rem;
+	margin-top: 1.3rem;
+	border: 0.2rem solid #E4E4E4;
+}
+.navigation-center-ri-sousuo .sousuo-input1 {
+	font-size: 1.1rem;
+	float: left;
+	width: 13.6rem;
+	height: 2.6rem;
+	color: #333;
+	outline: none;
+	background-color: #FFF;
+	padding-left:1rem;
+}
+.navigation-center-ri-sousuo .sousuo-input2 {
+	float: right;
+	width: 3.8rem;
+	height: 2.6rem;
+	cursor: pointer;
+	outline: 0 none !important;
+	background-color: #EEE;
+	font-size: 1.1rem;
+	color:#999;
+}
+.navigation-center-ri-sousuo button img {
+	width: 1rem;
+	height: 1rem;
+	margin-top: 0.4rem;
+	margin-left: 0.4rem;
+}
+
+/*navigation end */

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.CustomerLabelService">
+	<resultMap type="com.cofc.pojo.aida.CustomerLabel" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="upper_id" property="upperId" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="count" property="count" jdbcType="INTEGER" />
+	</resultMap>
+
+	<insert id="addCustomerLabel" parameterType="com.cofc.pojo.aida.CustomerLabel"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tf_customer_label(app_id,upper_id,name)
+		values(#{appId},#{upperId},#{name})
+	</insert>
+
+	<update id="updateCustomerLabel" parameterType="com.cofc.pojo.aida.CustomerLabel">
+		update tf_customer_label
+		<trim prefix="set" suffixOverrides=",">
+			<if test="name!=null and name!=''">name=#{name},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="delCustomerLabel" parameterType="com.cofc.pojo.aida.CustomerLabel">
+		delete from
+		tf_customer_label where id = #{id} and app_id = #{appId}
+	</delete>
+
+	<select id="getCustomerUpperLabelList" resultMap="BaseResultMap">
+		select * from
+		tf_customer_label where upper_id =#{upperId}
+	</select>
+	<select id="getCustomerLabelList" resultMap="BaseResultMap">
+		select a.*,
+		count(b.label_id) as count from tf_customer_label a left join
+		tf_customer_label_record b on a.id = b.label_id 
+	    where a.upper_id =#{upperId}
+	    group by a.id
+	</select>
+	<select id="getOneCustomerLabelList" resultMap="BaseResultMap">
+		select * from tf_customer_label a left join tf_customer_label_record b on a.id=b.label_id
+	    where a.id in (select b.label_id from tf_customer_label_record where b.app_id =#{appId} and b.user_id =#{userId} and b.sales_person_id =#{salesPersonId} )
+	</select>	
+	
+</mapper>

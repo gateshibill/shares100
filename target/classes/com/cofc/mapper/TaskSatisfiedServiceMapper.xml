@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.TaskSatisfiedServiceService">
+	<resultMap type="com.cofc.pojo.TaskSatisfiedService" id="BaseResultMap">
+		<id column="service_id" property="serviceId" jdbcType="INTEGER" />
+		<result column="service_name" property="serviceName" jdbcType="VARCHAR" />
+		<result column="service_type" property="serviceType" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="findAllServices" resultMap="BaseResultMap">
+		select * from TB_TASK_SATISFIED_SERVICE where service_type = #{type};
+	</select>
+	<select id="getTaskServiceCount" resultType="INT">
+	   select count(*) from TB_TASK_SATISFIED_SERVICE where 1=1
+	   <if test="service.serviceName != null and service.serviceName != ''">
+	    and service_name like CONCAT('%',#{service.serviceName},'%')
+	   </if>
+	   ;
+	</select>
+	<select id="getTaskServiceList" resultMap="BaseResultMap">
+	   select * from TB_TASK_SATISFIED_SERVICE where 1=1
+	   <if test="service.serviceName != null and service.serviceName != ''">
+	    and service_name like CONCAT('%',#{service.serviceName},'%')
+	   </if>
+	   order by service_id desc limit #{page},#{limit}
+	</select>
+	<select id="isAlreadyName" resultMap="BaseResultMap">
+	  select * from TB_TASK_SATISFIED_SERVICE where service_name = #{service}
+	</select>
+	<insert id="addService" parameterType="com.cofc.pojo.TaskSatisfiedService"
+	 useGeneratedKeys="true" keyProperty="serviceId">
+	  insert into TB_TASK_SATISFIED_SERVICE(service_name,service_type) values(#{serviceName},#{serviceType})
+	 </insert>
+	 <delete id="delService">
+	  delete from TB_TASK_SATISFIED_SERVICE where service_id = #{serviceId}
+	 </delete>
+	 <select id="getServiceDetail" resultMap="BaseResultMap">
+	  select * from TB_TASK_SATISFIED_SERVICE where service_id = #{serviceId}
+	 </select>
+	 <update id="updateService">
+	   update TB_TASK_SATISFIED_SERVICE 
+	   <set>
+	      service_name = #{serviceName},
+	      service_type = #{serviceType}
+	   </set>
+	   where service_id = #{serviceId}
+	 </update>
+	 <select id="isOnlyOneService" resultMap="BaseResultMap">
+	   select * from TB_TASK_SATISFIED_SERVICE where service_name= #{serviceName} 
+	   and service_Type = #{serviceType}
+	 </select>
+</mapper>

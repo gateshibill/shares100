@@ -1,0 +1,16 @@
+如果tb_descovery_common的login_plat为null。
+
+那它有可能被推荐到不同的社区（小程序），条件，分值(minRecommendValue)大于100。这个算一个阀门值。
+
+
+决定性的，影响有无
+
+tagMarkItem_weight  标签关联-权重    101分值
+topMarkItem_weight 置顶特权-权重      101分值
+
+
+非决定性的，影响排列顺序（当然了，要大于100才有资格显示）
+
+keyWordMarkItem_weight  关键字匹配-权重    30分或更少
+newMarkItem_weight 新上架特权-权重             30分或更少
+readCountMarkItem_weight 阅读数反馈-权重   30分或更少

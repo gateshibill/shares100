@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.TravelCommonService">
+	<resultMap type="com.cofc.pojo.TravelCommon" id="BaseResultMap">
+		<id column="travel_id" property="travelId" jdbcType="INTEGER" />
+		<result column="travel_title" property="travelTitle" jdbcType="VARCHAR" />
+		<result column="travel_content" property="travelContent"
+			jdbcType="VARCHAR" />
+		<result column="travel_image_list" property="travelImageList"
+			jdbcType="VARCHAR" />
+		<result column="travel_view_list" property="travelViewList"
+			jdbcType="VARCHAR" />
+		<result column="travel_view_count" property="travelViewCount"
+			jdbcType="INTEGER" />
+		<result column="travel_publisherid" property="travelPublisherId"
+			jdbcType="INTEGER" />
+		<result column="travel_guiderid" property="travelGuiderId"
+			jdbcType="INTEGER" />
+		<result column="travel_join_people" property="travelJoinPeople"
+			jdbcType="INTEGER" />
+		<result column="is_hot" property="isHot" jdbcType="INTEGER" />
+		<result column="is_recommend" property="isRecommend" jdbcType="INTEGER" />
+		<result column="red_bag_count" property="redBagCount" jdbcType="INTEGER" />
+		<result column="money_count" property="moneyCount" jdbcType="INTEGER" />
+		<result column="coupon_count" property="couponCount" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="score" property="score" jdbcType="VARCHAR" />
+		<result column="start_place" property="startPlace" jdbcType="VARCHAR" />
+		<result column="end_place" property="endPlace" jdbcType="VARCHAR" />
+		<result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+		<result column="travel_price" property="travelPrice" jdbcType="INTEGER" />
+		<association property="pUser" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="head_image" property="headImage" jdbcType="VARCHAR"></result>
+		</association>
+	</resultMap>
+
+	<insert id="addTravelInfo" parameterType="com.cofc.pojo.TravelCommon"
+		useGeneratedKeys="true" keyProperty="travelId">
+		insert into
+		TB_TRAVEL_COMMON(travel_title,travel_price,travel_content,travel_image_list,travel_view_list,travel_view_count,
+		travel_publisherid,travel_guiderid,travel_join_people,is_hot,is_recommend,red_bag_count,
+		money_count,coupon_count,login_plat,state,start_place,end_place,start_time,end_time,create_time)
+		values(#{travelTitle},#{travelPrice},#{travelContent},#{travelImageList},#{travelViewList},#{travelViewCount},#{travelPublisherId},
+		#{travelGuiderId},#{travelJoinPeople},#{isHot},#{isRecommend},#{redBagCount},#{moneyCount},#{couponCount},
+		#{loginPlat},#{state},#{startPlace},#{endPlace},#{startTime},#{endTime},#{createTime})
+	</insert>
+
+	<select id="getTravelListInfo" resultMap="BaseResultMap">
+		select * from TB_TRAVEL_COMMON as t left join TB_USER_COMMON as u on
+		t.travel_publisherid = u.user_id where t.login_plat = #{loginPlat} and
+		t.is_effect = 1
+		order by t.is_recommend desc,t.create_time desc limit #{pageNo},#{pageSize}
+	</select>
+
+	<update id="updateTravelInfo" parameterType="com.cofc.pojo.TravelCommon"
+		useGeneratedKeys="true" keyProperty="travelId">
+		update TB_TRAVEL_COMMON
+		<trim prefix="set" suffixOverrides=",">
+			<if test="travelTitle!=null and travelTitle!=''">travel_title=#{travelTitle},</if>
+			<if test="travelContent!=null and travelContent!=''">travel_content=#{travelContent},</if>
+			<if test="travelImageList!=null and travelImageList!=''">travel_image_list=#{travelImageList},</if>
+			<if test="travelViewList!=null and travelViewList!=''">travel_view_list=#{travelViewList},</if>
+			<if test="travelViewCount != null">travel_view_count=#{travelViewCount}</if>
+			<if test="startPlace!=null and startPlace!=''">start_place=#{startPlace},</if>
+			<if test="endPlace!=null and endPlace!=''">end_place=#{endPlace},</if>
+			<if test="isHot!=null ">is_hot=#{isHot},</if>
+			<if test="state!=null">state=#{state}</if>
+			<if test="isRecommend!=null">is_recommend=#{isRecommend},</if>
+			<if test="startTime!=null">start_time=#{startTime},</if>
+			<if test="endTime!=null">end_time=#{endTime},</if>
+			<if test="redBagCount!=null">red_bag_count=#{redBagCount},</if>
+			<if test="moneyCount!=null">money_count=#{moneyCount},</if>
+			<if test="couponCount!=null">coupon_count=#{couponCount},</if>
+			<if test="travelJoinPeople != null">travel_join_people=#{travelJoinPeople}</if>
+		</trim>
+		where travel_id = #{travelId}
+	</update>
+	<update id="deleteTravelInfo">
+		update TB_TRAVEL_COMMON set is_effect=0 where travel_id = #{travelId}
+	</update>
+	<select id="getTravelDetaiInfo" resultMap="BaseResultMap">
+		select * from TB_TRAVEL_COMMON as t left join TB_USER_COMMON as u on
+		u.user_id = t.travel_publisherid where t.travel_id = #{travelId}
+	</select>
+	<update id="updateState">
+		update TB_TRAVEL_COMMON set state=#{state} where travel_id = #{travelId}
+	</update>
+	<!-- 防止之前sql冲突 -->
+	<select id="getTravelListByBxy" resultMap="BaseResultMap">
+		select * from TB_TRAVEL_COMMON as t left join TB_USER_COMMON as u on
+		t.travel_publisherid = u.user_id
+		where t.is_effect = 1
+		<if test="travel.loginPlat != null">and t.login_plat = #{travel.loginPlat}</if>
+		<if test="travel.travelTitle != null and travel.travelTitle !=''">and t.travel_title = #{travel.travelTitle}</if>
+		<if test="travel.state != null">and t.state = #{travel.state}</if>
+		order by t.is_recommend desc,t.create_time desc limit
+		#{page},#{limit}
+	</select>
+	<select id="getTravelCountByBxy" resultType="int">
+		select count(*) from TB_TRAVEL_COMMON where is_effect = 1
+		<if test="travel.loginPlat != null">and login_plat = #{travel.loginPlat}</if>
+		<if test="travel.travelTitle != null and travel.travelTitle !=''">and travel_title = #{travel.travelTitle}</if>
+	   	<if test="travel.state != null">and state = #{travel.state}</if>
+	</select>
+	<select id="getTravelListByLoginPlat" resultMap="BaseResultMap">
+		select * from TB_TRAVEL_COMMON as t left join TB_USER_COMMON as u on
+		t.travel_publisherid = u.user_id
+		where t.is_effect = 1
+		<if test="travel.travelTitle != null and travel.travelTitle !=''">and t.travel_title = #{travel.travelTitle}</if>
+		<if test="travel.state != null">and t.state = #{travel.state}</if>
+		and t.login_plat in
+		<foreach item="item" index="index" collection="loginPlatList"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		order by t.is_recommend desc,t.create_time desc limit
+		#{page},#limit
+	</select>
+	<select id="getTravelCountByLoginPlat" resultType="int">
+		select count(*) from TB_TRAVEL_COMMON where is_effect = 1
+		<if test="travel.travelTitle != null and travel.travelTitle !=''">and travel_title = #{travel.travelTitle}</if>
+		<if test="travel.state != null">and state = #{travel.state}</if>
+		and login_plat in
+		<foreach item="item" index="index" collection="loginPlatList"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+</mapper>

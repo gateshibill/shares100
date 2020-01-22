@@ -1,0 +1,381 @@
+/*样式初始化*/
+*{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+ul,ol,li{
+	list-style: none;
+}
+body{
+	font-size: 16px;
+	font-family: '微软雅黑';
+	letter-spacing: 0.2px;
+}
+a{
+	text-decoration: none;
+}
+.page{
+	width: 100%;
+}
+/*navigation begin */
+.navigation{
+	width: 100%;
+	height: 6rem;
+}
+.navigation-center{
+	width: 70rem;
+	height: 6rem;
+	margin: 0 auto;
+}
+.navigation-center-le{
+	width: 26rem;
+	height: 6rem;
+	float: left;
+}
+.navigation-center-logo{
+	width: 26rem;
+	height: 3.7rem;
+	margin-top: 1.2rem;
+}
+.navigation-center-logo img{
+	width: 26rem;
+	height: 3.7rem;
+}
+/*navigation end */
+
+/*zhuce begin*/
+.zhuce{
+	width: 100%;
+	height: 30rem;
+	position: relative;
+}
+/*zhuce_yanzheng begin*/
+.zhuce_yanzheng{
+	display: block;
+	width: 100%;
+	height: 30rem;
+	position: absolute;
+	top: 0rem;
+	left: 0rem;
+	background-color: #fff;
+}
+.zhuce_yanzheng_center{
+	width: 21.25rem;
+	height: 30rem;
+	margin: 0 auto;
+	position: relative;
+}
+.zhuce_yanzheng_center_cen{
+	width: 21.25rem;
+	height: 20rem;
+	background-color: #fff;
+	position: absolute;
+	top: 5rem;
+}
+.yanzheng_center_cen_top{
+	width: 21.25rem;
+	height: 6rem;
+}
+.yanzheng_center_cen_top img{
+	width: 21.25rem;
+	height: 6rem;
+}
+.yanzheng_center_cen_bottom{
+	width: auto;
+	height: 14rem;
+	background-color: #fff;
+}
+.yanzheng_center_cen_bottom_phone{
+	width: 21.15rem;
+	height: 3rem;
+	background-color: #fff;
+	border:0.05rem solid #ccc;
+}
+.yanzheng_center_cen_bottom_phone select{
+	width: 9rem;
+	height: 2.85rem;
+	background-color: #fff;
+	margin-left: 0.05rem;
+	margin-top: 0.05rem;
+	float: left;
+	outline: none;
+}
+.yanzheng_center_cen_bottom_phone input{
+	width: 11.9rem;
+	height: 2.85rem;
+	background-color: #fff;
+	float: left;
+	margin-left: 0.05rem;
+	padding-left: 1rem;
+	margin-top: 0.05rem;
+	border-left: 0.05rem solid #ccc;
+	font-size: 1rem;
+	color: #666;
+	
+}
+.center_cen_bottom_phone_msg{
+	display: block;
+	width: 18.5rem;
+	height: 1.8rem;
+	color: red;
+	font-size: 1rem;
+}
+.yanzheng_center_cen_bottom_ma{
+	width: auto;
+	height: 3rem;
+	background-color: #fff;
+	border:0.05rem solid #ccc;
+}
+.yanzheng_center_cen_bottom_ma .input{
+	width: 13.8rem;
+	height: 2.85rem;
+	background-color: #fff;
+	float: right;
+	margin-left: 0.05rem;
+	margin-top: 0.05rem;
+	border-right: 0.05rem solid #ccc;
+	padding-left: 1rem;
+	font-size: 1rem;
+	color: #666;
+}
+.yanzheng_center_cen_bottom_ma .button{
+	width: 7.1rem;
+	height: 2.9rem;
+	background-color: #f4f4f4;
+	float: right;
+	margin-right:0.05rem;
+	color: #666;
+	font-size: 1rem;
+	cursor: pointer;
+}
+
+.yanzheng_center_cen_bottom_msg{
+	display: block;
+	width: 21.15rem;
+	height: 1.75rem;
+	background-color: #fff;
+}
+.yanzheng_center_cen_bottom_msg img{
+	width: 1.5rem;
+	height: 1.5rem;
+	float: left;
+}
+.yanzheng_center_cen_bottom_msg p{
+	width: 17rem;
+	height: 1rem;
+	background-color: #fff;
+	float: left;
+	margin-left: 0.7rem;
+	margin-top: 0.35rem;
+	color: #999;
+	font-size: 0.8rem;
+	line-height: 0.8rem;
+}
+.yanzheng_center_cen_bottom_button{
+	width: 21.15rem;
+	height: 3rem;
+	background-color: #279c72;
+	margin-top: 1.25rem;
+	color: #fff;
+	font-size: 1.25rem;
+	cursor: pointer;
+}
+/*zhuce_yanzheng end*/
+
+/*zhuce_msg begin*/
+.zhuce_msg{
+	display: none;
+	width: 100%;
+	height: 30rem;
+	background-color: #fff;
+	position: absolute;
+	top: 0rem;
+	left: 0rem;
+}
+.zhuce_msg_center{
+	width: 21.25rem;
+	height: 30rem;
+	margin: 0 auto;
+	position: relative;
+}
+.zhuce_msg_center_cen{
+	width: 21.25rem;
+	height: 24.5rem;
+	background-color: #fff;
+	position: absolute;
+	top: 5rem;
+}
+.msg_center_cen_top{
+	width: 21.25rem;
+	height: 6rem;
+}
+.msg_center_cen_top img{
+	width: 21.25rem;
+	height: 6rem;
+}
+
+.msg_center_cen_bottom{
+	width: 21.25rem;
+	height: 18.5rem;
+	background-color: #fff;
+}
+.msg_center_cen_bottom_name{
+	width: 21.25rem;
+	height: 3rem;
+	background-color: #fff;
+	border:0.05rem solid #ccc;
+}
+.msg_center_cen_bottom div p{
+	width: 6rem;
+	height: 1rem;
+	float: left;
+	margin-top: 1rem;
+	color: #666;
+	font-size: 1rem;
+	line-height: 1rem;
+	padding-left: 1rem;
+}
+.msg_center_cen_bottom div input{
+	width: 13.5rem;
+	height: 2.8rem;
+	float: left;
+	margin-top: 0.05rem;
+	padding-left: 1.5rem;
+	color: #666;
+	font-size: 1rem;
+}
+::-webkit-input-placeholder{
+	font-size: 0.8rem;
+	color: #ccc;
+}
+.center_cen_bottom_name_msg{
+	display: block;
+	width: 18.5rem;
+	height: 2rem;
+	color: red;
+	font-size: 1rem;
+}
+.msg_center_cen_bottom_password{
+	width: 21.25rem;
+	height: 3rem;
+	background-color: #fff;
+	border:0.05rem solid #ccc;
+}
+.center_cen_bottom_pass1_msg{
+	display: block;
+	width: 18.5rem;
+	height: 2rem;
+	color: red;
+	font-size: 1rem;
+}
+.center_cen_bottom_pass2_msg{
+	display: block;
+	width: 18.5rem;
+	height: 2rem;
+	color: red;
+	font-size: 1rem;
+}
+.msg_center_cen_bottom_button{
+	width: 21.25rem;
+	height: 3rem;
+	background-color: #279c72;
+	color: #fff;
+	font-size: 1.25rem;
+	cursor: pointer;
+}
+/*zhuce_msg end*/
+
+/*zhuce_success begin*/
+.zhuce_success{
+	display: none;
+	width: 100%;
+	height: 30rem;
+	position: absolute;
+	top: 0rem;
+	left: 0rem;
+}
+.zhuce_success_cen{
+	width: 100%;
+	height: 12.5rem;
+	margin-top: 7.5rem;
+}
+.zhuce_success_cen_center{
+	width: 82.75rem;
+	height: 12.5rem;
+	background-color: #dcefe8;
+	margin: 0 auto;
+	position: relative;
+}
+.success_cen_center_content{
+	width: 32rem;
+	height: 10.5rem;
+	position: absolute;
+	top: 2rem;
+	left: 30rem;
+}
+.success_cen_center_content img{
+	width: 2.5rem;
+	height: 2.5rem;
+	float: left;
+}
+.success_cen_center_content_title{
+	width: 28rem;
+	height: 2.5rem;
+	float: left;
+	margin-left: 1rem;
+	color: #3c3c3c;
+	font-size: 1.75rem;
+}
+.success_cen_center_content_zhanghao{
+	width: 28rem;
+	height: 1.25rem;
+	float: left;
+	margin-left: 3.5rem;
+	margin-top: 2rem;
+	color: #3c3c3c;
+	font-size: 1rem;
+	line-height: 1rem;
+}
+.success_cen_center_content_zhanghao span{
+	color: #f43d05;
+}
+.success_cen_center_content_name{
+	width: 28rem;
+	height: 1.25rem;
+	float: left;
+	margin-left: 3.5rem;
+	margin-top: 1rem;
+	color: #3c3c3c;
+	font-size: 1rem;
+	line-height: 1rem;
+}
+.success_cen_center_content_nums{
+	width: 28rem;
+	height: 1.25rem;
+	float: left;
+	margin-left: 3.5rem;
+	margin-top: 1rem;
+	color: #3c3c3c;
+	font-size: 1rem;
+	line-height: 1rem;
+}
+.success_cen_center_content_nums span{
+	display: inline-block;
+}
+.success_cen_center_content_nums a{
+	color: #3c3c3c;
+	display: inline-block;
+}
+
+
+/*zhuce_success end*/
+/*zhuce end*/
+
+/*denglu_bottom begin*/
+.zhuce_bottom{
+	width: 100%;
+	height: 20rem;
+	background-color: #fff;
+}
+/*denglu_bottom end*/

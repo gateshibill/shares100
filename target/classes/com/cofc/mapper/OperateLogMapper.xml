@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.OperateLogService">
+  <resultMap type="com.cofc.pojo.OperateLog" id="LogMap">
+   <id column="log_id" property="logId" jdbcType="INTEGER" />
+    <result column="operate_name" property="operateName" jdbcType="VARCHAR" />
+    <result column="operate_user" property="operateUser" jdbcType="VARCHAR" />
+    <result column="operate_time" property="operateTime" />
+    <result column="update_time" property="updateTime" /> 
+     <result column="operate_result" property="operateResult" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <insert id="addOperateLog" parameterType="com.cofc.pojo.OperateLog">
+     insert into TB_OPERATE_LOG (operate_name,operate_user,operate_time,operate_result)
+                       values(#{operateName},#{operateUser},#{operateTime},#{operateResult})
+  </insert>
+  
+  <select id="getOperateLogList" resultMap="LogMap">
+    select * from TB_OPERATE_LOG where 1=1
+    <if test="operateUser != null and operateUser != ''">
+      and operate_user like CONCAT('%',#{operateUser},'%')
+    </if>
+    <if test="startTime != null">
+     and operate_time &gt;=#{startTime}
+    </if>
+    <if test="endTime != null">
+     and operate_time &lt;=#{endTime}
+    </if>
+    order by operate_time desc limit #{page},#{limit}
+  </select>
+  <select id="getOperateLogCout" resultType="int">
+    select count(*) from TB_OPERATE_LOG where 1=1
+     <if test="operateUser != null and operateUser != ''">
+      and operate_user like CONCAT('%',#{operateUser},'%')
+    </if>
+    <if test="startTime != null">
+     and operate_time &gt;=#{startTime}
+    </if>
+    <if test="endTime != null">
+     and operate_time &lt;=#{endTime}
+    </if>
+  </select>
+  <delete id="deleteLog">
+    delete from TB_OPERATE_LOG where log_id=#{logId}
+  </delete>
+</mapper>

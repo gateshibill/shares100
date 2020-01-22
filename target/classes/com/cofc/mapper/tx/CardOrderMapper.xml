@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.tx.CardOrderService">
+	<resultMap type="com.cofc.pojo.tx.CardOrder" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="DOUBLE" />
+		<result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+		<result column="agent_order_num" property="agentOrderNum" jdbcType="VARCHAR" />
+		<result column="plat_order_num" property="platOrderNum" jdbcType="VARCHAR" />
+		<result column="card_list" property="cardList" jdbcType="VARCHAR" />
+		<result column="agent_code" property="agentCode" jdbcType="VARCHAR" />
+		<result column="quantity" property="quantity" jdbcType="VARCHAR" />
+		<result column="goods_code" property="goodsCode" jdbcType="VARCHAR" />
+		<result column="is_use" property="isUse" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="is_use_time" property="isUseTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="addCardData" parameterType="com.cofc.pojo.tx.CardOrder"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tx_card_order(goods_name,price,order_num,agent_order_num,plat_order_num,card_list,agent_code,create_time,quantity,
+		goods_code,is_use,is_use_time)
+		values(#{goodsName},#{price},#{orderNum},#{agentOrderNum},#{platOrderNum},#{cardList},#{agentCode},#{createTime},
+		#{quantity},#{goodsCode},#{isUse},#{isUseTime})
+	</insert>
+	<update id="updateCardData" parameterType="com.cofc.pojo.tx.CardOrder">
+		update tx_card_order
+		<trim prefix="set" suffixOverrides=",">
+			<if test="goodsName!=null and goodsName!=''">goods_name = #{goodsName},</if>
+			<if test="orderNum!=null and orderNum!=''">order_num = #{orderNum},</if>
+			<if test="cardList!=null and cardList!=''">card_list = #{cardList},</if>
+			<if test="price != null">price = #{price},</if>
+			<if test="agentCode!=null and agentCode!=''">agent_code = #{agentCode},</if>
+			<if test="isUse!=null">is_use = #{isUse},</if>
+			<if test="isUseTime!=null">is_use_time = #{isUseTime},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="delCardData" parameterType="com.cofc.pojo.tx.CardOrder">
+		delete from tx_card_order where id = #{id}
+	</delete>
+	<select id="getCardDataInfo" resultMap="BaseResultMap">
+		select * from tx_card_order where id = #{id}
+	</select>
+	
+	<select id="getCardDataCount" resultType="int">
+		select count(*) from tx_card_order where 1=1
+		<if test="data.agentCode != null and data.agentCode != null">
+			and agent_code = #{data.agentCode}
+		</if>
+		<if test="data.orderNum != null and data.orderNum != null">
+			and order_num = #{data.orderNum}
+		</if>
+		<if test="data.agentOrderNum != null and data.agentOrderNum != null">
+			and agent_order_num = #{data.agentOrderNum}
+		</if>
+		<if test="data.isUse!= null">
+			and is_use = #{isUse}
+		</if>
+	</select>
+	<select id="getCardDataList" resultMap="BaseResultMap">
+		select * from tx_card_order where 1=1
+		<if test="data.agentCode != null and data.agentCode != null">
+			and agent_code = #{data.agentCode}
+		</if>
+		<if test="data.orderNum != null and data.orderNum != null">
+			and order_num = #{data.orderNum}
+		</if>
+		<if test="data.agentOrderNum != null and data.agentOrderNum != null">
+			and agent_order_num = #{data.agentOrderNum}
+		</if>
+		<if test="data.isUse!= null">
+			and is_use = #{isUse}
+		</if>
+		order by create_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	<select id="getCardOrder" resultMap="BaseResultMap">
+		select * from tx_card_order where 1=1
+		<if test="agentCode != null and agentCode != ''">
+			and agent_code = #{agentCode}
+		</if>
+		<if test="agentOrderNum != null and agentOrderNum != ''">
+			and agent_order_num = #{agentOrderNum}
+		</if>
+		<if test="isUse != null">
+			and is_use = #{isUse};
+		</if>
+	</select>
+</mapper>

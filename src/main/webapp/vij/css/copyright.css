@@ -1,0 +1,126 @@
+/*鏍峰紡鍒濆鍖�*/
+*{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+ul,ol,li{
+	list-style: none;
+}
+body{
+	font-size: 0.8rem;
+	font-family: '寰蒋闆呴粦';
+	letter-spacing: 0.01rem;
+}
+.page{
+	width: 100%;
+}
+
+/*copyright begin*/
+.copyright{
+	width: 100%;
+	height: 21rem;
+	background-color: #ccc;
+}
+.copyright-sha{
+	width: 100%;
+	height: 4.5rem;
+	background-color: #fff;
+	border-bottom: 0.3rem solid #302e2c;
+}
+.copyright-xia{
+	width: 100%;
+	height: 16.5rem;
+	background-color: #888;
+}
+.xia-title{
+	width: 100%;
+	height: 4rem;
+	background-color: #fff;
+}
+.title-cen{
+	width: 70rem;
+	height: 4rem;
+	margin: 0 auto;
+}
+.title-cen li{
+	width: 6.5rem;
+	height: 4rem;
+	float: left;
+	margin-left: 6rem;
+}
+.title-cen .title-cen-li1{
+	margin-left: 0rem;
+}
+.title-cen li img{
+	width: 1.35rem;
+	height: 1.75rem;
+	margin-top: 1.1rem;
+	float: left;
+}
+.title-cen li p{
+	width: 4.65rem;
+	height: 1rem;
+	margin-top: 1.5rem;
+	float: left;
+	color: #302e2c;
+	font-size: 1rem;
+	line-height: 1;
+}
+.xia-content{
+	width: 100%;
+	height: 12.5rem;
+	background-color: #302e2c;
+}
+.content-cen{
+	width: 70rem;
+	height: 12.5rem;
+	margin: 0 auto;
+}
+.content-cen-left{
+	width: 19rem;
+	height: 12.5rem;
+	float: left;
+}
+.cen-left-l{
+	width: 7.5rem;
+	height: 12.5rem;
+	float: left;
+}
+.cen-left-r{
+	width: 7.5rem;
+	height: 12.5rem;
+	float: right;
+}
+.content-cen-left div img{
+	width: 7.5rem;
+	height: 7.5rem;
+	margin-top: 1.5rem;
+}
+.content-cen-left div p{
+	width: 7.5rem;
+	height: 1rem;
+	margin-top: 1.25rem;
+	color: #fff;
+	font-size: 1rem;
+	line-height: 1;
+}
+.content-cen-right{
+	width: 37rem;
+	height: 12.5rem;
+	float: right;
+}
+.cen-right-content{
+	width: 37rem;
+	height: 5.5rem;
+	margin-top: 3.5rem;
+}
+.cen-right-content p{
+	width: 37rem;
+	height: 1.7rem;
+	color: #fff;
+	font-size: 1.1;
+	line-height: 1;
+}
+/*copyright end*/
+

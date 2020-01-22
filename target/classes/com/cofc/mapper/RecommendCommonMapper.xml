@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.RecommendCommonService">
+	<resultMap type="com.cofc.pojo.RecommendCommon" id="RecommendMap">
+		<id column="recommend_id" property="recommendId" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="VARCHAR" />
+		<result column="is_end_recommend" property="isEndRecommend"
+			jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="descovery_id" property="descoveryId" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addRecommendCommon" parameterType="com.cofc.pojo.RecommendCommon">
+		insert into
+		TB_RECOMMEND_COMMON
+		(login_plat,is_end_recommend,create_time,goods_id,descovery_id)
+		values(#{loginPlat},#{isEndRecommend},#{createTime},#{goodsId},#{descoveryId})
+	</insert>
+	<insert id="insertBatchRecommend" parameterType="java.util.List">
+		insert into TB_RECOMMEND_COMMON
+		(login_plat,is_end_recommend,create_time,goods_id,descovery_id)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.loginPlat},#{item.isEndRecommend},#{item.createTime},#{item.goodsId},#{item.descoveryId})
+		</foreach>
+	</insert>
+	<select id="confirmIsRecommendtoThis" resultMap="RecommendMap">
+		select * from
+		TB_RECOMMEND_COMMON where login_plat = #{loginPlat} and descovery_id =
+		#{descoveryId}
+	</select>
+</mapper>

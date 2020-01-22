@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ProjectWorkPlanService">
+	<resultMap type="com.cofc.pojo.vij.ProjectWorkPlan" id="BaseResultMap">
+		<id column="plan_id" property="planId" jdbcType="INTEGER" />
+		<result column="plan_name" property="planName" jdbcType="VARCHAR" />
+		<result column="real_start_time" property="realStartTime" jdbcType="INTEGER" />
+		<result column="real_end_time" property="realEndTime" jdbcType="INTEGER" />
+		<result column="project_id" property="projectId" jdbcType="INTEGER" />
+		<result column="plan_type_id" property="planTypeId" jdbcType="INTEGER" />
+		<result column="is_finish" property="isFinish" jdbcType="INTEGER" />
+		<result column="plan_start_time" property="planStartTime" jdbcType="INTEGER" />
+		<result column="plan_end_time" property="planEndTime" jdbcType="INTEGER" />
+		<result column="check_status" property="checkStatus" jdbcType="INTEGER" />
+		<result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
+		<!-- <result column="big_plan_name" property="bigPlanName" jdbcType="VARCHAR"/> -->
+	</resultMap>
+	
+	<insert id="addWorkPlan" parameterType="com.cofc.pojo.vij.ProjectWorkProcess" useGeneratedKeys="true" keyProperty="planId">
+			INSERT INTO tv_project_work_plan(plan_name,real_start_time,real_end_time,project_id,
+			plan_start_time,plan_end_time,is_finish,plan_type_id)
+				VALUES(#{planName},#{realStartTime},#{realEndTime},#{projectId},#{planStartTime},#{planEndTime},#{isFinish},#{planTypeId})
+		</insert>
+		
+		<update id="updateWorkPlan" parameterType="com.cofc.pojo.vij.ProjectWorkPlan">
+		UPDATE tv_project_work_plan
+		<trim prefix="set" suffixOverrides=",">
+			<if test="planName !=null and planName !=''" >
+				plan_name =#{planName},
+			</if>
+			<if test="projectId !=null">
+				project_id = #{projectId},
+			</if>
+			<if test="realStartTime !=null">
+				real_start_time = #{realStartTime},
+			</if>
+			<if test="realEndTime !=null">
+				real_end_time = #{realEndTime},
+			</if>
+			<if test="planStartTime !=null">
+				plan_start_time = #{planStartTime},
+			</if>
+			<if test="planEndTime !=null">
+				plan_end_time = #{planEndTime},
+			</if>
+			<if test="planTypeId !=null">
+				plan_type_id = #{planTypeId},
+			</if>
+			<if test="isFinish !=null">
+				is_finish = #{isFinish},
+			</if>
+
+			<if test="checkStatus !=null">
+				check_status = #{checkStatus},
+			</if>
+		</trim>
+				where plan_id = #{planId}
+		</update>
+		
+		<delete id="delWorkPlan" parameterType="com.cofc.pojo.vij.ProjectWorkPlan">
+			delete from tv_project_work_plan where plan_id = #{planId}
+		</delete>
+		
+		<delete id="delWorkPlanByType" parameterType="com.cofc.pojo.vij.ProjectWorkProcess">
+			delete from tv_project_work_plan where plan_type_id = #{planTypeId}
+		</delete>
+		
+		<select id="getWorkPlanCount" resultType="int">
+			select COUNT(*) from tv_project_work_plan where plan_id = #{planId}
+		</select>
+		<select id="getInfoById" resultMap="BaseResultMap">
+			select * from tv_project_work_plan where plan_id = #{planId}
+		</select>		
+		<select id="getWorkPlanCountByProId" resultType="int">
+			select COUNT(*) from tv_project_work_plan where 1=1
+			<if test="pWorkPla.projectId != null">
+				and project_id = #{pWorkPla.projectId}
+			</if>
+		</select>
+		
+		<select id="getWorkPlanList" resultMap="BaseResultMap">
+				select * from tv_project_work_plan where 1=1
+				<if test="pWorkPla.planId != null">
+					and plan_id = #{pWorkPla.planId}
+				</if>
+				<if test="pWorkPla.projectId != null">
+					and project_id = #{pWorkPla.projectId}
+				</if>
+				<if test="pWorkPla.planTypeId != null">
+					and plan_type_id = #{pWorkPla.planTypeId}
+				</if>
+				order by is_finish desc,plan_start_time
+				<if test="page != null and limit != null">
+					limit #{page},#{limit}
+				</if>
+		</select>
+		<select id="getWorkPlanListByType" resultMap="BaseResultMap">
+			select * from tv_project_work_plan where 1=1 
+			<if test="planTypeId != null">
+				and plan_type_id = #{planTypeId}
+			</if>
+			order by plan_start_time
+		</select>
+		<select id="getProjectWorkPlayList" resultMap="BaseResultMap">
+			select * from tv_project_work_plan where 1=1
+			<if test="planTypeId != null">
+			 	and plan_type_id = #{planTypeId}
+			</if>
+			<if test="checkStatus != null">
+				and check_status = #{checkStatus}
+			</if>
+		</select>
+		<select id="projectWorkPlayAll" resultType="int">
+			select count(*) from tv_project_work_plan where 1=1
+			<if test="planTypeId != null">
+				and plan_type_id = #{planTypeId}
+			</if>
+			<if test="planId != null">
+				and plan_id = #{planId}
+			</if>
+		</select>
+	</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ProjectOfferTypeService">
+	<resultMap type="com.cofc.pojo.vij.ProjectOfferType" id="BaseResultMap">
+		<id column="offer_type_id" property="offerTypeId" jdbcType="INTEGER" />
+		<result column="project_id" property="projectId" jdbcType="INTEGER" />
+		<result column="offer_type_name" property="offerTypeName" jdbcType="VARCHAR" />
+		<result column="cover_image" property="coverImage" jdbcType="VARCHAR" />
+		<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<insert id="addOfferType" parameterType="com.cofc.pojo.vij.ProjectOfferType" 
+				useGeneratedKeys="true" keyProperty="offerTypeId" >
+	INSERT INTO tv_project_offer_type(project_id,offer_type_name,cover_image,order_status,create_time,is_effect,login_plat)
+	VALUES(#{projectId},#{offerTypeName},#{coverImage},#{orderStatus},#{createTime},#{isEffect},#{loginPlat})
+	</insert>
+	<update id="updateOfferType" parameterType="com.cofc.pojo.vij.ProjectOfferType">
+		UPDATE tv_project_offer_type 
+		<trim prefix="set" suffixOverrides=",">
+		<if test="projectId !=null">
+			project_id = #{projectId},
+		</if>
+		<if test="offerTypeName != null and offerTypeName !=''">
+			offer_type_name = #{offerTypeName},
+		</if>
+		<if test="coverImage != null and coverImage !=''">
+			cover_image = #{coverImage},
+		</if>
+		<if test="orderStatus != null ">
+			order_status = #{orderStatus},
+		</if>
+		<if test="isEffect != null ">
+			is_effect = #{isEffect},
+		</if>
+		<if test="loginPlat != null ">
+			login_plat = #{loginPlat},
+		</if>
+		</trim>
+		 WHERE offerType_id = #{offerTypeId}
+	</update>
+	<delete id="delOfferType" parameterType="com.cofc.pojo.vij.ProjectOfferType">
+		DELETE FROM tv_project_offer_type WHERE offerType_id = #{offerTypeId}
+	</delete>
+	<select id="getOfferTypeById" resultMap="BaseResultMap">
+		SELECT * FROM tv_project_offer_type WHERE offerType_id = #{offerTypeId}
+	</select>
+	</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.ExpressService">
+	<resultMap type="com.cofc.pojo.vij.Express" id="BaseResultMap">
+		<id column="express_id" property="expressId" jdbcType="INTEGER" />
+		<result column="express_name" property="expressName" jdbcType="VARCHAR" />
+		<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="is_remove" property="isRemove" jdbcType="INTEGER" />
+		<result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addExpress" parameterType="com.cofc.pojo.vij.Express"
+		useGeneratedKeys="true" keyProperty="expressId">
+		insert into tv_express(express_name,order_status,login_plat,is_remove,is_effect) 
+		values(#{expressName},#{orderStatus},#{loginPlat},#{isRemove},#{isEffect})
+	</insert>
+	<update id="updateExpress" parameterType="com.cofc.pojo.vij.Express">
+		update tv_express
+		<trim prefix="set" suffixOverrides=",">
+			<if test="expressName!=null and expressName!=''">express_name = #{expressName},</if>
+			<if test="orderStatus!=null">order_status = #{orderStatus},</if>
+			<if test="isRemove!=null">is_remove = #{isRemove},</if>
+			<if test="isEffect!=null">is_effect = #{isEffect},</if>
+		</trim>
+		where express_id = #{expressId}
+	</update>
+
+	<select id="getInfoById" resultMap="BaseResultMap">
+		select * from tv_express where express_id = #{expressId}
+	</select>
+	
+	<select id="getExpressCount" resultType="int">
+		select count(*) from tv_express where 1=1
+		<if test="exp.expressName != null and exp.expressName !=''">
+			and express_name like CONCAT('%',#{exp.expressName},'%') 
+		</if>
+		<if test="exp.loginPlat != null">
+			and login_plat = #{exp.loginPlat}
+		</if>
+		<if test="exp.isRemove != null">
+			and is_remove = #{exp.isRemove}
+		</if>
+		<if test="exp.loginPlat != null">
+			and is_effect = #{exp.isEffect}
+		</if>
+	</select>
+	<select id="getExpressList" resultMap="BaseResultMap">
+		select * from tv_express where 1=1
+		<if test="exp.expressName != null and exp.expressName !=''">
+			and express_name like CONCAT('%',#{exp.expressName},'%') 
+		</if>
+		<if test="exp.loginPlat != null">
+			and login_plat = #{exp.loginPlat}
+		</if>
+		<if test="exp.isRemove != null">
+			and is_remove = #{exp.isRemove}
+		</if>
+		<if test="exp.loginPlat != null">
+			and is_effect = #{exp.isEffect}
+		</if>
+		order by order_status
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+</mapper>

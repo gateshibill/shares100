@@ -1,0 +1,484 @@
+/*鏍峰紡鍒濆鍖�*/
+*{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+ul,ol,li{
+	list-style: none;
+} 
+body{
+	font-size: 0.8rem;
+	font-family: '寰蒋闆呴粦';
+	letter-spacing: 0.01rem;
+}
+.page{
+	width: 100%;
+	position: relative;
+}
+
+/*shenqing begin*/
+.shenqing{
+	display: none;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.85);
+	position: absolute;
+	top: -8.5rem;
+	left: 0rem;
+	z-index: -10;
+}
+.shenqing-cen{
+	width: 30.5rem;
+	height: 50rem;
+	margin: 0 auto;
+	padding-top: 8rem;
+}
+.shenqing-content{
+	width: 30.5rem;
+	height: 28rem;
+}
+.shenqing-title{
+	width: 30.5rem;
+	height: 7rem;
+	background-color: #45d4bb;
+}
+.quxiao{
+	height: 1.5rem;
+	padding-right: 0.5rem;
+	color: #666;
+	font-size: 1rem;
+	cursor: pointer;
+}
+.shenqing-maxtitle{
+	height: 1.3rem;
+	font-size: 1.3rem;
+	color: #333;
+	line-height: 1;
+}
+.shenqing-mintitle{
+	width: 22rem;
+	height: auto;
+	margin: 0 auto;
+	padding-top: 1rem;
+	font-size: 1rem;
+	color: #333;
+	line-height: 1.2;
+}
+.shenqing-form{
+	width: 30.5rem;
+	height: auto;
+	background-color: #fff;
+	padding-top: 1rem;
+	padding-bottom: 2rem;
+}
+.shenqing-form .el-form{
+	width: 22rem;
+	margin:0 auto;
+	font-size: 1rem;
+	color: #333;
+}
+.form-title{
+	padding-bottom: 1rem;
+	color: #333;
+	font-size: 1rem;
+	line-height: 1.2;
+}
+.span-danwei{
+	display: block;
+	position: absolute;
+	right: 0.3rem;
+	top: -0.1rem;
+}
+.shenqing-form .el-select{
+	width: 100%;
+}
+.shenqing-form .el-button{
+	width: 16rem;
+	height: 2.5rem;
+	margin-left: 6rem;
+	font-size: 1rem;
+	color: #fff;
+}
+
+/*shenqing end*/
+
+/*content  begin*/
+.content{
+	width: 100%;
+	height: auto;
+	background-color: #ccc;
+}
+
+/*banner begin*/
+.banner{
+	width: 100%;
+	height: 29rem;
+	position: relative;
+}
+.banner-image{
+	width: 100%;
+	height: 29rem;
+	background-color: #ccc;
+	position: absolute;
+	top: 0rem;
+	left: 0rem;
+}
+.banner-image img{
+	width: 100%;
+	height: 29rem;
+}
+.banner-content{
+	width: 100%;
+	height: 29rem;
+	position: absolute;
+	top: 0rem;
+	left: 0rem;
+}
+.banner-center{
+	width: 70rem;
+	height: 29rem;
+	margin: 0 auto;
+}
+.banner-form{
+	width: 22rem;
+	height: 29rem;
+	float: right;
+	margin-right: 1rem;
+}
+.form-f{
+	width: 22rem;
+	height: 25rem;
+	background-color: #fff;
+	margin-top: 1rem;
+	padding-top: 3rem;
+	padding: 1.5rem;
+}
+.form-f h2{
+	height: 3rem;
+	margin-top: 1.3rem;
+}
+.f-mintitle{
+	width: 19rem;
+	height: 1.75rem;
+	margin: 0 auto;
+	font-size: 0.8rem;
+	color: #666;
+}
+.form-f .el-cascader{
+	width: 100%;
+}
+.form-f .el-button{
+	width: 19rem;
+	height: 2.5rem;
+	font-size: 1rem;
+	color: #fff;
+}
+
+/*banner end*/
+
+/*serve begin*/
+.serve{
+	width: 100%;
+	height: 54rem;
+	background-color: #f5f5f5;
+}
+.serve-center{
+	width: 70rem;
+	height: 54rem;
+	margin: 0 auto;
+}
+.serve-top{
+	width: 70rem;
+	height: 7.5rem;
+	padding-top: 4rem;
+}
+.serve-top p{
+	height: 1.75rem;
+	font-size: 1.75rem;
+	color: #1e8e66;
+	line-height: 1.75rem;
+}
+.serve-buttom{
+	width: 70rem;
+	height: 46.5rem;
+	background-color: #fff;
+	padding-top: 1rem;
+}
+.buttom-left{
+	width: 70rem;
+	height: 9.25rem;
+	margin-top: 2rem;
+}
+.buttom-title{
+	width: 9.25rem;
+	height: 9.25rem;
+	background-color: #1e8e66;
+	border-radius: 4.62rem;
+}
+.buttom-left .buttom-title{
+	float: left;
+	margin-left: 11rem;
+}
+.serve .buttom-title p{
+	width: 8.25rem;
+	height: 8.25rem;
+	margin-top: 0.5rem;
+	margin-left: 0.5rem;
+	border:0.5rem solid #fff;
+	background-color: #1e8e66;
+	border-radius: 4.62rem;
+	font-size: 1.2rem;
+	color: #fff;
+	line-height: 1.2;
+	padding-top: 2.5rem;
+}
+.buttom-yuyin{
+	width: 20.25rem;
+	height: 9.25rem;
+	background-color: #c3ffea;
+	border-radius: 4.62rem;
+}
+.buttom-yuyin img{
+	width: 4rem;
+	height: 5.5rem;
+}
+.buttom-left .buttom-yuyin{
+	float: left;
+	margin-left: 1rem;
+}
+.buttom-left .buttom-yuyin img{
+	float: left;
+	margin-left: 3rem;
+	margin-top: 1.7rem;
+}
+
+.buttom-right{
+	width: 70rem;
+	height: 9.25rem;
+	margin-top: 1rem;
+}
+.buttom-right .buttom-title{
+	float: right;
+	margin-right: 11rem;
+}
+.buttom-right .buttom-yuyin{
+	float: right;
+	margin-right: 1rem;
+}
+.buttom-right .buttom-yuyin img{
+	float: right;
+	margin-right: 3rem;
+	margin-top: 1.7rem;
+}
+/*serve end*/
+
+/*item begin*/
+.item{
+	width: 100%;
+	height: auto;
+	background-color: #f5f5f5;
+}
+.item-cen{
+	width: 70rem;
+	height: auto;
+	margin: 0 auto;
+}
+.item-title{
+	width: 70rem;
+	height: 8rem;
+	padding-top: 4.5rem;
+}
+.item-title p{
+	width: 70rem;
+	height: 1.75rem;
+	font-size: 1.75rem;
+	color: #1e8e66;
+	line-height: 1;
+}
+.item-content{
+	width: 70rem;
+	height: auto;
+	margin-top: -1rem;
+}
+.content-left{
+	width: 70rem;
+	height: 20rem;
+	margin-top: 1rem;
+}
+.content-left .item-image{
+	width: 15rem;
+	height: 20rem;
+	background-color: #fff2ab;
+	float: left;
+}
+.item-image img{
+	width: 8.5rem;
+	height: 8.5rem;
+	margin-top: 2rem;
+	margin-left: 3.25rem;
+}
+.item-neme{
+	height: 1.5rem;
+	margin-top: 1rem;
+	font-size: 1.5rem;
+	color: #333;
+	line-height: 1;
+}
+.item-jingyan{
+	height: 1rem;
+	margin-top: 0.6rem;
+	font-size: 1rem;
+	color: #666;
+	line-height: 1;
+}
+.item-zhiwei{
+	height: 1rem;
+	margin-top: 1.5rem;
+	font-size: 1rem;
+	color: #666;
+	line-height: 1;
+}
+.item-imageone{
+	width: 30rem;
+	height: 20rem;
+	float: left;
+	margin-left: 1rem;
+}
+.item-imageone img{
+	width: 30rem;
+	height: 20rem;
+}
+
+.item-imagetwo{
+	width: 23rem;
+	height: 20rem;
+	float: left;
+	margin-left: 1rem;
+}
+.imagetwo-s{
+	width: 23rem;
+	height: 9.5rem;
+}
+.imagetwo-s img{
+	width: 23rem;
+	height: 9.5rem;
+}
+.imagetwo-x{
+	width: 23rem;
+	height: 9.5rem;
+	margin-top: 1rem;
+}
+.imagetwo-x img{
+	width: 23rem;
+	height: 9.5rem;
+}
+.content-right{
+	width: 70rem;
+	height: 20rem;
+	margin-top: 1rem;
+}
+.content-right .item-image{
+	width: 15rem;
+	height: 20rem;
+	background-color: #c3ffea;
+	float: left;
+}
+/*item end*/
+
+/*all-set begin*/
+.all-set{
+	width: 100%;
+	height: auto;
+	background-color: #f5f5f5;
+}
+.set-cen{
+	width: 70rem;
+	height: auto;
+	margin: 0 auto;
+}
+.cen-title{
+	width: 70rem;
+	height: 4rem;
+}
+.cen-title .set-title{
+	width: 15rem;
+	height: 1.5rem;
+	margin-top: 2rem;
+	float: left;
+	font-size: 1.2rem;
+	color: #333;
+	line-height: 1;
+}
+.cen-title .set-more{
+	width: 4.5rem;
+	height: 1rem;
+	margin-left: 49rem;
+	margin-top: 2.2rem;
+	float: left;
+	font-size: 1rem;
+	color: #999;
+	line-height: 1;
+	cursor: pointer;
+}
+.set-biao{
+	width: 1rem;
+	height: 1rem;
+	float: left;
+	margin-top: 2.2rem;
+	padding-top: 0rem;
+	background-color: #999;
+	border-radius: 0.5rem;
+	font-size: 1rem;
+	color: #fff;
+	line-height: 1;
+}
+.cen-content{
+	width: 70rem;
+	height: auto;
+}
+.cen-content ul{
+	width: 70.8rem;
+	height: auto;
+	margin-left: -0.8rem;
+	margin-top: -0.8rem;
+	padding-bottom: 3rem;
+}
+.cen-content ul li{
+	width: 13.36rem;
+	height: 17.5rem;
+	float: left;
+	margin-left: 0.8rem;
+	margin-top: 0.8rem;
+	background-color: #c3ffea;
+}
+.cen-content ul li img{
+	width: 7.5rem;
+	height: 7.5rem;
+	margin-top: 1.8rem;
+	margin-left: 2.8rem;
+}
+.set-neme{
+	height: 1.5rem;
+	margin-top: 1rem;
+	font-size: 1.5rem;
+	color: #333;
+	line-height: 1;
+}
+.set-jingyan{
+	height: 1rem;
+	margin-top: 0.6rem;
+	font-size: 1rem;
+	color: #666;
+	line-height: 1;
+}
+.set-zhiwei{
+	height: 1rem;
+	margin-top: 1.5rem;
+	font-size: 1rem;
+	color: #666;
+	line-height: 1;
+}
+
+/*all-set begin*/
+/*content  end*/

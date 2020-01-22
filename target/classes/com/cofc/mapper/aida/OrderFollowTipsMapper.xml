@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.aida.OrderFollowTipsService">
+	<resultMap type="com.cofc.pojo.aida.OrderFollowTips" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="app_id" property="appId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addOrderFollowTips" parameterType="com.cofc.pojo.aida.OrderFollowTips"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tf_order_follow_tips(app_id,user_id,type,content,create_time)
+		values(#{appId},#{userId},#{type},#{content},#{createTime})
+	</insert>
+	<update id="updateOrderFollowTips" parameterType="com.cofc.pojo.aida.OrderFollowTips">
+		update tf_order_follow_tips
+		<trim prefix="set" suffixOverrides=",">
+			<if test="content!=null ">content=#{content},</if>
+		</trim>
+		where id = #{id}
+	</update>
+
+	<delete id="delOrderFollowTips">
+		delete from tf_order_follow_tips where id =#{id} and
+		app_id=#{appId} 
+	</delete>
+	<select id="getOrderFollowTips" resultMap="BaseResultMap">
+		select * from
+		tf_order_follow_tips
+		where app_id=#{appId} and user_id=#{userId} and
+		id =#{id} 
+	</select>
+	<select id="getOrderFollowTipsList" resultMap="BaseResultMap">
+		select * from
+		tf_order_follow_tips
+		where (app_id=#{appId} or app_id=0)
+		and
+		(user_id =#{userId} or user_id=0)
+		and type=#{type}
+		order by create_time asc
+	</select>
+
+</mapper>

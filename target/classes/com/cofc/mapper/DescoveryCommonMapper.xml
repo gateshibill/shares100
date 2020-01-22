@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.DescoveryCommonService">
+	<resultMap type="com.cofc.pojo.DescoveryCommon" id="BaseResultMap">
+		<id column="descovery_id" property="descoveryId" jdbcType="INTEGER" />
+		<result column="descovery_title" property="descoveryTitle"
+			jdbcType="VARCHAR" />
+		<result column="descovery_image" property="descoveryImage"
+			jdbcType="VARCHAR" />
+		<result column="publisher_id" property="publisherId" jdbcType="INTEGER" />
+		<result column="descovery_type" property="descoveryType"
+			jdbcType="INTEGER" />
+		<result column="parise_count" property="pariseCount" jdbcType="INTEGER" />
+		<result column="read_count" property="readCount" jdbcType="INTEGER" />
+		<result column="joined_count" property="joinedCount" jdbcType="INTEGER" />
+		<result column="descovery_details" property="descoveryDetails"
+			jdbcType="INTEGER" />
+		<result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+		<result column="is_pass" property="isPass" jdbcType="INTEGER" />
+		<result column="is_shangjia" property="isShangJia" jdbcType="INTEGER" />
+		<result column="collect_count" property="collectCount"
+			jdbcType="INTEGER" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="is_recommend" property="isRecommend" jdbcType="INTEGER" />
+		<result column="photos_book" property="photosBook" jdbcType="VARCHAR" />
+		<result column="project_type" property="projectType" jdbcType="VARCHAR" />
+		<result column="project_status" property="projectStatus"
+			jdbcType="INTEGER" />
+		<result column="has_resource_tag" property="hasResourceTag"
+			jdbcType="VARCHAR" />
+		<result column="need_resource_tag" property="needResourceTag"
+			jdbcType="VARCHAR" />
+		<result column="project_pay" property="projectPay" jdbcType="VARCHAR" />
+		<result column="expiry_date" property="expiryDate" jdbcType="VARCHAR" />
+		<result column="product_type" property="productType" jdbcType="VARCHAR" />
+		<result column="product_price" property="productPrice"
+			jdbcType="DOUBLE" />
+		<result column="free_post" property="freePost" jdbcType="INTEGER" />
+		<result column="bid_way" property="bidWay" jdbcType="VARCHAR" />
+		<result column="skill_type" property="skillType" jdbcType="VARCHAR" />
+		<result column="start_time" property="startTime" jdbcType="DATE" />
+		<result column="end_time" property="endTime" jdbcType="DATE" />
+		<result column="service_price" property="servicePrice"
+			jdbcType="DOUBLE" />
+		<result column="explanatory_service" property="explanatoryService"
+			jdbcType="VARCHAR" />
+		<result column="service_way" property="serviceWay" jdbcType="VARCHAR" />
+		<result column="wanted_type" property="wantedType" jdbcType="VARCHAR" />
+		<result column="min_salary" property="minSalary" jdbcType="INTEGER" />
+		<result column="max_salary" property="maxSalary" jdbcType="INTEGER" />
+		<result column="work_city" property="workCity" jdbcType="VARCHAR" />
+		<result column="welfare" property="welfare" jdbcType="VARCHAR" />
+		<result column="wanted_skill" property="wantedSkill" jdbcType="VARCHAR" />
+		<result column="work_desc" property="wantedDesc" jdbcType="VARCHAR" />
+		<result column="place_name" property="placeName" jdbcType="VARCHAR" />
+		<result column="inquiry_tags" property="inquiryTags" jdbcType="VARCHAR" />
+		<result column="recommend_way" property="recommendWay"
+			jdbcType="INTEGER" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="cover_image" property="coverImage" jdbcType="VARCHAR" />
+		<result column="is_top" property="isTop" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+		<!-- '发现'发布者信息 -->
+		<association property="dscvPublisher" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="phone" property="phone" jdbcType="VARCHAR" />
+			<result column="e_mail" property="email" jdbcType="VARCHAR" />
+			<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+			<result column="user_sex" property="userSex" jdbcType="INTEGER" />
+		</association>
+		<!-- -->
+		<association property="app" javaType="com.cofc.pojo.ApplicationCommon">
+		<id column="application_id" property="applicationId" jdbcType="INTEGER" />
+		<result column="application_name" property="applicationName" jdbcType="VARCHAR" />
+		</association>
+
+		<association property="recommend" javaType="com.cofc.pojo.RecommendCommon">
+			<id column="recommend_id" property="recommendId" jdbcType="INTEGER" />
+			<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+			<result column="descovery_id" property="descoveryId" jdbcType="INTEGER" />
+		</association>
+
+	</resultMap>
+	
+	<!-- 前端展示发布列表（根据typeId不同） -->
+	<select id="getLoginPlatTypeIdList" resultMap="BaseResultMap">
+	   select * from TB_DESCOVERY_COMMON where is_shangjia=1 and descovery_type=#{type}
+	   <if test="loginPlat != null">
+	     and login_plat=#{loginPlat}
+	   </if>
+	   order by publish_time desc limit #{pageNo},#{pageSize}
+	</select>
+	
+	
+	<insert id="addNewDesCommon" parameterType="com.cofc.pojo.DescoveryCommon"
+		useGeneratedKeys="true" keyProperty="descoveryId">
+		insert into
+		TB_DESCOVERY_COMMON(descovery_title,descovery_image,
+		publisher_id,descovery_type,parise_count,read_count,joined_count,collect_count,descovery_details,
+		publish_time,is_pass,is_shangjia,update_time,login_plat,is_recommend,photos_book,
+		project_type,project_status,has_resource_tag,need_resource_tag,project_pay,expiry_date,
+		product_type,product_price,free_post,bid_way,skill_type,start_time,end_time,service_price,explanatory_service,
+		service_way,wanted_type,min_salary,max_salary,work_city,welfare,wanted_skill,work_desc,place_name,inquiry_tags,
+		recommend_way,is_top,address,cover_image)
+		values(#{descoveryTitle},#{descoveryImage},#{publisherId},#{descoveryType},#{pariseCount},
+		#{readCount},#{joinedCount},#{collectCount},#{descoveryDetails},#{publishTime},
+		#{isPass},#{isShangJia},#{updateTime},#{loginPlat},#{isRecommend},#{photosBook},
+		#{projectType},#{projectStatus},#{hasResourceTag},#{needResourceTag},#{projectPay},#{expiryDate},
+		#{productType},#{productPrice},#{freePost},#{bidWay},#{skillType},#{startTime},#{endTime},#{servicePrice},
+		#{explanatoryService},#{serviceWay},#{wantedType},#{minSalary},#{maxSalary},#{workCity},#{welfare},
+		#{wantedSkill},#{wantedDesc},#{placeName},#{inquiryTags},#{recommendWay},#{isTop},#{address},#{coverImage})
+	</insert>
+
+	<!--前端推荐质询 -->
+	<select id="publishedDescoveryList" resultMap="BaseResultMap">
+<!-- 		SELECT * FROM (SELECT * FROM TB_DESCOVERY_COMMON WHERE login_plat = -->
+<!-- 		#{loginPlat} and is_shangjia=1  -->
+<!-- 		<if test="type!=null"> -->
+<!-- 			and descovery_type =#{type} -->
+<!-- 		</if> -->
+<!-- 		UNION -->
+<!-- 		SELECT * FROM TB_DESCOVERY_COMMON WHERE is_recommend = 1 and recommend_way -->
+<!-- 		=1 and is_shangjia=1  -->
+<!-- 		<if test="type!=null"> -->
+<!-- 			and descovery_type =#{type} -->
+<!-- 		</if> -->
+<!-- 		UNION SELECT d.* FROM TB_DESCOVERY_COMMON d LEFT JOIN -->
+<!-- 		TB_APPLICATION_COMMON a ON d.login_plat = a.application_id -->
+<!-- 		WHERE d.is_recommend = 1 and d.recommend_way =2 and is_shangjia=1  -->
+<!-- 		<if test="groupType != null"> -->
+<!-- 			and a.group_type =#{groupType} -->
+<!-- 		</if> -->
+<!-- 		) aa LEFT -->
+<!-- 		JOIN TB_USER_COMMON u ON aa.publisher_id = u.user_id -->
+<!-- 		where aa.is_shangjia=1 -->
+       select * from TB_DESCOVERY_COMMON d left join TB_APPLICATION_COMMON a on d.login_plat = a.application_id
+         left join TB_USER_COMMON u ON d.publisher_id = u.user_id where d.is_shangjia=1
+       <if test="loginPlat != null">
+         and d.login_plat=#{loginPlat}
+       </if>
+		<if test="publisherId!=null">
+			and d.publisher_id =#{publisherId}
+		</if>
+		<if test="type!=null">
+			and d.descovery_type =#{type}
+		</if>
+		<if test="isPass!=null">
+			and d.is_pass = #{isPass}
+		</if>
+		<if test="descoveryId != null">
+			and d.descovery_id = #{descoveryId}
+		</if>
+		order by d.publish_time desc limit #{rowsId},#{pageSize}
+	</select>
+
+	<select id="getDescoveryListByPlat" resultMap="BaseResultMap">
+		select * from tb_descovery_common a where login_plat = #{login_plat} order by a.publish_time desc limit #{rowsId},#{pageSize};
+	</select>
+
+	<update id="passThisDescovery" parameterType="com.cofc.pojo.DescoveryCommon">
+		update
+		TB_DESCOVERY_COMMON set is_pass = 1 where descovery_id =
+		#{descoveryId}
+	</update>
+	<select id="getDescoveryById" resultMap="BaseResultMap">
+		select * from
+		TB_DESCOVERY_COMMON where descovery_id = #{descoveryId}
+	</select>
+	<!-- 修改发布文章 -->
+	<update id="updateDescoveryCommonInfo" parameterType="com.cofc.pojo.DescoveryCommon">
+		update TB_DESCOVERY_COMMON
+		<trim prefix="set" suffixOverrides=",">
+			<if test="readCount!=null">read_count=#{readCount},</if>
+			<if test="pariseCount!=null">parise_count=#{pariseCount},</if>
+			<if test="collectCount!=null">collect_count=#{collectCount},</if>
+			<if test="updateTime!=null">update_time = #{updateTime},</if>
+			<if test="isShangJia!=null">is_shangjia=#{isShangJia},</if>
+			<if test="isRecommend !=null">is_recommend=#{isRecommend},</if>
+			<if test="isPass!=null">is_pass=#{isPass},</if>
+			<if test="isTop!=null">is_top=#{isTop},</if>
+			<if test="descoveryTitle !=null and descoveryTitle !=''">
+				descovery_title=#{descoveryTitle},
+			</if>
+			<if test="descoveryImage !=null">
+				descovery_image=#{descoveryImage},
+			</if>
+			<if test="descoveryDetails !=null and descoveryDetails !=''">
+				descovery_details=#{descoveryDetails},
+			</if>
+			<if test="wantedSkill != null and wantedSkill !=''">
+				wanted_skill=#{wantedSkill},
+			</if>
+			<if test="wantedDesc != null and wantedDesc !=''">
+				work_desc=#{wantedDesc},
+			</if>
+			<if test="recommendWay != null">
+				recommend_way=#{recommendWay},
+			</if>
+			<if test="coverImage !=null and coverImage !=''">
+				cover_image=#{coverImage},
+			</if>
+		</trim>
+		where descovery_id = #{descoveryId}
+	</update>
+	<select id="findDescveryCommonInfo" resultMap="BaseResultMap">
+		<!-- SELECT * FROM (SELECT d.* FROM tb_recommend_common r LEFT JOIN -->
+		<!-- tb_descovery_common d ON r.descovery_id = d.descovery_id -->
+		<!-- WHERE -->
+		<!-- r.descovery_id IS NOT NULL -->
+		select * from
+		TB_DESCOVERY_COMMON d left join TB_USER_COMMON u on d.publisher_id=u.user_id
+		left join tb_application_common a on d.login_plat=a.application_id
+		left join TB_DESCOVERY_TYPE as t on t.type_id = d.descovery_type
+		where 1=1
+		<if test="descovery!=null">
+			<if test="descovery.descoveryId!=null">
+				and d.descovery_id = #{descovery.descoveryId}
+			</if>
+			<if test="descovery.descoveryType!=null">
+				and d.descovery_type = #{descovery.descoveryType}
+			</if>
+			<if test="descovery.descoveryTitle!=null and descovery.descoveryTitle!=''">
+				and d.descovery_title like CONCAT('%',#{descovery.descoveryTitle},'%')
+			</if>
+			<if test="descovery.publisherId!=null">
+				and d.publisher_id = #{descovery.publisherId}
+			</if>
+			<if test="descovery.isPass!=null">
+				and d.is_pass = #{descovery.isPass}
+			</if>
+			<if test="descovery.isShangJia!=null">
+				and d.is_shangjia = #{descovery.isShangJia}
+			</if>
+			<if test="descovery.loginPlat!=null">
+				and d.login_plat = #{descovery.loginPlat}
+			</if>
+		</if>
+		<!-- UNION SELECT * FROM tb_descovery_common d WHERE 1 = 1 -->
+		<!-- <if test="descovery!=null"> -->
+		<!-- <if test="descovery.descoveryId!=null"> -->
+		<!-- and descovery_id = #{descovery.descoveryId} -->
+		<!-- </if> -->
+		<!-- <if test="descovery.descoveryType!=null"> -->
+		<!-- and descovery_type = #{descovery.descoveryType} -->
+		<!-- </if> -->
+		<!-- <if test="descovery.descoveryTitle!=null and descovery.descoveryTitle!=''"> -->
+		<!-- and descovery_title like -->
+		<!-- CONCAT('%','${descovery.descoveryTitle}','%') -->
+		<!-- </if> -->
+		<!-- <if test="descovery.publisherId!=null"> -->
+		<!-- and publisher_id = #{descovery.publisherId} -->
+		<!-- </if> -->
+		<!-- <if test="descovery.isPass!=null"> -->
+		<!-- and is_pass = #{descovery.isPass} -->
+		<!-- </if> -->
+		<!-- <if test="descovery.isShangJia!=null"> -->
+		<!-- and is_shangjia = #{descovery.isShangJia} -->
+		<!-- </if> -->
+		<!-- <if test="descovery.loginPlat!=null"> -->
+		<!-- and login_plat = #{descovery.loginPlat} -->
+		<!-- </if> -->
+		<!-- </if> -->
+		<!-- )dc left join tb_user_common u on dc.publisher_id = u.user_id where 
+			1 -->
+		<!-- =1 -->
+		<if test="startTime!=null and startTime!=''">
+			and d.publish_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and d.publish_time &lt;= #{endTime}
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (u.nick_name like CONCAT('%',#{userKeyWords},'%') or
+			u.real_name like CONCAT('%',#{userKeyWords},'%'))
+		</if>
+		order by d.publish_time desc limit #{rowsId},#{pageSize}
+	</select>
+
+	<select id="getDescoveryCount" resultType="int">
+		
+		select count(*) from
+		TB_DESCOVERY_COMMON d left join TB_USER_COMMON u on d.publisher_id=u.user_id
+		left join TB_DESCOVERY_TYPE as t on t.type_id = d.descovery_type
+		where 1=1
+		<if test="descovery!=null">
+			<if test="descovery.descoveryId!=null">
+				and d.descovery_id = #{descovery.descoveryId}
+			</if>
+			<if test="descovery.descoveryType!=null">
+				and d.descovery_type = #{descovery.descoveryType}
+			</if>
+			<if test="descovery.descoveryTitle!=null and descovery.descoveryTitle!=''">
+				and d.descovery_title like
+				CONCAT('%',#{descovery.descoveryTitle},'%')
+			</if>
+			<if test="descovery.publisherId!=null">
+				and d.publisher_id = #{descovery.publisherId}
+			</if>
+			<if test="descovery.isPass!=null">
+				and d.is_pass = #{descovery.isPass}
+			</if>
+			<if test="descovery.isShangJia!=null">
+				and d.is_shangjia = #{descovery.isShangJia}
+			</if>
+			<if test="descovery.loginPlat!=null">
+				and d.login_plat = #{descovery.loginPlat}
+			</if>
+		</if>
+		<!-- UNION SELECT * FROM tb_descovery_common d WHERE 1 = 1 -->
+		<!-- <if test="descovery!=null"> -->
+		<!-- <if test="descovery.descoveryId!=null"> -->
+		<!-- and descovery_id = #{descovery.descoveryId} -->
+		<!-- </if> -->
+		<!-- <if test="descovery.descoveryType!=null"> -->
+		<!-- and descovery_type = #{descovery.descoveryType} -->
+		<!-- </if> -->
+		<!-- <if test="descovery.descoveryTitle!=null and descovery.descoveryTitle!=''"> -->
+		<!-- and descovery_title like -->
+		<!-- CONCAT('%','${descovery.descoveryTitle}','%') -->
+		<!-- </if> -->
+		<!-- <if test="descovery.publisherId!=null"> -->
+		<!-- and publisher_id = #{descovery.publisherId} -->
+		<!-- </if> -->
+		<!-- <if test="descovery.isPass!=null"> -->
+		<!-- and is_pass = #{descovery.isPass} -->
+		<!-- </if> -->
+		<!-- <if test="descovery.isShangJia!=null"> -->
+		<!-- and is_shangjia = #{descovery.isShangJia} -->
+		<!-- </if> -->
+		<!-- <if test="descovery.loginPlat!=null"> -->
+		<!-- and login_plat = #{descovery.loginPlat} -->
+		<!-- </if> -->
+		<!-- </if> -->
+		<!-- )dc left join tb_user_common u on dc.publisher_id = u.user_id where 
+			1 -->
+		<!-- =1 -->
+		<if test="startTime!=null and startTime!=''">
+			and d.publish_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and d.publish_time &lt;= #{endTime}
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (u.nick_name like CONCAT('%',#{userKeyWords},'%') or
+			u.real_name like CONCAT('%',#{userKeyWords},'%'))
+		</if>
+	</select>
+
+	<select id="getPublisherDetails" resultMap="BaseResultMap">
+		select * from TB_DESCOVERY_COMMON dc
+		left join TB_DESCOVERY_TYPE dt on
+		dc.descovery_type=dt.type_id
+		left join TB_USER_COMMON u on
+		dc.publisher_id = u.user_id
+		<if test="type==1">
+			left join TB_TAG_COMMON tc on
+			dc.has_resource_tag=tc.tag_id
+		</if>
+		<if test="type==2">
+			left join TB_TAG_COMMON tc on dc.product_type=tc.tag_id
+		</if>
+		<if test="type==3">
+			left join TB_TAG_COMMON tc on dc.skill_type=tc.tag_id
+		</if>
+		<if test="type==4">
+			left join TB_TAG_COMMON tc on dc.wanted_type=tc.tag_id
+		</if>
+		<if test="type==5">
+			left join TB_TAG_COMMON tc on dc.wanted_type=tc.tag_id
+		</if>
+		where dc.descovery_id=#{descoveryId}
+	</select>
+	<select id="findRecommendToAllDecovery" resultMap="BaseResultMap">
+		select * from
+		TB_DESCOVERY_COMMON where is_recommend = 1 and recommend_way = 1
+	</select>
+	<select id="findRecommendToSameDescovery" resultMap="BaseResultMap">
+		select *
+		from
+		TB_DESCOVERY_COMMON d left join TB_APPLICATION_COMMON a on
+		d.login_plat =
+		a.application_id where d.is_recommend = 1 and
+		d.recommend_way = 3
+		<if test="applicationType!=null">
+			and a.application_type = #{applicationType}
+		</if>
+	</select>
+	<delete id="deleteDescoveryCommon">
+		delete from TB_DESCOVERY_COMMON where descovery_id=#{descoveryId}
+	</delete>
+	
+	<select id="findRecommendDecoveryByApplication" resultMap="BaseResultMap">
+		select * from tb_descovery_common a, (select descovery_id,mark from tb_descovery_recommend where application_id = #{applicationID} order by mark) b where a.descovery_id = b.descovery_id order by b.mark desc,a.publish_time desc limit #{rowsId},#{pageSize};
+	</select>
+	
+	<select id="findRecommendDecoveryByApplication2" resultMap="BaseResultMap">
+<!-- 
+		select a.* from tb_descovery_common a, tb_descovery_recommend b where (login_plat = #{applicationID} || login_plat is null) and b.id = CONCAT(a.descovery_id, "_", #{applicationID}) order by mark desc, a.publish_time desc limit #{rowsId},#{pageSize};
+ -->	
+
+		select a.* from tb_descovery_common a left join tb_descovery_recommend  b on ( b.id = CONCAT(a.descovery_id, "_", #{applicationID})) 
+			where (a.login_plat = #{applicationID}  || a.login_plat is null) and a.is_shangjia = 1 order by b.mark desc, a.publish_time desc limit #{rowsId},#{pageSize};	
+	</select>	
+	
+		<resultMap type="com.cofc.pojo.DescoveryCommon" id="BaseResultMap2">
+		<id column="descovery_id" property="descoveryId" jdbcType="INTEGER" />
+		<result column="descovery_title" property="descoveryTitle"
+			jdbcType="VARCHAR" />
+		<result column="descovery_image" property="descoveryImage"
+			jdbcType="VARCHAR" />
+		<result column="publisher_id" property="publisherId" jdbcType="INTEGER" />
+		<result column="descovery_type" property="descoveryType"
+			jdbcType="INTEGER" />
+		<result column="parise_count" property="pariseCount" jdbcType="INTEGER" />
+		<result column="read_count" property="readCount" jdbcType="INTEGER" />
+		<result column="joined_count" property="joinedCount" jdbcType="INTEGER" />
+		<result column="descovery_details" property="descoveryDetails"
+			jdbcType="INTEGER" />
+		<result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+		<result column="is_pass" property="isPass" jdbcType="INTEGER" />
+		<result column="is_shangjia" property="isShangJia" jdbcType="INTEGER" />
+		<result column="collect_count" property="collectCount"
+			jdbcType="INTEGER" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="is_recommend" property="isRecommend" jdbcType="INTEGER" />
+		<result column="photos_book" property="photosBook" jdbcType="VARCHAR" />
+		<result column="project_type" property="projectType" jdbcType="VARCHAR" />
+		<result column="project_status" property="projectStatus"
+			jdbcType="INTEGER" />
+		<result column="has_resource_tag" property="hasResourceTag"
+			jdbcType="VARCHAR" />
+		<result column="need_resource_tag" property="needResourceTag"
+			jdbcType="VARCHAR" />
+		<result column="project_pay" property="projectPay" jdbcType="VARCHAR" />
+		<result column="expiry_date" property="expiryDate" jdbcType="VARCHAR" />
+		<result column="product_type" property="productType" jdbcType="VARCHAR" />
+		<result column="product_price" property="productPrice"
+			jdbcType="DOUBLE" />
+		<result column="free_post" property="freePost" jdbcType="INTEGER" />
+		<result column="bid_way" property="bidWay" jdbcType="VARCHAR" />
+		<result column="skill_type" property="skillType" jdbcType="VARCHAR" />
+		<result column="start_time" property="startTime" jdbcType="DATE" />
+		<result column="end_time" property="endTime" jdbcType="DATE" />
+		<result column="service_price" property="servicePrice"
+			jdbcType="DOUBLE" />
+		<result column="explanatory_service" property="explanatoryService"
+			jdbcType="VARCHAR" />
+		<result column="service_way" property="serviceWay" jdbcType="VARCHAR" />
+		<result column="wanted_type" property="wantedType" jdbcType="VARCHAR" />
+		<result column="min_salary" property="minSalary" jdbcType="INTEGER" />
+		<result column="max_salary" property="maxSalary" jdbcType="INTEGER" />
+		<result column="work_city" property="workCity" jdbcType="VARCHAR" />
+		<result column="welfare" property="welfare" jdbcType="VARCHAR" />
+		<result column="wanted_skill" property="wantedSkill" jdbcType="VARCHAR" />
+		<result column="work_desc" property="wantedDesc" jdbcType="VARCHAR" />
+		<result column="place_name" property="placeName" jdbcType="VARCHAR" />
+		<result column="inquiry_tags" property="inquiryTags" jdbcType="VARCHAR" />
+		<result column="recommend_way" property="recommendWay" jdbcType="INTEGER" />
+		<result column="is_top" property="isTop" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<select id="findDecovery" resultMap="BaseResultMap2">
+		select * from tb_descovery_common limit #{rowsId},#{pageSize};
+	</select>
+	
+	<!-- 新开方法：防止sql冲突 -->
+	<select id="getDescoveryCountByLoginPlat" resultType="int">		
+		select count(*) from
+		TB_DESCOVERY_COMMON d left join TB_USER_COMMON u on d.publisher_id=u.user_id
+		left join TB_DESCOVERY_TYPE as t on t.type_id = d.descovery_type
+		where 1=1
+		<if test="descovery!=null">
+			<if test="descovery.descoveryId!=null">
+				and d.descovery_id = #{descovery.descoveryId}
+			</if>
+			<if test="descovery.descoveryType!=null">
+				and d.descovery_type = #{descovery.descoveryType}
+			</if>
+			<if test="descovery.descoveryTitle!=null and descovery.descoveryTitle!=''">
+				and d.descovery_title like
+				CONCAT('%',#{descovery.descoveryTitle},'%')
+			</if>
+			<if test="descovery.publisherId!=null">
+				and d.publisher_id = #{descovery.publisherId}
+			</if>
+			<if test="descovery.isPass!=null">
+				and d.is_pass = #{descovery.isPass}
+			</if>
+			<if test="descovery.isShangJia!=null">
+				and d.is_shangjia = #{descovery.isShangJia}
+			</if>
+			<!-- <if test="descovery.loginPlat!=null">
+				and d.login_plat = #{descovery.loginPlat}
+			</if> -->
+		</if>
+	
+		<if test="startTime!=null and startTime!=''">
+			and d.publish_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and d.publish_time &lt;= #{endTime}
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (u.nick_name like CONCAT('%',#{userKeyWords},'%') or
+			u.real_name like CONCAT('%',#{userKeyWords},'%'))
+		</if>
+		and d.login_plat in 
+		 <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach> 
+	</select>
+	
+	
+	<select id="findDescveryCommonInfoByLoginPlat" resultMap="BaseResultMap">
+		select * from
+		TB_DESCOVERY_COMMON d left join TB_USER_COMMON u on d.publisher_id=u.user_id
+		left join tb_application_common a on d.login_plat=a.application_id
+		left join TB_DESCOVERY_TYPE as t on t.type_id = d.descovery_type
+		where 1=1
+		<if test="descovery!=null">
+			<if test="descovery.descoveryId!=null">
+				and d.descovery_id = #{descovery.descoveryId}
+			</if>
+			<if test="descovery.descoveryType!=null">
+				and d.descovery_type = #{descovery.descoveryType}
+			</if>
+			<if test="descovery.descoveryTitle!=null and descovery.descoveryTitle!=''">
+				and d.descovery_title like CONCAT('%',#{descovery.descoveryTitle},'%')
+			</if>
+			<if test="descovery.publisherId!=null">
+				and d.publisher_id = #{descovery.publisherId}
+			</if>
+			<if test="descovery.isPass!=null">
+				and d.is_pass = #{descovery.isPass}
+			</if>
+			<if test="descovery.isShangJia!=null">
+				and d.is_shangjia = #{descovery.isShangJia}
+			</if>
+			<!-- <if test="descovery.loginPlat!=null">
+				and d.login_plat = #{descovery.loginPlat}
+			</if> -->
+		</if>
+	
+		<if test="startTime!=null and startTime!=''">
+			and d.publish_time &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and d.publish_time &lt;= #{endTime}
+		</if>
+		<if test="userKeyWords!=null and userKeyWords!=''">
+			and (u.nick_name like CONCAT('%',#{userKeyWords},'%') or
+			u.real_name like CONCAT('%',#{userKeyWords},'%'))
+		</if>
+			and d.login_plat in 
+		 <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach> 
+		order by d.publish_time desc limit #{rowsId},#{pageSize}
+	</select>
+	
+	
+</mapper>

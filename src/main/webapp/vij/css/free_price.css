@@ -1,0 +1,254 @@
+/*鏍峰紡鍒濆鍖�*/
+*{
+	margin: 0;
+	padding: 0;
+	border: 0; 
+}
+ul,ol,li{
+	list-style: none;
+}
+body{
+	font-size: 0.8rem;
+	font-family: '寰蒋闆呴粦';
+	letter-spacing: 0.01rem;
+}
+a{
+	text-decoration: none;
+}
+.page{
+	width: 100%;
+}
+
+/*price bejin*/
+.price{
+	width: 100%;
+	height: 34.5rem;
+	position: relative;
+}
+.price-image{
+	width: 100%;
+	height: 34.5rem;
+	position: absolute;
+	top: 0rem;
+	left: 0rem;
+}
+.price-image img{
+	width: 100%;
+	height: 34.5rem;
+}
+.price-content{
+	width: 100%;
+	height: 34.5rem;
+	position: absolute;
+	top: 0rem;
+	left: 0rem;
+}
+.price-center{
+	width: 70rem;
+	height: 34.5rem;
+	margin: 0 auto;
+	padding-top: 9rem;
+}
+.center-cen{
+	width: 70rem;
+	height: 21.5rem;
+}
+.center-content{
+	width: 53rem;
+	height: 21.5rem;
+	background-color: #fff;
+	margin: 0 auto;
+	border-bottom:0.15rem solid #8e9baf;
+}
+/*content-counter begin*/
+.el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before {
+    content: '';
+    color: #f56c6c;
+    margin-right: 0px;
+}
+.el-form-item{
+	width: 100%;
+}
+.el-cascader{
+	width: 100%;
+}
+.content-counter{
+	width: 20.5rem;
+	height: 21.35rem;
+	float: left;
+	margin-left: 1.75rem;
+	padding-top: 1.5rem;
+}
+.el-form h2{
+	height: 2.5rem;
+}
+.counter-input{
+	width: 14.5rem;
+	height: 2rem;
+	background-color: #fff;
+	position: relative;
+	float: left;
+	border:0.1rem solid #ddd;
+	border-radius: 0.2rem;
+	color: #333;
+	font-size: 0.9rem;
+	outline: none;
+	padding-left: 0.5rem;
+}
+.span-danwei{
+	width: 1.5rem;
+	height: 1.75rem;
+	position: absolute;
+	top: -0.1rem;
+	right: 0.5rem;
+	color: #333;
+	font-size: 1.2rem;
+	line-height: 1.75rem;
+}
+.span-danwei sup{
+	color: #333;
+	font-size: 0.6rem;
+	line-height: 1.75rem; 
+}
+
+.div-span{
+	width: 14.5rem;
+	height: 1.75rem; 
+	position: absolute;
+	top: 0rem;
+	left: 0rem;
+}
+.div-span span{
+	width: auto;
+	height: 1.75rem; 
+	float: left;
+	margin-left: 0.65rem;
+	color: #333;
+	font-size: 0.9rem;
+	line-height: 1.75rem;
+	
+}
+.div-span img{
+	width: 1.75rem;
+	height: 1.75rem;
+}
+.ul-li{
+	display: none;
+	width: 14.5rem;
+	height: 11.75rem;
+	background-color: #fff; 
+	position: absolute;
+	top: 1.75rem;
+	left: 0rem;
+	z-index: 100;
+}
+.ul-li li{
+	width: 2.4rem;
+	height: 11.75rem;
+	float: left;
+	margin-left: 0.4rem; 
+}
+.ul-li li span{
+	display: block;
+	width: 2.4rem;
+	height: 1.5rem;
+	background-color: #eee;
+	margin-top: 0.4rem;
+	color: #333;
+	font-size: 0.9rem;
+	line-height: 1.5rem;
+	cursor: pointer;
+}
+.ul-li li .span{
+	background-color: #1e8e66;
+	color: #fff;
+}
+.content-counter .msg{
+	display: block;
+	width: 14.3rem;
+	height: 1.5rem;
+	float: left;
+	margin-left: 5.7rem;
+	color: red;
+	font-size: 0.9rem;
+	line-height: 1.5rem;
+}
+
+/*content-count begin*/
+.content-count{
+	width: 7.5rem;
+	height: 21.35rem;
+	float: left;
+}
+.count-image{
+	width: 7.5rem;
+	height: 7.5rem;
+	margin-top: 7.5rem;
+}
+.count-image img{
+	width: 7.5rem;
+	height: 7.5rem;
+	cursor: pointer;
+}
+
+/*content-count begin*/
+.content-result{
+	width: 21rem;
+	height: 21.35rem;
+	float: left;
+	padding-top: 1.5rem;
+}
+.result-re{
+	width: 20.5rem;
+	height: 3rem;
+	margin-top: 2rem;
+	color: #666;
+	font-size: 1.25rem; 
+}
+.result-re span{
+	color: red;
+	font-size: 1.25rem; 
+}
+.result-type{
+	width: 20.5rem;
+	height: 13.5rem;
+	border:0.05rem solid #1e8e66;
+}
+.result-type p{
+	width: 16.5rem;
+	height: 1rem;
+	margin-top: 1.25rem;
+	margin-left: 4rem;
+	color: #666;
+	font-size: 1rem;
+	line-height: 1rem;
+}
+.result-type-ty{
+	width: 16.5rem;
+	height: 1.5rem;
+	margin-top: 1.25rem;
+	margin-left: 4rem;
+	color: #666;
+	font-size: 0.8rem;
+}
+.result-type-ty input{
+	display: inline-block;
+	width: 1.3rem;
+	height: 1.3rem;
+	float:left;
+	margin-left: 0.5rem;
+	color: #666;
+	font-size: 1rem;
+	-webkit-appearance: radio;
+}
+.result-type-ty span{
+	display: inline-block;
+	width: auto;
+	height: 0.9rem;
+	float:left;
+	margin-top:0.25rem;
+	font-size: 0.8rem;
+	line-height: 0.8rem;
+}
+
+/*price end*/

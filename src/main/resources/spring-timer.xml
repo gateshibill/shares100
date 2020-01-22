@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<beans xmlns="http://www.springframework.org/schema/beans"    
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"    
+    xmlns:context="http://www.springframework.org/schema/context"    
+    xmlns:mvc="http://www.springframework.org/schema/mvc"    
+    xsi:schemaLocation="http://www.springframework.org/schema/beans      
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd      
+                        http://www.springframework.org/schema/context      
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd      
+                        http://www.springframework.org/schema/mvc      
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">    
+    
+
+
+  	<bean id="calculateRecommendMarkTimer" class="com.cofc.timer.CalculateRecommendMarkTimer">
+  	</bean>
+  	<!-- 定时器配置 -->
+	<bean id="calculateRecommendMarkServise" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="calculateRecommendMarkTimer"></property><!-- 指定任务类 -->
+		<property name="targetMethod" value="calculate"></property><!-- 指定任务方法 -->
+	</bean>     
+	<!-- 定义时间间隔触发器 -->
+	<bean id="calculateRecommendMarkTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="calculateRecommendMarkServise"></property>
+		<property name="cronExpression">
+			<value>0 0 0/2 * * ?</value>
+		</property>
+	</bean>   
+   
+     <bean id="bossDataAnalysisTimer" class="com.cofc.timer.BossDataAnalysisTimer">
+  	</bean>
+  	<!-- 定时器配置 -->
+	<bean id="bossDataAnalysisServise" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="bossDataAnalysisTimer"></property><!-- 指定任务类 -->
+		<property name="targetMethod" value="calculate"></property><!-- 指定任务方法 -->
+	</bean>     
+	<!-- 定义时间间隔触发器 -->
+	<bean id="bossDataAnalysisTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="bossDataAnalysisServise"></property>
+		<property name="cronExpression">
+			<value>0 0 0/1 * * ?</value>
+		</property>
+	</bean>  
+	
+	<!-- 启动定时器 -->
+	<bean id="startJob" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!--  ref bean="calculateRecommendMarkTrigger"/>  -->
+				<ref bean="bossDataAnalysisTrigger"/>
+			</list>
+		</property>
+	</bean>     
+        
+</beans>    

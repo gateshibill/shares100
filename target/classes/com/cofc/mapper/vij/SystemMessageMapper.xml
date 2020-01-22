@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.SystemMessageService">
+	<resultMap type="com.cofc.pojo.vij.SystemMessage" id="BaseResultMap">
+		<id column="mes_id" property="mesId" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="object_id" property="objectId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="is_read" property="isRead" jdbcType="INTEGER" />
+		<result column="login_plat" property="loginPlat" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<!--  -->
+		<association property="application" javaType="com.cofc.pojo.ApplicationCommon">
+		<id column="application_id" property="applicationId" jdbcType="INTEGER" />
+		<result column="application_name" property="applicationName" jdbcType="VARCHAR" />
+		</association>
+		<association property="user" javaType="com.cofc.pojo.UserCommon">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<insert id="addSysMes" parameterType="com.cofc.pojo.vij.SystemMessage"
+		useGeneratedKeys="true" keyProperty="advId">
+		insert into
+		tv_system_message(title,content,type,object_id,user_id,is_read,create_time,login_plat)
+		values(#{title},#{content},#{type},#{objectId},#{userId},#{isReaD},#{createTime},#{loginPlat})
+	</insert>
+	<update id="updateSysMes" parameterType="com.cofc.pojo.vij.SystemMessage">
+		update tv_system_message
+		<trim prefix="set" suffixOverrides=",">
+			<if test="title!=null and title!=''">title = #{title},</if>
+			<if test="content!=null and content!=''">content = #{content},</if>
+			<if test="type!=null">type = #{type},</if>
+			<if test="isRead!=null">is_read = #{isRead},</if>
+		</trim>
+		where mes_id = #{mesId}
+	</update>
+	<delete id="delSysMes" parameterType="com.cofc.pojo.vij.SystemMessage">
+		delete from tv_system_message where mes_id = #{mesId}
+	</delete>
+	<select id="getSysMesCount" resultType="int">
+		select count(*) from tv_system_message where 1=1
+		<if test="message.userId != null">
+			and user_id = #{message.userId}
+		</if>
+		<if test="message.isRead != null">
+			and is_read = #{message.isRead}
+		</if>
+		<if test="message.loginPlat != null">
+			and login_plat = #{message.loginPlat}
+		</if>
+	</select>
+	
+	<!-- 平台化 -->
+	<select id="getCountMessage" resultType="int">
+		SELECT count(*) from tv_system_message w
+		LEFT JOIN TB_USER_COMMON u 
+		on w.login_plat = u.login_plat
+		where 1 = 1
+		<if test="message.userId !=null">
+			and w.user_Id = #{message.userId}
+		</if>
+		<if test="message.isRead != null">
+			and w.is_read = #{message.isRead}
+		</if>
+		<if test="message.loginPlat != null">
+		and w.loginPlat like CONCAT('%',#{message.loginPlat},'%')
+		</if>
+		
+	</select>
+	<select id="findMessageList2" resultMap="BaseResultMap">
+		SELECT * from tv_system_message w
+		LEFT JOIN TB_USER_COMMON u 
+		on w.login_plat = u.login_plat
+		where 1 = 1
+		<if test="message.userId !=null">
+			and w.user_Id = #{message.userId}
+		</if>
+		<if test="message.isRead != null">
+			and w.is_read = #{message.isRead}
+		</if>
+		<if test="message.loginPlat != null">
+		and w.loginPlat like CONCAT('%',#{message.loginPlat},'%')
+		</if>
+	</select>
+	
+	<!-- 分区应用 -->
+	<select id="getCountMessageByLoginPlat" resultType="int"> 
+		SELECT count(*) from tv_system_message w
+		LEFT JOIN TB_USER_COMMON u 
+		on w.login_plat = u.login_plat
+		where 1 = 1
+		<if test="message.userId !=null">
+			and w.user_Id = #{message.userId}
+		</if>
+		<if test="message.isRead != null">
+			and w.is_read = #{message.isRead}
+		</if>
+		<if test="message.loginPlat != null">
+		and w.loginPlat like CONCAT('%',#{message.loginPlat},'%')
+		</if>
+		 and w.login_plat in 
+		 <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach> 
+	</select>
+	
+	<!-- 从新开Sql -->
+	<select id="getMessageByLoginPlat" resultMap="BaseResultMap">
+		SELECT * from tv_system_message w
+		LEFT JOIN TB_USER_COMMON u 
+		on w.login_plat = u.login_plat
+		where 1 = 1
+		<if test="message.userId !=null">
+			and w.user_Id = #{message.userId}
+		</if>
+		<if test="message.isRead != null">
+			and w.is_read = #{message.isRead}
+		</if>
+		<if test="message.loginPlat != null">
+		and w.loginPlat like CONCAT('%',#{message.loginPlat},'%')
+		</if>
+		 and w.login_plat in 
+		 <foreach item="item"  index="index" collection="loginPlatList" open="("
+					separator="," close=")">
+					#{item}
+	    </foreach> 
+	    order by w.create_time desc limit #{page},#{limit}
+	</select>
+	
+	<select id="getSysMesList" resultMap="BaseResultMap">
+		select * from tv_system_message where 1=1
+		<if test="message.userId != null">
+			and user_id = #{message.userId}
+		</if>
+		<if test="message.isRead != null">
+			and is_read = #{message.isRead}
+		</if>
+		<if test="message.loginPlat != null">
+			and login_plat = #{message.loginPlat}
+		</if>
+		order by create_time desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	
+	<!-- 优化查询 -->
+	<select id="getNewMessageList" resultMap="BaseResultMap">
+			SELECT * from tv_system_message where is_read = 0
+			<if test="loginPlatList != null">
+			and login_plat in 
+			<foreach item="item"  index="index" collection="loginPlatList" open="("
+						separator="," close=")">
+						#{item}
+		    </foreach>
+		</if>
+	</select> 
+</mapper>

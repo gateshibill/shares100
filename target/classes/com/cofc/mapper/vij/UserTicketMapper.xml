@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.vij.UserTicketService">
+	<resultMap type="com.cofc.pojo.vij.UserTicket" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="ticket_id" property="ticketId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="is_use" property="isUse" jdbcType="INTEGER" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="ticket_name" property="ticketName" jdbcType="VARCHAR" />
+		<result column="ticket_desc" property="ticketDesc" jdbcType="VARCHAR" />
+		<result column="ticket_money" property="ticketMoney" jdbcType="INTEGER" />
+		<result column="ticket_type" property="ticketType" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addUserTicket" parameterType="com.cofc.pojo.vij.UserTicket"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into tv_user_ticket(ticket_id,user_id,is_use) 
+		values(#{ticketId},#{userId},#{isUse})
+	</insert>
+	<update id="updateUserTicket" parameterType="com.cofc.pojo.vij.UserTicket">
+		update tv_user_ticket
+		<trim prefix="set" suffixOverrides=",">
+			<if test="isUse!=null">is_use = #{isUse},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<delete id="delUserTicket" parameterType="com.cofc.pojo.vij.UserTicket">
+		delete from tv_user_ticket where id = #{id}
+	</delete>
+	<select id="getUserTicketCount" resultType="int">
+		select count(*) from tv_user_ticket as t left join tb_user_common as u on u.user_id = t.user_id 
+		left join tv_card_ticket as c on t.ticket_id = c.ticket_id where 1=1
+		<if test="ticket.userId != null">
+			and t.user_id = #{ticket.userId}
+		</if>
+		<if test="ticket.isUse != null">
+			and t.is_use = #{ticket.isUse}
+		</if>
+	</select>
+	<select id="getUserTicketList" resultMap="BaseResultMap">
+		select * from tv_user_ticket as t left join tb_user_common as u on u.user_id = t.user_id 
+		left join tv_card_ticket as c on t.ticket_id = c.ticket_id where 1=1
+		<if test="ticket.userId != null">
+			and t.user_id = #{ticket.userId}
+		</if>
+		<if test="ticket.isUse != null">
+			and t.is_use = #{ticket.isUse}
+		</if>
+		order by id desc
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	<select id="checkHasCardCount" resultType="int">
+		select count(*) from tv_user_ticket where 1=1
+		<if test="ticketId != null">
+			and ticket_id = #{ticketId}
+		</if>
+		<if test="userId != null">
+			and user_id = #{userId}
+		</if>
+		<if test="isUse != null">
+			and is_use = #{isUse}
+		</if>
+	</select>
+</mapper>

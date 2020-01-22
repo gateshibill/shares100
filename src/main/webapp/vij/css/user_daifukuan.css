@@ -1,0 +1,264 @@
+/*鏍峰紡鍒濆鍖�*/
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+ul, ol, li {
+	list-style: none;
+}
+html{
+	width: 100%;
+	height:100%;
+}
+body {
+	font-family: "寰蒋闆呴粦";
+	font-size: 0.8rem;
+	letter-spacing: 0.01rem;
+	height:100%;
+}
+a {
+	text-decoration: none;
+}
+.page {
+	width: 100%;
+}
+
+/*centre begin*/
+.centre {
+	width: 100%;
+	min-height:40rem;                                  
+	background-color: #f0f2f2;
+	padding-top:2.5rem;
+}
+.centre-center {
+	width: 70rem;
+	height:auto;
+	margin: 0 auto;
+	background-color: #f0f2f2;
+	position: relative;
+	
+}
+.centre-center-left {
+	position:absolute;
+	top:0rem;
+	left:0rem;
+	width: 15%;
+	height:100%;
+	background-color: #fff;
+	padding-bottom:2rem;
+}
+.centre-center-left ul {
+	width: 100%;
+	height:100%;
+}
+.centre-center-left ul li {
+	font-size: 1.1rem;
+	width: 9.5rem;
+	height: 1rem;
+	margin-top: 1rem;
+	margin-left: 1rem;
+	color: #4F4F4F;
+}
+.centre-center-left-a {
+	color: #4F4F4F;
+}
+.centre-center-left-a1 {
+	color: #1E8E66;
+}
+
+/*centre-center-right begin*/
+.centre-center-right {
+	float: right;
+	width: 83%;
+	height:auto;
+	background-color: #FFF;
+	padding:1%;
+}
+.centre-center-right-user {
+	width: 56.5rem;
+	height: 10.75rem;
+	border: 0.05rem solid #BFBFBF;
+	background-color: #CCC;
+}
+.centre-center-right-user-s {
+	width: 56.3rem;
+	height: 5.3rem;
+	margin-top: 0.05rem;
+	margin-left: 0.05rem;
+	border-bottom: 0.05rem solid #BFBFBF;
+	background-color: #EAF7F3;
+}
+.center-right-user-s-image {
+	float: left;
+	width: 4.5rem;
+	height: 4.5rem;
+	margin-top: 0.5rem;
+	margin-left: 1rem;
+}
+.center-right-user-s-image img {
+	width: 4.5rem;
+	height: 4.5rem;
+}
+.center-right-user-s-ul {
+	float: left;
+	width: 49.8rem;
+	height: 1.2rem;
+	margin-top: 2rem;
+	margin-left: 1rem;
+}
+.center-right-user-s-ul li {
+	font-size: 1rem;
+	float: left;
+	width: 13rem;
+	height: 1.2rem;
+	color: #4F4F4F;
+}
+.center-right-user-s-ul li a {
+	color: #4F4F4F;
+}
+
+.centre-center-right-user-x {
+	width: 56.3rem;
+	height: 5.25rem;
+	margin-left: 0.05rem;
+	background-color: #FFF;
+}
+.centre-center-right-user-x ul {
+	width:auto;
+	width: fit-content;
+	width:-moz-fit-content;
+	max-width: 56rem;
+	height: 5.25rem;
+	margin:0 auto;
+}
+.centre-center-right-user-x ul li {
+	float: left;
+	width: 9rem;
+	height: 5.25rem;
+	cursor: pointer;
+}
+.center-right-user-x-image {
+	width: 1.7rem;
+	height: 1.7rem;
+	margin-top: 0.7rem;
+	margin-left: 3.6rem;
+}
+.center-right-user-x-image img {
+	width: 1.7rem;
+	height: 1.7rem;
+	cursor: pointer;
+}
+.centre-center-right-user-x ul li p {
+	font-size: 1rem;
+	width: 10rem;
+	height: 1rem;
+	margin-top: 0.75rem;
+	cursor: pointer;
+	color: #999;
+}
+.centre-center-right-user-x ul .user-x-li p span {
+	color: #27AB7C;
+}
+
+/*centre-center-right-goods begin*/
+.centre-center-right-goods {
+	width: 56.5rem;
+	padding-top: 1.75rem;
+	background-color: #FFF;
+}
+.centre-center-right-goods-like {
+	display: flex;
+	width: 56.5rem;
+	background-color: #F0F2F2;
+
+	flex-wrap: nowrap;
+	justify-content: space-between;
+}
+.goods-like-item {
+	font-size: 0.9rem;
+	line-height: 1.5rem;
+	float: left;
+	width: 7.1rem;
+	text-align: center;
+	color: #4F4F4F;
+}
+.goods-like-item.long {
+	width: 23.25rem;
+	display: block;
+}
+
+.center-right-orders {
+	position: relative;
+	width: 56.5rem;
+}
+.order-items {
+	margin-top: 1rem;
+	width: 100%;
+	border: 1px solid #eee;
+	display: flex;
+	justify-content: space-between;
+}
+.order-goods-list{
+	display: block;
+}
+.goods-item{
+	display: flex;
+	width: 35.5rem;
+	padding: 1rem 0;
+	border: 1px solid #eee;
+
+	align-items: flex-start;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+}
+.goods-image {
+	margin-left: 1rem;
+	width: 5rem;
+	height: 5rem;
+}
+.goods-name-box {
+	margin-left: 1rem;
+	width: 16.25rem;
+}
+.goods-name {
+	font-size: 0.9rem;
+	word-wrap: normal;
+	color: #333;
+}
+.goods-type {
+	font-size: 0.8rem;
+	color: #666;
+}
+.goods-price,.goods-number{
+	font-size: 0.8rem;
+	width: 7.1rem;
+	text-align: center;
+}
+.order-status-box{
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: center;
+}
+.order-subtatol,.order-status,.order-event{
+	width: 7.1rem;
+	font-size: 0.8rem;
+	text-align: center;
+}
+
+.pagination{
+	display: flex;
+	margin-top: 1rem;
+	flex-wrap: nowrap;
+	justify-content: flex-end;
+	padding-bottom: 3rem;
+}
+
+/* index-bottom begin*/
+.index-bottom{
+	width:100%;
+	height:2rem;
+	background-color: #f0f2f2;
+}
+/* index-bottom end*/

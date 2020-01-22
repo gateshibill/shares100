@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cofc.service.TravelCommentService">
+	<resultMap type="com.cofc.pojo.TravelComment" id="BaseResultMap">
+		<id column="comment_id" property="commentId" jdbcType="INTEGER" />
+	    <result column="comment_content" property="commentContent" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="reply_user_id" property="replyuserId" jdbcType="INTEGER" />
+	    <result column="comment_image" property="commentImage" jdbcType="VARCHAR" />
+	    <result column="is_effect" property="isEffect" jdbcType="INTEGER" />
+		<result column="travel_id" property="travelId" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<association property="user" javaType="com.cofc.pojo.UserCommon">
+			<id column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+			<result column="real_name" property="realName" jdbcType="VARCHAR" />
+			<result column="head_image" property="headImage" jdbcType="VARCHAR" />
+		</association>
+		
+	</resultMap>
+
+	<insert id="addCommentInfo" parameterType="com.cofc.pojo.TravelComment"
+		useGeneratedKeys="true" keyProperty="commentId">
+		insert into
+		TB_TRAVEL_COMMENT(comment_content,user_id,reply_user_id,comment_image,is_effect,travel_id,create_time)
+		values(#{commentContent},#{userId},#{replyuserId},#{commentImage},#{isEffect},#{travelId},#{createTime})
+	</insert>
+
+	<select id="getCommentList" resultMap="BaseResultMap">
+		select * from TB_TRAVEL_COMMENT as c left join TB_USER_COMMON as u on c.user_id = u.user_id
+		where c.is_effect = 1 and c.travel_id = #{travelId} order by c.create_time limit #{pageNo},#{pageSize} 
+	</select>
+	
+	<select id="getOneComment" resultMap="BaseResultMap">
+	   select * from TB_TRAVEL_COMMENT where comment_id = #{commentId}
+	</select>
+    
+    <delete id="delComment">
+      delete from TB_TRAVEL_COMMENT where comment_id = #{commentId}
+    </delete>
+    
+    <select id="getCommentCountByTravelId" resultType="int">
+     select count(*) from TB_TRAVEL_COMMENT where is_effect = 1 and travel_id = #{travelId}
+    </select>
+     
+    <select id="getCommentCountByUserId" resultType="int">
+     select count(*) from TB_TRAVEL_COMMENT where is_effect = 1 and travel_id = #{travelId} and user_id = #{userId}
+    </select>
+    
+    <select id="getCommentImageCountByTravelId" resultType="int">
+     select count(*) from TB_TRAVEL_COMMENT where is_effect = 1 and comment_image &lt;&gt;'' and travel_id = #{travelId} 
+    </select>
+    
+    <select id="getCommentImageCountByUserId" resultType="int">
+     select count(*) from TB_TRAVEL_COMMENT where is_effect = 1 and comment_image &lt;&gt;'' 
+     and travel_id = #{travelId} and user_id = #{userId}
+    </select>
+    
+    <select id="getCommentListByBxy" resultMap="BaseResultMap">
+		select * from TB_TRAVEL_COMMENT as c left join TB_USER_COMMON as u on c.user_id = u.user_id
+		where c.is_effect = 1 and c.travel_id = #{travelId}
+		<if test="comment.commentContent != null and comment.commentContent != ''">
+		   c.comment_content = #{comment.commentContent}
+		</if> 
+		order by c.create_time limit #{page},#{limit} 
+	</select>
+</mapper>
