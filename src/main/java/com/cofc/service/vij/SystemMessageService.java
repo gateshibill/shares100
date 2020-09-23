@@ -3,7 +3,7 @@ package com.cofc.service.vij;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
-import org.junit.runners.Parameterized.Parameters;
+//import org.junit.runners.Parameterized.Parameters;
 
 import com.cofc.pojo.GoodsCommon;
 import com.cofc.pojo.GoodsType;

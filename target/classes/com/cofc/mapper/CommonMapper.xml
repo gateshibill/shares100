@@ -6,13 +6,15 @@
 		<result column="value" property="value" jdbcType="VARCHAR" />
 		<result column="type" property="type" jdbcType="VARCHAR" />
 		<result column="desc" property="desc" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
 	</resultMap>
 	<select id="getSystemSettings" resultMap="SystemSettingsMap">
 		select * from tb_system_settings
 	</select>
 	
 	<insert id="addSystemSetting" parameterType="com.cofc.pojo.SystemSetting">
-		insert into tb_system_settings(`key`, `value`, `type`, `desc`)values(#{key}, #{value}, #{type}, #{desc})
+		insert into tb_system_settings(`key`, `value`, `type`, `desc`, `create_time`)
+		values(#{key}, #{value}, #{type}, #{desc}, #{createTime})
 	</insert>
 	
 	<update id="updateSystemSetting" parameterType="com.cofc.pojo.SystemSetting">
@@ -24,11 +26,9 @@
 		</trim>
 		where `key` = #{key}
 	</update>
-	
-	<select id="findAllTagMap" resultType="map">
-		select * from tb_tag_map
+
+	<select id="getValue" resultMap="SystemSettingsMap">
+		select * from tb_system_settings where key=#{key}
 	</select>
-	<select id="findAllGroupTypes" resultType="map">
-		select type_id,type_name from tb_group_types;
-	</select>
+
 </mapper>

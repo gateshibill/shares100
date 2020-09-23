@@ -13,12 +13,8 @@
 	</classpathentry>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
+			<attribute name="test" value="true"/>
 			<attribute name="optional" value="true"/>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources">
-		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
@@ -28,22 +24,40 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_51">
 		<attributes>
-			<attribute name="owner.project.facets" value="java"/>
+			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/commons-lang-2.4-osgi.jar"/>
-	<classpathentry kind="lib" path="D:/feikanyun/cofC/lib/fastjson-1.2.6.jar"/>
-	<classpathentry kind="lib" path="D:/feikanyun/cofC/lib/fluent-hc-4.3.4.jar"/>
-	<classpathentry kind="lib" path="D:/feikanyun/cofC/lib/httpclient-cache-4.3.4.jar"/>
-	<classpathentry kind="lib" path="D:/feikanyun/cofC/lib/httpmime-4.3.4.jar"/>
-	<classpathentry kind="lib" path="D:/feikanyun/cofC/lib/im.jar"/>
-	<classpathentry kind="lib" path="D:/feikanyun/cofC/lib/ImageUtil.jar"/>
-	<classpathentry kind="lib" path="D:/feikanyun/cofC/lib/MathUtils.jar"/>
-	<classpathentry kind="lib" path="D:/feikanyun/cofC/lib/smack.jar"/>
-	<classpathentry kind="lib" path="D:/feikanyun/cofC/lib/smackx.jar"/>
-	<classpathentry kind="lib" path="D:/feikanyun/cofC/lib/alipay-sdk-java-3.3.2.jar"/>
-	<classpathentry kind="lib" path="D:/feikanyun/cofC/lib/alipay-sdk-java-3.3.2-source.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.1.1-sources.jar"/>
+	<classpathentry kind="lib" path="lib/fastjson-1.2.6.jar"/>
+	<classpathentry kind="lib" path="lib/fluent-hc-4.3.4.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient-cache-4.3.4.jar"/>
+	<classpathentry kind="lib" path="lib/httpmime-4.3.4.jar"/>
+	<classpathentry kind="lib" path="lib/im.jar"/>
+	<classpathentry kind="lib" path="lib/ImageUtil.jar"/>
+	<classpathentry kind="lib" path="lib/MathUtils.jar"/>
+	<classpathentry kind="lib" path="lib/smack.jar"/>
+	<classpathentry kind="lib" path="lib/smackx.jar"/>
+	<classpathentry kind="src" path="target/generated-sources/annotations">
+		<attributes>
+			<attribute name="ignore_optional_problems" value="true"/>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="m2e-apt" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path="target/generated-test-sources/test-annotations">
+		<attributes>
+			<attribute name="ignore_optional_problems" value="true"/>
+			<attribute name="test" value="true"/>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="m2e-apt" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="E:/project/shares100/lib/alipay-sdk-java-3.3.2.jar"/>
+	<classpathentry kind="lib" path="E:/project/shares100/lib/alipay-sdk-java-3.3.2-source.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
