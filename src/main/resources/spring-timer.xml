@@ -47,7 +47,7 @@
 		<property name="triggers">
 			<list>
 				<!--  ref bean="calculateRecommendMarkTrigger"/>  -->
-				<ref bean="bossDataAnalysisTrigger"/>
+				<!-- <ref bean="bossDataAnalysisTrigger"/> -->
 			</list>
 		</property>
 	</bean>     

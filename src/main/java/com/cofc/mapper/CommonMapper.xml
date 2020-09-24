@@ -3,6 +3,7 @@
 <mapper namespace="com.cofc.service.CommonService">
 	<resultMap id="SystemSettingsMap" type="com.cofc.pojo.SystemSetting">
 		<id column="key" property="key" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
 		<result column="value" property="value" jdbcType="VARCHAR" />
 		<result column="type" property="type" jdbcType="VARCHAR" />
 		<result column="desc" property="desc" jdbcType="VARCHAR" />
@@ -13,8 +14,8 @@
 	</select>
 	
 	<insert id="addSystemSetting" parameterType="com.cofc.pojo.SystemSetting">
-		insert into tb_system_settings(`key`, `value`, `type`, `desc`, `create_time`)
-		values(#{key}, #{value}, #{type}, #{desc}, #{createTime})
+		insert into tb_system_settings(`key`, `name`,`value`, `type`, `desc`, `create_time`)
+		values(#{key}, #{name}, #{value}, #{type}, #{desc}, #{createTime})
 	</insert>
 	
 	<update id="updateSystemSetting" parameterType="com.cofc.pojo.SystemSetting">
@@ -28,7 +29,7 @@
 	</update>
 
 	<select id="getValue" resultMap="SystemSettingsMap">
-		select * from tb_system_settings where key=#{key}
+		select * from tb_system_settings where name=#{key}
 	</select>
 
 </mapper>

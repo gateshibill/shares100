@@ -1,4 +1,4 @@
-package com.cofc.upload;
+package com.cofc.controller.file;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cofc.service.CommonService;
+import com.cofc.util.BaseUtil;
 import com.cofc.util.JsonUtil;
 
 //import com.ylb.service.OfPropertyService;
@@ -25,7 +27,7 @@ import com.cofc.util.JsonUtil;
 
 @Controller
 @RequestMapping("/upload")
-public class UploadFile {
+public class UploadFile  extends BaseUtil {
 
 	private final static String FILE_SERVER_DIR = "file_server_dir";
 	private final static String FILE_SERVER_URL = "file_server_url";
@@ -36,17 +38,17 @@ public class UploadFile {
 	private CommonService commonService;
 
 	/**
-	 * 上传声音
+	 * 上传文件
 	 * 
 	 * @param file
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public String upload(@RequestParam(value = "file", required = false) MultipartFile file, InputStream inputStream,
+	public void upload(HttpServletResponse response, @RequestParam(value = "file", required = false) MultipartFile file, InputStream inputStream,
 			HttpServletRequest request) {
 		System.out.println("upload:" + file.getName() + "/" + file.getSize());
-		return uploadFileToServer(file, request, "", "");
+		output(response,  uploadFileToServer(file, request, "", ""));
 	}
 
 	private String uploadFileToServer(MultipartFile file, HttpServletRequest request, String uploadDir, String subffix) {
@@ -106,7 +108,7 @@ public class UploadFile {
 		File file = new File(filePath);
 		if (file.exists()) {
 			if (file.isDirectory()) {
-				System.out.println("dir exists");
+				System.out.println("dir exists:"+filePath);
 			} else {
 				System.out.println("fail to create dir:" + file.getAbsolutePath());
 			}

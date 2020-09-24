@@ -5,6 +5,7 @@ import java.util.Date;
 public class SystemSetting {
 
 	private String key;
+	private String name;
 	private String value;
 	private String type;
 	private String desc;
@@ -39,6 +40,12 @@ public class SystemSetting {
 	}
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }
