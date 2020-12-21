@@ -17,7 +17,7 @@
 		<mysqlDriver.version>5.1.35</mysqlDriver.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
 		<jstl.version>1.2</jstl.version>
-		<xstream.version>1.4.8</xstream.version>
+		<xstream.version>1.4.15</xstream.version>
 		<httpclient.version>4.3.4</httpclient.version>
 		<jdom.version>2.0.2</jdom.version>
 		<redis.version>2.9.0</redis.version>
