@@ -14,7 +14,7 @@
 		<gson.version>2.2.4</gson.version>
 		<junit.version>4.12</junit.version>
 		<javaee.version>7.0</javaee.version>
-		<mysqlDriver.version>5.1.35</mysqlDriver.version>
+		<mysqlDriver.version>8.0.28</mysqlDriver.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
 		<jstl.version>1.2</jstl.version>
 		<xstream.version>1.4.8</xstream.version>
